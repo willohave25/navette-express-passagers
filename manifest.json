@@ -2,7 +2,7 @@
   "name": "Navette Express - Passagers",
   "short_name": "Navette Express",
   "description": "Votre navette en un clic - Sûreté, Rapidité, Confort pour vos trajets à Abidjan",
-  "start_url": "/splash.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#0F1A2E",
   "theme_color": "#1B2A4A",
