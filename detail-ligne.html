@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#1B2A4A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Navette Express">
+  <meta name="description" content="Détail de la ligne Yopougon - Plateau - Navette Express Abidjan.">
+  
+  <!-- Favicon et icônes -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
+  <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+  
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/app.css">
+  
+  <title>Détail ligne - Navette Express</title>
+</head>
+<body class="with-nav">
+  <!-- Header -->
+  <header class="header">
+    <button class="header-btn" data-action="back" onclick="goBack()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <h1 class="header-title">Détail ligne</h1>
+    <button class="header-btn" onclick="shareLine()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="18" cy="5" r="3"/>
+        <circle cx="6" cy="12" r="3"/>
+        <circle cx="18" cy="19" r="3"/>
+        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+      </svg>
+    </button>
+  </header>
+  
+  <!-- Contenu principal -->
+  <main class="page-with-header">
+    <!-- En-tête avec itinéraire visuel -->
+    <div class="line-detail-header">
+      <div class="line-detail-status">
+        <span class="line-status-badge active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          Ligne active
+        </span>
+      </div>
+      
+      <!-- Itinéraire visuel -->
+      <div class="line-detail-route">
+        <div class="route-point start">
+          <div class="route-dot"></div>
+          <span class="route-name">Yopougon Wassakara</span>
+        </div>
+        <div class="route-line"></div>
+        <div class="route-point end">
+          <div class="route-dot"></div>
+          <span class="route-name">Plateau Centre</span>
+        </div>
+      </div>
+      
+      <!-- Infos principales -->
+      <div class="line-detail-info">
+        <div class="info-item">
+          <span class="info-label">Horaire</span>
+          <span class="info-value">06:30</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Durée</span>
+          <span class="info-value">~45 min</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Arrêts</span>
+          <span class="info-value">3 arrêts</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Places</span>
+          <span class="info-value highlight">12/35</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Type de bus -->
+    <section class="detail-section">
+      <h3 class="section-title">Type de bus</h3>
+      <div class="bus-type-card">
+        <div class="bus-type-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="14" rx="2"/>
+            <path d="M3 10h18"/>
+            <circle cx="7" cy="18" r="2"/>
+            <circle cx="17" cy="18" r="2"/>
+          </svg>
+        </div>
+        <div class="bus-type-info">
+          <h4>Hyundai County</h4>
+          <p>Bus standard • 35 places • Climatisé</p>
+        </div>
+        <div class="bus-type-features">
+          <span class="bus-feature">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            Clim
+          </span>
+          <span class="bus-feature">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            USB
+          </span>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Tarifs -->
+    <section class="tarifs-section">
+      <h3 class="section-title">Tarifs selon la distance</h3>
+      <div class="tarifs-grid">
+        <div class="tarif-item">
+          <span class="tarif-distance">5 km</span>
+          <span class="tarif-price">300 <span>FCFA</span></span>
+        </div>
+        <div class="tarif-item active">
+          <span class="tarif-distance">10 km</span>
+          <span class="tarif-price">400 <span>FCFA</span></span>
+        </div>
+        <div class="tarif-item">
+          <span class="tarif-distance">15 km</span>
+          <span class="tarif-price">500 <span>FCFA</span></span>
+        </div>
+        <div class="tarif-item">
+          <span class="tarif-distance">20 km</span>
+          <span class="tarif-price">600 <span>FCFA</span></span>
+        </div>
+      </div>
+      <p class="tarifs-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        Le tarif est calculé automatiquement selon votre point de montée et descente.
+      </p>
+    </section>
+    
+    <!-- Arrêts -->
+    <section class="stops-section">
+      <h3 class="section-title">Itinéraire et arrêts</h3>
+      <div class="stops-list">
+        <div class="stop-item start">
+          <div class="stop-content">
+            <span class="stop-name">Yopougon Wassakara</span>
+            <span class="stop-time">Départ 06:30</span>
+          </div>
+        </div>
+        <div class="stop-item">
+          <div class="stop-content">
+            <span class="stop-name">Yopougon Maroc</span>
+            <span class="stop-time">06:40</span>
+          </div>
+        </div>
+        <div class="stop-item">
+          <div class="stop-content">
+            <span class="stop-name">Adjamé Liberté</span>
+            <span class="stop-time">06:55</span>
+          </div>
+        </div>
+        <div class="stop-item">
+          <div class="stop-content">
+            <span class="stop-name">Plateau Indénié</span>
+            <span class="stop-time">07:10</span>
+          </div>
+        </div>
+        <div class="stop-item end">
+          <div class="stop-content">
+            <span class="stop-name">Plateau Centre (CCIA)</span>
+            <span class="stop-time">Arrivée 07:15</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Horaires disponibles -->
+    <section class="schedules-section">
+      <h3 class="section-title">Autres horaires disponibles</h3>
+      <div class="schedules-grid">
+        <button class="schedule-btn active">
+          <span class="schedule-time">06:30</span>
+          <span class="schedule-seats">12 places</span>
+        </button>
+        <button class="schedule-btn">
+          <span class="schedule-time">07:00</span>
+          <span class="schedule-seats">8 places</span>
+        </button>
+        <button class="schedule-btn">
+          <span class="schedule-time">07:30</span>
+          <span class="schedule-seats">15 places</span>
+        </button>
+        <button class="schedule-btn disabled">
+          <span class="schedule-time">08:00</span>
+          <span class="schedule-seats">Complet</span>
+        </button>
+      </div>
+    </section>
+    
+    <!-- Chauffeur -->
+    <section class="driver-section">
+      <h3 class="section-title">Votre chauffeur</h3>
+      <div class="driver-card">
+        <div class="driver-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <div class="driver-info">
+          <span class="driver-name">Kouassi Bernard</span>
+          <span class="driver-vehicle">Hyundai County • AB 1234 CI</span>
+          <div class="driver-rating">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <span>4.8</span>
+            <span class="rating-count">(126 trajets)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Boutons d'action -->
+    <div class="detail-actions">
+      <button class="btn btn-secondary" onclick="shareLine()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <circle cx="18" cy="5" r="3"/>
+          <circle cx="6" cy="12" r="3"/>
+          <circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+        Partager
+      </button>
+      <button class="btn btn-primary" onclick="navigateTo('reservation.html?ligne=1')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+          <path d="M9 16l2 2 4-4"/>
+        </svg>
+        Réserver ce bus
+      </button>
+    </div>
+    
+    <!-- Espace pour bottom nav -->
+    <div style="height: 24px;"></div>
+  </main>
+  
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="accueil.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Accueil</span>
+    </a>
+    <a href="lignes.html" class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/>
+        <circle cx="12" cy="12" r="2"/>
+      </svg>
+      <span>Lignes</span>
+    </a>
+    <a href="suivi.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+      </svg>
+      <span>Suivi</span>
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 01-3.46 0"/>
+      </svg>
+      <span>Notifs</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profil</span>
+    </a>
+  </nav>
+  
+  <!-- Bouton WhatsApp flottant -->
+  <a href="https://wa.me/2250703285359" target="_blank" class="whatsapp-fab" aria-label="Contacter sur WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+  
+  <!-- Styles spécifiques -->
+  <style>
+    .line-detail-header {
+      padding: var(--spacing-lg);
+      background: linear-gradient(180deg, rgba(46, 196, 182, 0.1) 0%, transparent 100%);
+    }
+    
+    .line-detail-status {
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .line-detail-route {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-xl);
+      padding: 0 var(--spacing-sm);
+    }
+    
+    .route-point {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 100px;
+    }
+    
+    .route-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--secondary-turquoise);
+      margin-bottom: var(--spacing-sm);
+      box-shadow: 0 0 10px rgba(46, 196, 182, 0.5);
+    }
+    
+    .route-point.end .route-dot {
+      background: var(--premium-gold);
+      box-shadow: 0 0 10px rgba(200, 169, 81, 0.5);
+    }
+    
+    .route-line {
+      flex: 1;
+      height: 3px;
+      background: linear-gradient(90deg, var(--secondary-turquoise), var(--premium-gold));
+      margin: 0 var(--spacing-md);
+      margin-bottom: 24px;
+      border-radius: 2px;
+    }
+    
+    .route-name {
+      font-size: 13px;
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+    
+    .line-detail-info {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-sm);
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-md);
+    }
+    
+    .info-item {
+      text-align: center;
+    }
+    
+    .info-label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    
+    .info-value {
+      font-size: 15px;
+      font-weight: var(--font-semibold);
+    }
+    
+    .info-value.highlight {
+      color: var(--secondary-turquoise);
+    }
+    
+    .detail-section {
+      padding: var(--spacing-md);
+    }
+    
+    .bus-type-card {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-md);
+    }
+    
+    .bus-type-icon {
+      width: 56px;
+      height: 56px;
+      background: rgba(46, 196, 182, 0.15);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--secondary-turquoise);
+    }
+    
+    .bus-type-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .bus-type-info {
+      flex: 1;
+    }
+    
+    .bus-type-info h4 {
+      font-size: 16px;
+      font-weight: var(--font-semibold);
+      margin-bottom: 4px;
+    }
+    
+    .bus-type-info p {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    
+    .bus-type-features {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .bus-feature {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--success);
+    }
+    
+    .tarifs-section {
+      padding: var(--spacing-md);
+    }
+    
+    .tarifs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-sm);
+    }
+    
+    .tarif-item {
+      background: var(--card-bg);
+      border: 2px solid transparent;
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      text-align: center;
+      transition: all var(--transition-fast);
+    }
+    
+    .tarif-item.active {
+      border-color: var(--secondary-turquoise);
+      background: rgba(46, 196, 182, 0.1);
+    }
+    
+    .tarif-distance {
+      display: block;
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .tarif-price {
+      font-size: 22px;
+      font-weight: var(--font-bold);
+      color: var(--premium-gold);
+    }
+    
+    .tarif-price span {
+      font-size: 12px;
+      font-weight: var(--font-regular);
+    }
+    
+    .tarifs-note {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-sm);
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: var(--radius-sm);
+    }
+    
+    .tarifs-note svg {
+      flex-shrink: 0;
+      color: var(--info);
+    }
+    
+    .stops-section {
+      padding: var(--spacing-md);
+    }
+    
+    .stops-list {
+      position: relative;
+      padding-left: 28px;
+    }
+    
+    .stops-list::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 20px;
+      bottom: 20px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--secondary-turquoise), var(--premium-gold));
+    }
+    
+    .stop-item {
+      position: relative;
+      padding: var(--spacing-md) 0;
+    }
+    
+    .stop-item::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--dark-bg);
+      border: 2px solid var(--secondary-turquoise);
+    }
+    
+    .stop-item.start::before,
+    .stop-item.end::before {
+      width: 16px;
+      height: 16px;
+      left: -26px;
+      background: var(--secondary-turquoise);
+      border: none;
+    }
+    
+    .stop-item.end::before {
+      background: var(--premium-gold);
+    }
+    
+    .stop-content {
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+    }
+    
+    .stop-name {
+      display: block;
+      font-weight: var(--font-semibold);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+    
+    .stop-time {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .schedules-section {
+      padding: var(--spacing-md);
+    }
+    
+    .schedules-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-sm);
+    }
+    
+    .schedule-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--spacing-md) var(--spacing-sm);
+      background: var(--card-bg);
+      border: 2px solid transparent;
+      border-radius: var(--radius-md);
+      transition: all var(--transition-fast);
+    }
+    
+    .schedule-btn.active {
+      border-color: var(--secondary-turquoise);
+      background: rgba(46, 196, 182, 0.1);
+    }
+    
+    .schedule-btn.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .schedule-time {
+      font-size: 16px;
+      font-weight: var(--font-semibold);
+      margin-bottom: 4px;
+    }
+    
+    .schedule-seats {
+      font-size: 10px;
+      color: var(--text-secondary);
+    }
+    
+    .schedule-btn.active .schedule-seats {
+      color: var(--secondary-turquoise);
+    }
+    
+    .driver-section {
+      padding: var(--spacing-md);
+    }
+    
+    .detail-actions {
+      display: flex;
+      gap: var(--spacing-md);
+      padding: var(--spacing-lg);
+      padding-top: var(--spacing-md);
+    }
+    
+    .detail-actions .btn {
+      flex: 1;
+    }
+    
+    .detail-actions .btn-primary {
+      flex: 2;
+    }
+  </style>
+  
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script>
+    /* Sélection d'horaire */
+    document.querySelectorAll('.schedule-btn:not(.disabled)').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.schedule-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+    
+    /* Partager la ligne */
+    function shareLine() {
+      if (navigator.share) {
+        navigator.share({
+          title: 'Ligne Yopougon → Plateau',
+          text: 'Découvrez cette ligne de navette sur Navette Express !',
+          url: window.location.href
+        });
+      } else {
+        /* Copier le lien */
+        navigator.clipboard.writeText(window.location.href);
+        showToast('Lien copié !', 'success');
+      }
+    }
+  </script>
+</body>
+</html>
