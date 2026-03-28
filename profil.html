@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#1B2A4A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Navette Express">
+  <meta name="description" content="Mon profil - Navette Express Abidjan.">
+  
+  <!-- Favicon et icônes -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
+  <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+  
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/app.css">
+  
+  <title>Mon profil - Navette Express</title>
+</head>
+<body class="with-nav">
+  <!-- Header -->
+  <header class="header">
+    <div style="width: 44px;"></div>
+    <h1 class="header-title">Mon profil</h1>
+    <button class="header-btn" onclick="openModal('settings-modal')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+      </svg>
+    </button>
+  </header>
+  
+  <!-- Contenu principal -->
+  <main class="page-with-header">
+    <!-- En-tête profil -->
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <span id="avatar-initials">JK</span>
+        <button class="avatar-edit" onclick="openModal('edit-avatar-modal')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 20h9"/>
+            <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+          </svg>
+        </button>
+      </div>
+      <h2 class="profile-name" id="profile-name">Jean-Marc Kouadio</h2>
+      <p class="profile-phone" id="profile-phone">+225 07 03 28 53 59</p>
+      
+      <!-- Badge abonnement -->
+      <div class="subscription-badge" id="subscription-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        <span>Abonné Confort</span>
+      </div>
+    </div>
+    
+    <!-- Statistiques -->
+    <div class="profile-stats">
+      <div class="stat-item">
+        <span class="stat-value" id="stat-trips">24</span>
+        <span class="stat-label">Trajets</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="stat-km">312</span>
+        <span class="stat-label">Km parcourus</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="stat-saved">4 800</span>
+        <span class="stat-label">FCFA économisés</span>
+      </div>
+    </div>
+    
+    <!-- Menu profil -->
+    <div class="profile-menu">
+      <!-- Section Compte -->
+      <div class="menu-section">
+        <h3 class="menu-section-title">Mon compte</h3>
+        
+        <a href="#" class="menu-item" onclick="openModal('edit-profile-modal'); return false;">
+          <div class="menu-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <span class="menu-item-text">Modifier mes informations</span>
+          <svg class="menu-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </a>
+        
+        <a href="abonnements.html" class="menu-item">
+          <div class="menu-item-icon gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </div>
+          <span class="menu-item-text">Mon abonnement</span>
+          <span class="menu-item-badge gold">Actif</span>
+          <svg class="menu-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </a>
+        
+        <a href="historique.html" class="menu-item">
+          <div class="menu-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <span class="menu-item-text">Historique des trajets</span>
+          <svg class="menu-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </a>
+        
+        <a href="#" class="menu-item" onclick="openModal('payment-methods-modal'); return false;">
+          <div class="menu-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+              <line x1="1" y1="10" x2="23" y2="10"/>
+            </svg>
+          </div>
+          <span class="menu-item-text">Moyens de paiement</span>
+          <svg class="menu-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </a>
+      </div>
+      
+      <!-- Section Préférences -->
+      <div class="menu-section">
+        <h3 class="menu-section-title">Préférences</h3>
+        
+        <div class="menu-item">
+          <div class="menu-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+              <path d="M13.73 21a2 2 0 01-3.46 0"/>
+            </svg>
+          </div>
+          <span class="menu-item-text">Notifications push</span>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-notifications" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        
+        <div class="menu-item">
+          <div class="menu-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <span class="menu-item-text">Partage de position</span>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-location" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        
+        <div class="menu-item">
+          <div class="menu-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+          </div>
+          <span class="menu-item-text">SMS de rappel</span>
+          <label class="toggle">
+            <input type="checkbox" id="toggle-sms" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Section Support -->
+      <div class="menu-section">
+        <h3 class="menu-section-title">Support</h3>
+        
+        <a href="https://wa.me/2250703285359" target="_blank" class="menu-item">
+          <div class="menu-item-icon whatsapp">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            </svg>
+          </div>
+          <span class="menu-item-text">Contacter sur WhatsApp</span>
+          <svg class="menu-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </a>
+        
+        <a href="tel:+2250544039393" class="menu-item">
+          <div class="menu-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+            </svg>
+          </div>
+          <span class="menu-item-text">Appeler le support</span>
+          <svg class="menu-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </a>
+        
+        <a href="a-propos.html" class="menu-item">
+          <div class="menu-item-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="16" x2="12" y2="12"/>
+              <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+          </div>
+          <span class="menu-item-text">À propos</span>
+          <svg class="menu-item-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </a>
+      </div>
+      
+      <!-- Déconnexion -->
+      <button class="btn btn-danger btn-block logout-btn" onclick="confirmLogout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Se déconnecter
+      </button>
+      
+      <!-- Version -->
+      <p class="app-version">Navette Express v1.0.0</p>
+    </div>
+  </main>
+  
+  <!-- Modal modifier profil -->
+  <div class="modal-overlay" id="edit-profile-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Modifier mes informations</h3>
+        <button class="modal-close" onclick="closeModal('edit-profile-modal')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-content">
+        <form id="edit-profile-form">
+          <div class="form-group">
+            <label for="edit-name" class="form-label">Nom complet</label>
+            <input type="text" id="edit-name" class="form-input" value="Jean-Marc Kouadio" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="edit-email" class="form-label">Email</label>
+            <input type="email" id="edit-email" class="form-input" value="jean.kouadio@email.com">
+          </div>
+          
+          <div class="form-group">
+            <label for="edit-quartier" class="form-label">Quartier de résidence</label>
+            <input type="text" id="edit-quartier" class="form-input" value="Yopougon Wassakara">
+          </div>
+          
+          <div class="form-group">
+            <label for="edit-workplace" class="form-label">Lieu de travail</label>
+            <input type="text" id="edit-workplace" class="form-input" value="Plateau">
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">
+            Enregistrer les modifications
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal moyens de paiement -->
+  <div class="modal-overlay" id="payment-methods-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Moyens de paiement</h3>
+        <button class="modal-close" onclick="closeModal('payment-methods-modal')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-content">
+        <div class="payment-method-saved">
+          <div class="payment-method-icon orange-money">
+            <svg viewBox="0 0 40 40" fill="none">
+              <rect width="40" height="40" rx="8" fill="#FF6B00"/>
+              <text x="20" y="26" text-anchor="middle" fill="white" font-size="10" font-weight="bold">OM</text>
+            </svg>
+          </div>
+          <div class="payment-method-info">
+            <span class="payment-method-name">Orange Money</span>
+            <span class="payment-method-number">07 •• •• •• 59</span>
+          </div>
+          <span class="payment-default-badge">Par défaut</span>
+        </div>
+        
+        <button class="btn btn-secondary btn-block mt-lg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Ajouter un moyen de paiement
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal paramètres -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Paramètres</h3>
+        <button class="modal-close" onclick="closeModal('settings-modal')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-content">
+        <div class="settings-item">
+          <span>Langue</span>
+          <select class="form-input form-select" style="width: auto;">
+            <option value="fr" selected>Français</option>
+          </select>
+        </div>
+        
+        <div class="settings-item">
+          <span>Thème</span>
+          <select class="form-input form-select" style="width: auto;">
+            <option value="dark" selected>Sombre</option>
+            <option value="light">Clair</option>
+          </select>
+        </div>
+        
+        <div class="divider-thick my-lg"></div>
+        
+        <button class="btn btn-ghost btn-block" onclick="clearCache()">
+          Vider le cache
+        </button>
+        
+        <button class="btn btn-ghost btn-block text-danger" onclick="confirmDeleteAccount()">
+          Supprimer mon compte
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="accueil.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Accueil</span>
+    </a>
+    <a href="lignes.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/>
+        <circle cx="12" cy="12" r="2"/>
+      </svg>
+      <span>Lignes</span>
+    </a>
+    <a href="suivi.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+      </svg>
+      <span>Suivi</span>
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 01-3.46 0"/>
+      </svg>
+      <span>Notifs</span>
+    </a>
+    <a href="profil.html" class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profil</span>
+    </a>
+  </nav>
+  
+  <!-- Styles spécifiques -->
+  <style>
+    .profile-header {
+      text-align: center;
+      padding: var(--spacing-xl);
+      background: linear-gradient(180deg, rgba(46, 196, 182, 0.1) 0%, transparent 100%);
+    }
+    
+    .profile-avatar {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      margin: 0 auto var(--spacing-md);
+    }
+    
+    .profile-avatar span {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--secondary-turquoise), var(--primary-blue));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: var(--font-bold);
+      color: white;
+    }
+    
+    .avatar-edit {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 32px;
+      height: 32px;
+      background: var(--card-bg);
+      border: 2px solid var(--dark-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+    }
+    
+    .avatar-edit svg {
+      width: 14px;
+      height: 14px;
+    }
+    
+    .profile-name {
+      font-size: 22px;
+      font-weight: var(--font-bold);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .profile-phone {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .subscription-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(200, 169, 81, 0.15);
+      border: 1px solid rgba(200, 169, 81, 0.3);
+      border-radius: var(--radius-full);
+      color: var(--premium-gold);
+      font-size: 13px;
+      font-weight: var(--font-semibold);
+    }
+    
+    .profile-stats {
+      display: flex;
+      justify-content: space-around;
+      padding: var(--spacing-lg);
+      background: var(--card-bg);
+      margin: 0 var(--spacing-md) var(--spacing-md);
+      border-radius: var(--radius-lg);
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-value {
+      display: block;
+      font-size: 24px;
+      font-weight: var(--font-bold);
+      color: var(--secondary-turquoise);
+    }
+    
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .profile-menu {
+      padding: 0 var(--spacing-md) var(--spacing-xl);
+    }
+    
+    .menu-section {
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .menu-section-title {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      padding: var(--spacing-sm) 0;
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: var(--card-bg);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-xs);
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+    
+    .menu-item-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      flex-shrink: 0;
+    }
+    
+    .menu-item-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .menu-item-icon.gold {
+      background: rgba(200, 169, 81, 0.15);
+      color: var(--premium-gold);
+    }
+    
+    .menu-item-icon.whatsapp {
+      background: rgba(37, 211, 102, 0.15);
+      color: #25D366;
+    }
+    
+    .menu-item-text {
+      flex: 1;
+      font-size: 15px;
+    }
+    
+    .menu-item-badge {
+      padding: 4px 10px;
+      background: rgba(46, 196, 182, 0.15);
+      color: var(--secondary-turquoise);
+      font-size: 11px;
+      font-weight: var(--font-semibold);
+      border-radius: var(--radius-sm);
+    }
+    
+    .menu-item-badge.gold {
+      background: rgba(200, 169, 81, 0.15);
+      color: var(--premium-gold);
+    }
+    
+    .menu-item-arrow {
+      width: 20px;
+      height: 20px;
+      color: var(--text-muted);
+    }
+    
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 28px;
+      cursor: pointer;
+    }
+    
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 28px;
+      transition: all var(--transition-fast);
+    }
+    
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      left: 3px;
+      bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: all var(--transition-fast);
+    }
+    
+    .toggle input:checked + .toggle-slider {
+      background: var(--secondary-turquoise);
+    }
+    
+    .toggle input:checked + .toggle-slider::before {
+      transform: translateX(20px);
+    }
+    
+    .logout-btn {
+      margin-top: var(--spacing-lg);
+    }
+    
+    .logout-btn svg {
+      margin-right: var(--spacing-sm);
+    }
+    
+    .app-version {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: var(--spacing-lg);
+      padding-bottom: var(--spacing-xl);
+    }
+    
+    .payment-method-saved {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: var(--radius-md);
+    }
+    
+    .payment-method-number {
+      display: block;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    
+    .payment-default-badge {
+      font-size: 10px;
+      padding: 4px 8px;
+      background: rgba(46, 196, 182, 0.15);
+      color: var(--secondary-turquoise);
+      border-radius: var(--radius-sm);
+    }
+    
+    .settings-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-md) 0;
+    }
+    
+    .text-danger {
+      color: var(--error) !important;
+    }
+  </style>
+  
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script>
+    /* Charger les données utilisateur */
+    document.addEventListener('DOMContentLoaded', function() {
+      const userName = localStorage.getItem('userName') || 'Jean-Marc Kouadio';
+      const userPhone = localStorage.getItem('userPhone') || '+225 07 03 28 53 59';
+      
+      document.getElementById('profile-name').textContent = userName;
+      document.getElementById('profile-phone').textContent = userPhone;
+      
+      /* Initiales */
+      const names = userName.split(' ');
+      const initials = names.length >= 2 
+        ? names[0][0] + names[names.length - 1][0] 
+        : names[0].substring(0, 2);
+      document.getElementById('avatar-initials').textContent = initials.toUpperCase();
+    });
+    
+    /* Formulaire modification profil */
+    document.getElementById('edit-profile-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('edit-name').value;
+      const quartier = document.getElementById('edit-quartier').value;
+      const workplace = document.getElementById('edit-workplace').value;
+      
+      localStorage.setItem('userName', name);
+      localStorage.setItem('userQuartier', quartier);
+      localStorage.setItem('userWorkplace', workplace);
+      
+      closeModal('edit-profile-modal');
+      showToast('Profil mis à jour', 'success');
+      
+      /* Rafraîchir l'affichage */
+      document.getElementById('profile-name').textContent = name;
+    });
+    
+    /* Déconnexion */
+    function confirmLogout() {
+      if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
+        showLoading('Déconnexion...');
+        
+        setTimeout(() => {
+          localStorage.clear();
+          navigateTo('connexion.html');
+        }, 1000);
+      }
+    }
+    
+    /* Vider le cache */
+    function clearCache() {
+      if ('caches' in window) {
+        caches.keys().then(names => {
+          names.forEach(name => caches.delete(name));
+        });
+      }
+      showToast('Cache vidé', 'success');
+      closeModal('settings-modal');
+    }
+    
+    /* Supprimer compte */
+    function confirmDeleteAccount() {
+      if (confirm('Voulez-vous vraiment supprimer votre compte ? Cette action est irréversible.')) {
+        showLoading('Suppression en cours...');
+        
+        setTimeout(() => {
+          localStorage.clear();
+          navigateTo('inscription.html');
+        }, 2000);
+      }
+    }
+  </script>
+</body>
+</html>
