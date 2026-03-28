@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#1B2A4A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Navette Express">
+  <meta name="description" content="Toutes les lignes de navette disponibles à Abidjan - Navette Express.">
+  
+  <!-- Favicon et icônes -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
+  <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+  
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/app.css">
+  
+  <title>Choisir une ligne - Navette Express</title>
+</head>
+<body class="with-nav">
+  <!-- Header -->
+  <header class="header">
+    <button class="header-btn" onclick="openModal('search-modal')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </button>
+    <h1 class="header-title">Choisir une ligne</h1>
+    <button class="header-btn" onclick="openModal('filter-modal')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="4" y1="21" x2="4" y2="14"/>
+        <line x1="4" y1="10" x2="4" y2="3"/>
+        <line x1="12" y1="21" x2="12" y2="12"/>
+        <line x1="12" y1="8" x2="12" y2="3"/>
+        <line x1="20" y1="21" x2="20" y2="16"/>
+        <line x1="20" y1="12" x2="20" y2="3"/>
+        <line x1="1" y1="14" x2="7" y2="14"/>
+        <line x1="9" y1="8" x2="15" y2="8"/>
+        <line x1="17" y1="16" x2="23" y2="16"/>
+      </svg>
+    </button>
+  </header>
+  
+  <!-- Contenu principal -->
+  <main class="page-with-header">
+    <!-- Pull to refresh indicator -->
+    <div class="pull-indicator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12a9 9 0 11-6.219-8.56"/>
+      </svg>
+    </div>
+    
+    <!-- Filtres rapides -->
+    <div class="lines-filters">
+      <button class="filter-chip active" data-filter="all">Toutes</button>
+      <button class="filter-chip" data-filter="proximity">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        Près de moi
+      </button>
+      <button class="filter-chip" data-filter="morning">Matin</button>
+      <button class="filter-chip" data-filter="afternoon">Après-midi</button>
+      <button class="filter-chip" data-filter="vip">VIP</button>
+    </div>
+    
+    <!-- Liste des lignes -->
+    <div class="lines-list">
+      <!-- Ligne 1 : Active -->
+      <div class="card line-card stagger-item" onclick="navigateTo('detail-ligne.html?id=1')">
+        <div class="line-card-main">
+          <div class="line-status active"></div>
+          <div class="line-card-body">
+            <div class="line-route">
+              <span class="line-from">Yopougon</span>
+              <span class="line-arrow-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </span>
+              <span class="line-to">Plateau</span>
+            </div>
+            <div class="line-meta">
+              <span class="line-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                06:30
+              </span>
+              <span class="line-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                </svg>
+                45 min
+              </span>
+              <span class="line-meta-item line-price">400 FCFA</span>
+            </div>
+            <span class="line-status-badge active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              Ligne active • 12 places
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Ligne 2 : Active -->
+      <div class="card line-card stagger-item" onclick="navigateTo('detail-ligne.html?id=2')">
+        <div class="line-card-main">
+          <div class="line-status active"></div>
+          <div class="line-card-body">
+            <div class="line-route">
+              <span class="line-from">Abobo</span>
+              <span class="line-arrow-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </span>
+              <span class="line-to">Marcory</span>
+            </div>
+            <div class="line-meta">
+              <span class="line-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                07:00
+              </span>
+              <span class="line-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                </svg>
+                50 min
+              </span>
+              <span class="line-meta-item line-price">500 FCFA</span>
+            </div>
+            <span class="line-status-badge active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              Ligne active • 8 places
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Ligne 3 : Active -->
+      <div class="card line-card stagger-item" onclick="navigateTo('detail-ligne.html?id=3')">
+        <div class="line-card-main">
+          <div class="line-status active"></div>
+          <div class="line-card-body">
+            <div class="line-route">
+              <span class="line-from">Cocody</span>
+              <span class="line-arrow-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </span>
+              <span class="line-to">Zone Industrielle</span>
+            </div>
+            <div class="line-meta">
+              <span class="line-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                06:45
+              </span>
+              <span class="line-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                </svg>
+                35 min
+              </span>
+              <span class="line-meta-item line-price">300 FCFA</span>
+            </div>
+            <span class="line-status-badge active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              Ligne active • 15 places
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Ligne 4 : En attente -->
+      <div class="card line-card stagger-item" onclick="navigateTo('detail-ligne.html?id=4')">
+        <div class="line-card-main">
+          <div class="line-status pending"></div>
+          <div class="line-card-body">
+            <div class="line-route">
+              <span class="line-from">Anyama</span>
+              <span class="line-arrow-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </span>
+              <span class="line-to">Plateau</span>
+            </div>
+            <div class="line-meta">
+              <span class="line-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                06:00
+              </span>
+              <span class="line-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                </svg>
+                55 min
+              </span>
+              <span class="line-meta-item line-price">600 FCFA</span>
+            </div>
+            <span class="line-status-badge pending">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              En attente • 8/15 passagers
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Ligne 5 : Complète -->
+      <div class="card line-card stagger-item" onclick="navigateTo('detail-ligne.html?id=5')">
+        <div class="line-card-main">
+          <div class="line-status full"></div>
+          <div class="line-card-body">
+            <div class="line-route">
+              <span class="line-from">Koumassi</span>
+              <span class="line-arrow-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </span>
+              <span class="line-to">Plateau</span>
+            </div>
+            <div class="line-meta">
+              <span class="line-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                07:30
+              </span>
+              <span class="line-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                </svg>
+                40 min
+              </span>
+              <span class="line-meta-item line-price">350 FCFA</span>
+            </div>
+            <span class="line-status-badge full">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="15" y1="9" x2="9" y2="15"/>
+                <line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
+              Bus complet • Prochain à 08:00
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Ligne 6 : VIP -->
+      <div class="card line-card card-premium stagger-item" onclick="navigateTo('detail-ligne.html?id=6')">
+        <div class="line-card-main">
+          <div class="line-status active" style="background: var(--premium-gold);"></div>
+          <div class="line-card-body">
+            <div class="line-route">
+              <span class="line-from">Cocody Riviera</span>
+              <span class="line-arrow-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </span>
+              <span class="line-to">Plateau CCIA</span>
+            </div>
+            <div class="line-meta">
+              <span class="line-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                07:00
+              </span>
+              <span class="line-meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                </svg>
+                25 min
+              </span>
+              <span class="line-meta-item line-price" style="color: var(--premium-gold);">800 FCFA</span>
+            </div>
+            <span class="line-status-badge" style="background: rgba(200, 169, 81, 0.15); color: var(--premium-gold);">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+              VIP • Climatisé • 6 places
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Espace pour bottom nav -->
+    <div style="height: 24px;"></div>
+  </main>
+  
+  <!-- Modal recherche -->
+  <div class="modal-overlay" id="search-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Rechercher une ligne</h3>
+        <button class="modal-close" onclick="closeModal('search-modal')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-content">
+        <div class="search-bar">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" class="search-input" placeholder="Rechercher une ligne, un quartier..." id="search-input">
+        </div>
+        
+        <div class="search-suggestions mt-lg">
+          <p class="text-sm text-muted mb-md">Recherches populaires</p>
+          <div class="search-tags">
+            <button class="tag" onclick="searchLine('Yopougon')">Yopougon</button>
+            <button class="tag" onclick="searchLine('Plateau')">Plateau</button>
+            <button class="tag" onclick="searchLine('Cocody')">Cocody</button>
+            <button class="tag" onclick="searchLine('Abobo')">Abobo</button>
+            <button class="tag" onclick="searchLine('Marcory')">Marcory</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal filtres -->
+  <div class="modal-overlay" id="filter-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Filtrer les lignes</h3>
+        <button class="modal-close" onclick="closeModal('filter-modal')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-content">
+        <!-- Filtre proximité -->
+        <div class="filter-section">
+          <h4 class="filter-title">Proximité</h4>
+          <div class="filter-options">
+            <label class="form-check">
+              <input type="radio" name="proximity" value="all" class="form-check-input" checked>
+              <span class="form-check-label">Toutes les lignes</span>
+            </label>
+            <label class="form-check">
+              <input type="radio" name="proximity" value="nearby" class="form-check-input">
+              <span class="form-check-label">Autour de mon quartier</span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Filtre heure -->
+        <div class="filter-section">
+          <h4 class="filter-title">Heure de départ</h4>
+          <div class="filter-options">
+            <label class="form-check">
+              <input type="checkbox" name="time" value="morning" class="form-check-input" checked>
+              <span class="form-check-label">Matin (06h - 09h)</span>
+            </label>
+            <label class="form-check">
+              <input type="checkbox" name="time" value="afternoon" class="form-check-input" checked>
+              <span class="form-check-label">Après-midi (16h - 19h)</span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Filtre type de bus -->
+        <div class="filter-section">
+          <h4 class="filter-title">Type de bus</h4>
+          <div class="filter-options">
+            <label class="form-check">
+              <input type="checkbox" name="bus" value="standard" class="form-check-input" checked>
+              <span class="form-check-label">Standard</span>
+            </label>
+            <label class="form-check">
+              <input type="checkbox" name="bus" value="vip" class="form-check-input">
+              <span class="form-check-label">VIP (climatisé)</span>
+            </label>
+          </div>
+        </div>
+        
+        <!-- Filtre statut -->
+        <div class="filter-section">
+          <h4 class="filter-title">Statut</h4>
+          <div class="filter-options">
+            <label class="form-check">
+              <input type="checkbox" name="status" value="active" class="form-check-input" checked>
+              <span class="form-check-label">Lignes actives</span>
+            </label>
+            <label class="form-check">
+              <input type="checkbox" name="status" value="pending" class="form-check-input">
+              <span class="form-check-label">En attente de passagers</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="resetFilters()">Réinitialiser</button>
+        <button class="btn btn-primary" onclick="applyFilters()">Appliquer</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="accueil.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Accueil</span>
+    </a>
+    <a href="lignes.html" class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/>
+        <circle cx="12" cy="12" r="2"/>
+      </svg>
+      <span>Lignes</span>
+    </a>
+    <a href="suivi.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+      </svg>
+      <span>Suivi</span>
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 01-3.46 0"/>
+      </svg>
+      <span>Notifs</span>
+      <span class="nav-badge">3</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profil</span>
+    </a>
+  </nav>
+  
+  <!-- Bouton WhatsApp flottant -->
+  <a href="https://wa.me/2250703285359" target="_blank" class="whatsapp-fab" aria-label="Contacter sur WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+  
+  <!-- Styles spécifiques -->
+  <style>
+    .lines-filters {
+      display: flex;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .filter-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      padding: 8px 16px;
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: var(--font-medium);
+      color: var(--text-secondary);
+      transition: all var(--transition-fast);
+      white-space: nowrap;
+    }
+    
+    .filter-chip.active {
+      background: var(--secondary-turquoise);
+      border-color: var(--secondary-turquoise);
+      color: var(--dark-bg);
+    }
+    
+    .filter-chip svg {
+      opacity: 0.7;
+    }
+    
+    .filter-chip.active svg {
+      opacity: 1;
+    }
+    
+    .lines-list {
+      padding: 0 var(--spacing-md);
+    }
+    
+    .line-card {
+      margin-bottom: var(--spacing-md);
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    .line-card-main {
+      display: flex;
+    }
+    
+    .line-status {
+      width: 4px;
+      flex-shrink: 0;
+    }
+    
+    .line-card-body {
+      flex: 1;
+      padding: var(--spacing-md);
+    }
+    
+    .line-route {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .line-from, .line-to {
+      font-weight: var(--font-semibold);
+      font-size: 15px;
+    }
+    
+    .line-arrow-icon {
+      color: var(--text-muted);
+    }
+    
+    .line-arrow-icon svg {
+      width: 16px;
+      height: 16px;
+    }
+    
+    .line-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .line-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    
+    .line-meta-item svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.7;
+    }
+    
+    .line-price {
+      font-weight: var(--font-semibold);
+      color: var(--premium-gold);
+    }
+    
+    .search-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+    }
+    
+    .filter-section {
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .filter-title {
+      font-size: 14px;
+      font-weight: var(--font-semibold);
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .filter-options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .modal-footer {
+      display: flex;
+      gap: var(--spacing-md);
+    }
+    
+    .modal-footer .btn {
+      flex: 1;
+    }
+  </style>
+  
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script>
+    /* Gestion des filtres rapides */
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+      chip.addEventListener('click', function() {
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        this.classList.add('active');
+        
+        const filter = this.dataset.filter;
+        filterLines(filter);
+      });
+    });
+    
+    function filterLines(filter) {
+      /* Placeholder - à implémenter avec les vraies données */
+      console.log('Filtrer par:', filter);
+      showToast('Filtre appliqué : ' + filter, 'info');
+    }
+    
+    function searchLine(term) {
+      document.getElementById('search-input').value = term;
+      closeModal('search-modal');
+      showToast('Recherche : ' + term, 'info');
+    }
+    
+    function resetFilters() {
+      document.querySelectorAll('#filter-modal input[type="checkbox"]').forEach(cb => {
+        cb.checked = cb.value === 'standard' || cb.value === 'active';
+      });
+      document.querySelectorAll('#filter-modal input[type="radio"]').forEach(rb => {
+        rb.checked = rb.value === 'all';
+      });
+    }
+    
+    function applyFilters() {
+      closeModal('filter-modal');
+      showToast('Filtres appliqués', 'success');
+    }
+  </script>
+</body>
+</html>
