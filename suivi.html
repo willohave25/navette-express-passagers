@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#1B2A4A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Navette Express">
+  <meta name="description" content="Suivez votre navette en temps réel - Navette Express Abidjan.">
+  
+  <!-- Favicon et icônes -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
+  <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+  
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/app.css">
+  
+  <title>Suivre ma navette - Navette Express</title>
+</head>
+<body class="with-nav">
+  <!-- Header -->
+  <header class="header">
+    <button class="header-btn" data-action="back" onclick="goBack()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <h1 class="header-title">Suivre ma navette</h1>
+    <button class="header-btn" onclick="refreshTracking()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="23 4 23 10 17 10"/>
+        <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+      </svg>
+    </button>
+  </header>
+  
+  <!-- Carte / Map -->
+  <div class="map-container">
+    <!-- Placeholder carte avec illustration -->
+    <div class="map-placeholder" id="map-placeholder">
+      <div class="map-illustration">
+        <!-- Illustration SVG d'une carte avec bus -->
+        <svg viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Fond carte -->
+          <rect width="300" height="200" fill="#0F1A2E"/>
+          
+          <!-- Grille routes -->
+          <path d="M0 50 H300 M0 100 H300 M0 150 H300" stroke="rgba(46,196,182,0.1)" stroke-width="1"/>
+          <path d="M50 0 V200 M100 0 V200 M150 0 V200 M200 0 V200 M250 0 V200" stroke="rgba(46,196,182,0.1)" stroke-width="1"/>
+          
+          <!-- Route principale -->
+          <path d="M30 180 Q80 120 150 100 T270 30" stroke="#2EC4B6" stroke-width="4" stroke-linecap="round" fill="none" stroke-dasharray="8 4"/>
+          
+          <!-- Point de départ -->
+          <circle cx="30" cy="180" r="10" fill="#2EC4B6"/>
+          <circle cx="30" cy="180" r="6" fill="#0F1A2E"/>
+          
+          <!-- Point d'arrivée -->
+          <circle cx="270" cy="30" r="10" fill="#C8A951"/>
+          <circle cx="270" cy="30" r="6" fill="#0F1A2E"/>
+          
+          <!-- Bus en mouvement -->
+          <g transform="translate(140, 95) rotate(-15)">
+            <rect x="-18" y="-10" width="36" height="20" rx="4" fill="#2EC4B6"/>
+            <rect x="-14" y="-7" width="8" height="6" rx="1" fill="#0F1A2E"/>
+            <rect x="-2" y="-7" width="8" height="6" rx="1" fill="#0F1A2E"/>
+            <rect x="8" y="-7" width="6" height="6" rx="1" fill="#0F1A2E"/>
+            <circle cx="-10" cy="10" r="4" fill="#1B2A4A"/>
+            <circle cx="10" cy="10" r="4" fill="#1B2A4A"/>
+            <!-- Pulse autour du bus -->
+            <circle cx="0" cy="0" r="25" fill="none" stroke="#2EC4B6" stroke-width="2" opacity="0.3">
+              <animate attributeName="r" from="20" to="35" dur="1.5s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" from="0.5" to="0" dur="1.5s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+          
+          <!-- Arrêts intermédiaires -->
+          <circle cx="80" cy="130" r="5" fill="#A0AEC0"/>
+          <circle cx="200" cy="60" r="5" fill="#A0AEC0"/>
+        </svg>
+      </div>
+      
+      <p class="map-info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        Carte Google Maps disponible après intégration API
+      </p>
+    </div>
+  </div>
+  
+  <!-- Infos de suivi -->
+  <div class="tracking-info">
+    <!-- ETA -->
+    <div class="tracking-eta">
+      <div class="eta-content">
+        <span class="eta-label">Arrivée dans</span>
+        <div class="eta-time-container">
+          <span class="eta-time" id="eta-minutes">8</span>
+          <span class="eta-unit">min</span>
+        </div>
+      </div>
+      <div class="eta-distance">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <span>2.3 km restants</span>
+      </div>
+    </div>
+    
+    <!-- Prochain arrêt -->
+    <div class="next-stop-card">
+      <div class="next-stop-header">
+        <span class="next-stop-label">Prochain arrêt</span>
+        <span class="next-stop-eta">Dans 3 min</span>
+      </div>
+      <div class="next-stop-name">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+          <circle cx="12" cy="12" r="10"/>
+          <circle cx="12" cy="12" r="3" fill="currentColor"/>
+        </svg>
+        <span>Adjamé Liberté</span>
+      </div>
+      <div class="stops-remaining">
+        <span>2 arrêts restants avant votre destination</span>
+      </div>
+    </div>
+    
+    <!-- Chauffeur -->
+    <div class="driver-card">
+      <div class="driver-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div class="driver-info">
+        <span class="driver-name">Kouassi Bernard</span>
+        <span class="driver-vehicle">Hyundai County • AB 1234 CI</span>
+        <div class="driver-rating">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          <span>4.8</span>
+        </div>
+      </div>
+      <a href="tel:+2250703285359" class="driver-call">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+        </svg>
+      </a>
+    </div>
+    
+    <!-- Notification -->
+    <div class="tracking-notification">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 01-3.46 0"/>
+      </svg>
+      <span>Une notification vous avertira 5 minutes avant votre arrêt.</span>
+    </div>
+    
+    <!-- Itinéraire détaillé -->
+    <section class="route-details">
+      <h3 class="section-title">Itinéraire</h3>
+      
+      <div class="route-stops">
+        <div class="route-stop completed">
+          <div class="stop-marker"></div>
+          <div class="stop-info">
+            <span class="stop-name">Yopougon Wassakara</span>
+            <span class="stop-time">Départ 06:30</span>
+          </div>
+          <span class="stop-status">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </span>
+        </div>
+        
+        <div class="route-stop completed">
+          <div class="stop-marker"></div>
+          <div class="stop-info">
+            <span class="stop-name">Yopougon Maroc</span>
+            <span class="stop-time">06:40</span>
+          </div>
+          <span class="stop-status">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </span>
+        </div>
+        
+        <div class="route-stop current">
+          <div class="stop-marker"></div>
+          <div class="stop-info">
+            <span class="stop-name">Adjamé Liberté</span>
+            <span class="stop-time">~06:55</span>
+          </div>
+          <span class="stop-status next">Prochain</span>
+        </div>
+        
+        <div class="route-stop">
+          <div class="stop-marker"></div>
+          <div class="stop-info">
+            <span class="stop-name">Plateau Indénié</span>
+            <span class="stop-time">~07:10</span>
+          </div>
+        </div>
+        
+        <div class="route-stop destination">
+          <div class="stop-marker"></div>
+          <div class="stop-info">
+            <span class="stop-name">Plateau Centre (CCIA)</span>
+            <span class="stop-time">~07:15</span>
+          </div>
+          <span class="stop-status your-stop">Votre arrêt</span>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="accueil.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Accueil</span>
+    </a>
+    <a href="lignes.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/>
+        <circle cx="12" cy="12" r="2"/>
+      </svg>
+      <span>Lignes</span>
+    </a>
+    <a href="suivi.html" class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+      </svg>
+      <span>Suivi</span>
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 01-3.46 0"/>
+      </svg>
+      <span>Notifs</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profil</span>
+    </a>
+  </nav>
+  
+  <!-- Styles spécifiques -->
+  <style>
+    .map-container {
+      height: 35vh;
+      min-height: 200px;
+      background: var(--dark-bg);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .map-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .map-illustration {
+      width: 100%;
+      max-width: 300px;
+    }
+    
+    .map-illustration svg {
+      width: 100%;
+      height: auto;
+    }
+    
+    .map-info {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: var(--spacing-md);
+    }
+    
+    .tracking-info {
+      padding: var(--spacing-md);
+      padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom) + var(--spacing-xl));
+    }
+    
+    .tracking-eta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, rgba(46, 196, 182, 0.15) 0%, rgba(46, 196, 182, 0.05) 100%);
+      border: 1px solid rgba(46, 196, 182, 0.3);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .eta-content {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .eta-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .eta-time-container {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+    
+    .eta-time {
+      font-size: 48px;
+      font-weight: var(--font-bold);
+      color: var(--secondary-turquoise);
+      line-height: 1;
+    }
+    
+    .eta-unit {
+      font-size: 18px;
+      color: var(--secondary-turquoise);
+    }
+    
+    .eta-distance {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    .next-stop-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .next-stop-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .next-stop-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    
+    .next-stop-eta {
+      font-size: 12px;
+      color: var(--secondary-turquoise);
+      font-weight: var(--font-semibold);
+    }
+    
+    .next-stop-name {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      font-size: 18px;
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .next-stop-name svg {
+      color: var(--secondary-turquoise);
+    }
+    
+    .stops-remaining {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    
+    .driver-card {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .driver-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--primary-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--secondary-turquoise);
+      flex-shrink: 0;
+    }
+    
+    .driver-avatar svg {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .driver-info {
+      flex: 1;
+    }
+    
+    .driver-name {
+      display: block;
+      font-weight: var(--font-semibold);
+      margin-bottom: 2px;
+    }
+    
+    .driver-vehicle {
+      display: block;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    
+    .driver-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--premium-gold);
+    }
+    
+    .driver-call {
+      width: 48px;
+      height: 48px;
+      background: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      flex-shrink: 0;
+    }
+    
+    .driver-call svg {
+      width: 22px;
+      height: 22px;
+    }
+    
+    .tracking-notification {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md);
+      background: rgba(52, 152, 219, 0.1);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .tracking-notification svg {
+      color: var(--info);
+      flex-shrink: 0;
+    }
+    
+    .route-details {
+      margin-top: var(--spacing-lg);
+    }
+    
+    .route-stops {
+      position: relative;
+      padding-left: 32px;
+    }
+    
+    .route-stops::before {
+      content: '';
+      position: absolute;
+      left: 9px;
+      top: 12px;
+      bottom: 12px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--success) 0%, var(--success) 40%, var(--text-muted) 40%, var(--text-muted) 100%);
+    }
+    
+    .route-stop {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md) 0;
+      position: relative;
+    }
+    
+    .stop-marker {
+      position: absolute;
+      left: -28px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--dark-bg);
+      border: 2px solid var(--text-muted);
+    }
+    
+    .route-stop.completed .stop-marker {
+      background: var(--success);
+      border-color: var(--success);
+    }
+    
+    .route-stop.current .stop-marker {
+      background: var(--secondary-turquoise);
+      border-color: var(--secondary-turquoise);
+      box-shadow: 0 0 10px var(--secondary-turquoise);
+    }
+    
+    .route-stop.destination .stop-marker {
+      background: var(--premium-gold);
+      border-color: var(--premium-gold);
+    }
+    
+    .stop-info {
+      flex: 1;
+    }
+    
+    .stop-info .stop-name {
+      display: block;
+      font-weight: var(--font-medium);
+      font-size: 14px;
+    }
+    
+    .stop-info .stop-time {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    
+    .route-stop.completed .stop-info .stop-name {
+      color: var(--text-secondary);
+    }
+    
+    .stop-status {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+      font-weight: var(--font-semibold);
+    }
+    
+    .stop-status svg {
+      color: var(--success);
+    }
+    
+    .stop-status.next {
+      background: rgba(46, 196, 182, 0.15);
+      color: var(--secondary-turquoise);
+    }
+    
+    .stop-status.your-stop {
+      background: rgba(200, 169, 81, 0.15);
+      color: var(--premium-gold);
+    }
+  </style>
+  
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script>
+    /* Mise à jour ETA en temps réel (simulation) */
+    let etaMinutes = 8;
+    
+    function updateETA() {
+      if (etaMinutes > 0) {
+        etaMinutes--;
+        document.getElementById('eta-minutes').textContent = etaMinutes;
+        
+        if (etaMinutes <= 2) {
+          showToast('Votre bus arrive bientôt !', 'info');
+        }
+      }
+    }
+    
+    /* Mise à jour toutes les minutes */
+    setInterval(updateETA, 60000);
+    
+    /* Rafraîchir le suivi */
+    function refreshTracking() {
+      showLoading('Mise à jour...');
+      
+      setTimeout(() => {
+        hideLoading();
+        showToast('Position mise à jour', 'success');
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
