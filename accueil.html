@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#1B2A4A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Navette Express">
+  <meta name="description" content="Navette Express - Réservez vos trajets quotidiens et locations de bus pour événements à Abidjan.">
+  
+  <!-- Favicon et icônes -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
+  <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+  
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/app.css">
+  
+  <title>Accueil - Navette Express</title>
+</head>
+<body class="with-nav">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-logo">
+      <picture>
+        <source srcset="images/logo/logo-jaebets.webp" type="image/webp">
+        <img src="images/logo/logo-jaebets.png" alt="Navette Express" width="36" height="36">
+      </picture>
+    </div>
+    <h1 class="header-title">Navette Express</h1>
+    <button class="header-btn" onclick="navigateTo('notifications.html')">
+      <!-- Icône cloche -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 01-3.46 0"/>
+      </svg>
+      <span class="nav-badge" id="notification-badge">3</span>
+    </button>
+  </header>
+  
+  <!-- Contenu principal -->
+  <main class="page-with-header">
+    <!-- Pull to refresh indicator -->
+    <div class="pull-indicator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12a9 9 0 11-6.219-8.56"/>
+      </svg>
+    </div>
+    
+    <!-- Salutation -->
+    <div class="home-greeting">
+      <p class="greeting-text">Bonjour,</p>
+      <h2 class="greeting-name" id="user-name">Jean-Marc !</h2>
+    </div>
+    
+    <!-- Cartes principales -->
+    <div class="home-cards">
+      <!-- Carte 1 : Lignes régulières -->
+      <div class="card card-clickable home-card" onclick="navigateTo('lignes.html')">
+        <div class="card-icon">
+          <!-- Icône bus -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 6v6M16 6v6M2 12h20M6 18h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            <circle cx="7" cy="18" r="2"/>
+            <circle cx="17" cy="18" r="2"/>
+          </svg>
+        </div>
+        <div class="home-card-content">
+          <h3 class="card-title">Lignes régulières travailleurs</h3>
+          <p class="card-body">Abonnez-vous ou réservez un trajet quotidien confortable entre votre quartier et votre lieu de travail.</p>
+          <div class="home-card-cta">
+            <span class="btn btn-sm btn-secondary">Voir mes lignes</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Carte 2 : Location événement -->
+      <div class="card card-clickable home-card card-premium" onclick="navigateTo('location-evenement.html')">
+        <div class="card-icon" style="background: rgba(200, 169, 81, 0.15); color: var(--premium-gold);">
+          <!-- Icône événement -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+            <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
+          </svg>
+        </div>
+        <div class="home-card-content">
+          <h3 class="card-title">Location bus événement</h3>
+          <p class="card-body">Organisez mariage, funérailles, sortie scolaire ou meeting avec un bus adapté à votre événement.</p>
+          <div class="home-card-cta">
+            <span class="btn btn-sm btn-primary">Faire une demande</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Prochaine navette -->
+    <div class="card next-shuttle" id="next-shuttle">
+      <div class="next-shuttle-header">
+        <span class="next-shuttle-badge">Prochaine navette</span>
+        <span class="line-status-badge active">En route</span>
+      </div>
+      <h3 class="card-title" id="next-shuttle-line">Yopougon → Plateau</h3>
+      <div class="next-shuttle-info">
+        <div class="next-shuttle-time">
+          <span id="next-shuttle-minutes">12</span> <span>min</span>
+        </div>
+        <div class="next-shuttle-details">
+          <p>Départ depuis <strong id="next-shuttle-stop">Carrefour Wassakara</strong></p>
+          <p class="text-sm text-muted">Bus Hyundai County • <span id="next-shuttle-seats">8</span> places disponibles</p>
+        </div>
+      </div>
+      <div class="next-shuttle-actions">
+        <button class="btn btn-sm btn-secondary" onclick="navigateTo('suivi.html')">
+          <!-- Icône GPS -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="3"/>
+            <line x1="12" y1="2" x2="12" y2="6"/>
+            <line x1="12" y1="18" x2="12" y2="22"/>
+            <line x1="2" y1="12" x2="6" y2="12"/>
+            <line x1="18" y1="12" x2="22" y2="12"/>
+          </svg>
+          Suivre
+        </button>
+        <button class="btn btn-sm btn-ghost" onclick="navigateTo('detail-ligne.html?id=1')">
+          Détails
+        </button>
+      </div>
+    </div>
+    
+    <!-- Lignes populaires -->
+    <section class="popular-lines">
+      <h3 class="section-title">Lignes les plus réservées</h3>
+      
+      <div class="popular-line-item stagger-item" onclick="navigateTo('detail-ligne.html?id=1')">
+        <div class="popular-line-info">
+          <div class="line-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 6v6M16 6v6M2 12h20M6 18h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="line-name">Yopougon → Plateau</p>
+            <p class="line-details">06:30 • 45 min • 400 FCFA</p>
+          </div>
+        </div>
+        <div class="line-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+      </div>
+      
+      <div class="popular-line-item stagger-item" onclick="navigateTo('detail-ligne.html?id=2')">
+        <div class="popular-line-info">
+          <div class="line-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 6v6M16 6v6M2 12h20M6 18h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="line-name">Abobo → Marcory</p>
+            <p class="line-details">07:00 • 50 min • 500 FCFA</p>
+          </div>
+        </div>
+        <div class="line-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+      </div>
+      
+      <div class="popular-line-item stagger-item" onclick="navigateTo('detail-ligne.html?id=3')">
+        <div class="popular-line-info">
+          <div class="line-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M8 6v6M16 6v6M2 12h20M6 18h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="line-name">Cocody → Zone Industrielle</p>
+            <p class="line-details">06:45 • 35 min • 300 FCFA</p>
+          </div>
+        </div>
+        <div class="line-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+      </div>
+      
+      <button class="btn btn-ghost btn-block mt-md" onclick="navigateTo('lignes.html')">
+        Voir toutes les lignes
+      </button>
+    </section>
+    
+    <!-- Bannière promo -->
+    <div class="promo-banner" onclick="navigateTo('abonnements.html')">
+      <div class="promo-content">
+        <h4 class="promo-title">🎉 10 trajets pour le prix de 9</h4>
+        <p class="promo-text">Abonnez-vous dès maintenant et économisez sur vos trajets quotidiens.</p>
+      </div>
+      <div class="promo-arrow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+    </div>
+    
+    <!-- Espace pour bottom nav -->
+    <div style="height: 24px;"></div>
+  </main>
+  
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <a href="accueil.html" class="nav-item active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Accueil</span>
+    </a>
+    <a href="lignes.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/>
+        <circle cx="12" cy="12" r="2"/>
+      </svg>
+      <span>Lignes</span>
+    </a>
+    <a href="suivi.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+      </svg>
+      <span>Suivi</span>
+    </a>
+    <a href="notifications.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 01-3.46 0"/>
+      </svg>
+      <span>Notifs</span>
+      <span class="nav-badge">3</span>
+    </a>
+    <a href="profil.html" class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profil</span>
+    </a>
+  </nav>
+  
+  <!-- Bouton WhatsApp flottant -->
+  <a href="https://wa.me/2250703285359" target="_blank" class="whatsapp-fab" aria-label="Contacter sur WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+    </svg>
+  </a>
+  
+  <!-- Styles spécifiques -->
+  <style>
+    .header-logo {
+      display: flex;
+      align-items: center;
+    }
+    
+    .header-logo img {
+      border-radius: 8px;
+    }
+    
+    .header-btn {
+      position: relative;
+    }
+    
+    .header-btn .nav-badge {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      min-width: 16px;
+      height: 16px;
+      font-size: 9px;
+    }
+    
+    .home-greeting {
+      padding: var(--spacing-lg);
+      padding-top: var(--spacing-md);
+    }
+    
+    .home-cards {
+      padding: 0 var(--spacing-md);
+    }
+    
+    .home-card {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .home-card .card-icon {
+      flex-shrink: 0;
+    }
+    
+    .home-card-content {
+      flex: 1;
+    }
+    
+    .home-card-cta {
+      margin-top: var(--spacing-md);
+    }
+    
+    .next-shuttle {
+      margin: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .next-shuttle-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .next-shuttle-info {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-lg);
+      margin: var(--spacing-md) 0;
+    }
+    
+    .next-shuttle-time {
+      font-size: 36px;
+      font-weight: var(--font-bold);
+      color: var(--secondary-turquoise);
+      line-height: 1;
+    }
+    
+    .next-shuttle-time span {
+      font-size: 16px;
+      font-weight: var(--font-regular);
+    }
+    
+    .next-shuttle-details p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+    
+    .next-shuttle-details strong {
+      color: var(--text-primary);
+    }
+    
+    .next-shuttle-actions {
+      display: flex;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-md);
+      padding-top: var(--spacing-md);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .popular-lines {
+      padding: 0 var(--spacing-md);
+      margin-top: var(--spacing-lg);
+    }
+    
+    .promo-banner {
+      margin: var(--spacing-lg) var(--spacing-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    
+    .promo-content {
+      flex: 1;
+    }
+    
+    .promo-arrow {
+      opacity: 0.7;
+    }
+  </style>
+  
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script>
+    /* Charger le nom de l'utilisateur */
+    document.addEventListener('DOMContentLoaded', function() {
+      const userName = localStorage.getItem('userName') || 'Voyageur';
+      document.getElementById('user-name').textContent = userName + ' !';
+      
+      /* Simuler la mise à jour du temps restant */
+      updateNextShuttleTime();
+    });
+    
+    function updateNextShuttleTime() {
+      let minutes = 12;
+      const minutesEl = document.getElementById('next-shuttle-minutes');
+      
+      setInterval(() => {
+        if (minutes > 0) {
+          minutes--;
+          minutesEl.textContent = minutes;
+        }
+      }, 60000); /* Mise à jour chaque minute */
+    }
+  </script>
+</body>
+</html>
