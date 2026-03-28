@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#1B2A4A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Navette Express">
+  <meta name="description" content="Lignes de navette disponibles près de chez vous - Navette Express Abidjan.">
+  
+  <!-- Favicon et icônes -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
+  <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+  
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/app.css">
+  
+  <title>Lignes suggérées - Navette Express</title>
+</head>
+<body class="no-nav">
+  <!-- Header -->
+  <header class="header">
+    <button class="header-btn" data-action="back" onclick="navigateTo('accueil.html')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <h1 class="header-title">Lignes pour vous</h1>
+    <div style="width: 44px;"></div>
+  </header>
+  
+  <!-- Contenu principal -->
+  <main class="page-with-header">
+    <!-- Introduction -->
+    <div class="suggestions-intro">
+      <div class="suggestions-icon">
+        <!-- Icône localisation -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <h2 class="suggestions-title">Lignes disponibles près de chez vous</h2>
+      <p class="suggestions-text">
+        Basé sur votre quartier <strong id="user-quartier">Yopougon</strong> et votre destination <strong id="user-workplace">Plateau</strong>.
+      </p>
+    </div>
+    
+    <!-- Liste des lignes suggérées -->
+    <div class="suggestions-list">
+      <!-- Ligne 1 : Parfaite correspondance -->
+      <div class="suggestion-card best-match stagger-item">
+        <div class="suggestion-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          Meilleure correspondance
+        </div>
+        
+        <div class="suggestion-header">
+          <div class="suggestion-route">
+            <span class="route-from">Yopougon Wassakara</span>
+            <span class="route-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </span>
+            <span class="route-to">Plateau Centre</span>
+          </div>
+          <div class="suggestion-status active">Active</div>
+        </div>
+        
+        <div class="suggestion-details">
+          <div class="suggestion-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>Point de ramassage : <strong>Carrefour Wassakara</strong></span>
+          </div>
+          <div class="suggestion-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>À <strong>5 min</strong> à pied de chez vous</span>
+          </div>
+          <div class="suggestion-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span>Horaires : <strong>06:30 - 07:00 - 07:30</strong></span>
+          </div>
+          <div class="suggestion-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+            </svg>
+            <span><strong>12 places</strong> disponibles</span>
+          </div>
+        </div>
+        
+        <div class="suggestion-footer">
+          <div class="suggestion-price">
+            <span class="price-amount">400</span>
+            <span class="price-currency">FCFA</span>
+            <span class="price-label">/ trajet</span>
+          </div>
+          <button class="btn btn-primary" onclick="joinLine(1)">
+            Rejoindre cette ligne
+          </button>
+        </div>
+      </div>
+      
+      <!-- Ligne 2 -->
+      <div class="suggestion-card stagger-item">
+        <div class="suggestion-header">
+          <div class="suggestion-route">
+            <span class="route-from">Yopougon Maroc</span>
+            <span class="route-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </span>
+            <span class="route-to">Plateau Indénié</span>
+          </div>
+          <div class="suggestion-status active">Active</div>
+        </div>
+        
+        <div class="suggestion-details">
+          <div class="suggestion-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>Point de ramassage : <strong>Terminus Maroc</strong></span>
+          </div>
+          <div class="suggestion-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>À <strong>12 min</strong> à pied de chez vous</span>
+          </div>
+          <div class="suggestion-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <span>Horaires : <strong>06:00 - 06:45 - 07:15</strong></span>
+          </div>
+          <div class="suggestion-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+            </svg>
+            <span><strong>8 places</strong> disponibles</span>
+          </div>
+        </div>
+        
+        <div class="suggestion-footer">
+          <div class="suggestion-price">
+            <span class="price-amount">400</span>
+            <span class="price-currency">FCFA</span>
+            <span class="price-label">/ trajet</span>
+          </div>
+          <button class="btn btn-primary" onclick="joinLine(2)">
+            Rejoindre cette ligne
+          </button>
+        </div>
+      </div>
+      
+      <!-- Ligne 3 : En attente -->
+      <div class="suggestion-card stagger-item">
+        <div class="suggestion-header">
+          <div class="suggestion-route">
+            <span class="route-from">Yopougon Selmer</span>
+            <span class="route-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </span>
+            <span class="route-to">Plateau CCIA</span>
+          </div>
+          <div class="suggestion-status pending">En attente</div>
+        </div>
+        
+        <div class="suggestion-details">
+          <div class="suggestion-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span>Point de ramassage : <strong>Carrefour Selmer</strong></span>
+          </div>
+          <div class="suggestion-detail">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>À <strong>8 min</strong> à pied de chez vous</span>
+          </div>
+          <div class="suggestion-detail pending-info">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+            </svg>
+            <span><strong>7 passagers</strong> inscrits sur 15 minimum</span>
+          </div>
+        </div>
+        
+        <div class="suggestion-progress">
+          <div class="progress">
+            <div class="progress-bar gold" style="width: 47%;"></div>
+          </div>
+          <p class="progress-text">Plus que <strong>8 passagers</strong> pour activer cette ligne</p>
+        </div>
+        
+        <div class="suggestion-footer">
+          <div class="suggestion-price">
+            <span class="price-amount">350</span>
+            <span class="price-currency">FCFA</span>
+            <span class="price-label">/ trajet</span>
+          </div>
+          <button class="btn btn-secondary" onclick="joinLine(3)">
+            Rejoindre cette ligne
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Section aucune ligne ne convient -->
+    <div class="no-match-section">
+      <div class="divider-thick"></div>
+      
+      <div class="no-match-content">
+        <h3 class="no-match-title">Aucune ligne ne vous convient ?</h3>
+        <p class="no-match-text">Proposez une nouvelle ligne et nous l'activerons dès qu'un nombre suffisant de passagers l'auront rejointe.</p>
+        
+        <button class="btn btn-primary btn-block" onclick="openModal('propose-line-modal')">
+          <!-- Icône plus -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Proposer une nouvelle ligne
+        </button>
+        
+        <p class="no-match-info">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+          Votre ligne sera activée dès que <strong>15 passagers</strong> l'auront rejointe.
+        </p>
+      </div>
+    </div>
+    
+    <!-- Bouton continuer -->
+    <div class="suggestions-footer">
+      <button class="btn btn-ghost btn-block" onclick="navigateTo('accueil.html')">
+        Passer et voir l'accueil
+      </button>
+    </div>
+  </main>
+  
+  <!-- Modal proposer une ligne -->
+  <div class="modal-overlay" id="propose-line-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Proposer une nouvelle ligne</h3>
+        <button class="modal-close" onclick="closeModal('propose-line-modal')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-content">
+        <form id="propose-line-form">
+          <div class="form-group">
+            <label for="propose-depart" class="form-label">Point de départ</label>
+            <input type="text" id="propose-depart" class="form-input" placeholder="Ex : Yopougon Niangon" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="propose-destination" class="form-label">Destination</label>
+            <input type="text" id="propose-destination" class="form-input" placeholder="Ex : Plateau, Marcory" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="propose-horaire" class="form-label">Horaire souhaité</label>
+            <select id="propose-horaire" class="form-input form-select" required>
+              <option value="" disabled selected>Choisir un créneau</option>
+              <option value="06:00">06:00</option>
+              <option value="06:30">06:30</option>
+              <option value="07:00">07:00</option>
+              <option value="07:30">07:30</option>
+              <option value="08:00">08:00</option>
+            </select>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">
+            Soumettre ma proposition
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Styles spécifiques -->
+  <style>
+    .suggestions-intro {
+      text-align: center;
+      padding: var(--spacing-xl);
+      background: linear-gradient(180deg, rgba(46, 196, 182, 0.1) 0%, transparent 100%);
+    }
+    
+    .suggestions-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(46, 196, 182, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--spacing-md);
+      color: var(--secondary-turquoise);
+    }
+    
+    .suggestions-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .suggestions-title {
+      font-size: 20px;
+      font-weight: var(--font-bold);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .suggestions-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    .suggestions-text strong {
+      color: var(--secondary-turquoise);
+    }
+    
+    .suggestions-list {
+      padding: var(--spacing-md);
+    }
+    
+    .suggestion-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .suggestion-card.best-match {
+      border-color: var(--secondary-turquoise);
+      background: rgba(46, 196, 182, 0.05);
+    }
+    
+    .suggestion-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--secondary-turquoise);
+      color: var(--dark-bg);
+      font-size: 11px;
+      font-weight: var(--font-bold);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--spacing-md);
+      text-transform: uppercase;
+    }
+    
+    .suggestion-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .suggestion-route {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      flex-wrap: wrap;
+    }
+    
+    .route-from, .route-to {
+      font-weight: var(--font-semibold);
+      font-size: 15px;
+    }
+    
+    .route-arrow {
+      color: var(--text-muted);
+    }
+    
+    .suggestion-status {
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: var(--font-bold);
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    
+    .suggestion-status.active {
+      background: rgba(46, 196, 182, 0.15);
+      color: var(--ligne-active);
+    }
+    
+    .suggestion-status.pending {
+      background: rgba(200, 169, 81, 0.15);
+      color: var(--ligne-attente);
+    }
+    
+    .suggestion-details {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .suggestion-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-xs) 0;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    
+    .suggestion-detail svg {
+      flex-shrink: 0;
+      margin-top: 2px;
+      opacity: 0.7;
+    }
+    
+    .suggestion-detail strong {
+      color: var(--text-primary);
+    }
+    
+    .suggestion-detail.pending-info {
+      color: var(--premium-gold);
+    }
+    
+    .suggestion-progress {
+      margin-bottom: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: rgba(200, 169, 81, 0.1);
+      border-radius: var(--radius-md);
+    }
+    
+    .progress-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-align: center;
+      margin-top: var(--spacing-sm);
+    }
+    
+    .suggestion-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--spacing-md);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .suggestion-price {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+    
+    .price-amount {
+      font-size: 24px;
+      font-weight: var(--font-bold);
+      color: var(--premium-gold);
+    }
+    
+    .price-currency {
+      font-size: 14px;
+      font-weight: var(--font-semibold);
+      color: var(--premium-gold);
+    }
+    
+    .price-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    
+    .no-match-section {
+      margin-top: var(--spacing-lg);
+    }
+    
+    .no-match-content {
+      padding: var(--spacing-xl);
+      text-align: center;
+    }
+    
+    .no-match-title {
+      font-size: 18px;
+      font-weight: var(--font-bold);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .no-match-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-lg);
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .no-match-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: var(--spacing-lg);
+    }
+    
+    .no-match-info svg {
+      flex-shrink: 0;
+      color: var(--premium-gold);
+    }
+    
+    .suggestions-footer {
+      padding: var(--spacing-md);
+      padding-bottom: calc(var(--spacing-xl) + var(--safe-area-bottom));
+    }
+  </style>
+  
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script>
+    /* Charger les infos utilisateur */
+    document.addEventListener('DOMContentLoaded', function() {
+      /* Simuler les données utilisateur */
+      const quartier = localStorage.getItem('userQuartier') || 'Yopougon';
+      const workplace = localStorage.getItem('userWorkplace') || 'Plateau';
+      
+      document.getElementById('user-quartier').textContent = quartier;
+      document.getElementById('user-workplace').textContent = workplace;
+    });
+    
+    /* Rejoindre une ligne */
+    function joinLine(lineId) {
+      showLoading('Inscription en cours...');
+      
+      setTimeout(() => {
+        hideLoading();
+        showToast('Vous avez rejoint cette ligne avec succès !', 'success');
+        
+        /* Rediriger vers l'accueil après un court délai */
+        setTimeout(() => {
+          navigateTo('accueil.html');
+        }, 1500);
+      }, 1000);
+    }
+    
+    /* Formulaire proposition de ligne */
+    document.getElementById('propose-line-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const depart = document.getElementById('propose-depart').value;
+      const destination = document.getElementById('propose-destination').value;
+      const horaire = document.getElementById('propose-horaire').value;
+      
+      closeModal('propose-line-modal');
+      showLoading('Envoi de votre proposition...');
+      
+      setTimeout(() => {
+        hideLoading();
+        showToast('Proposition envoyée ! Nous vous notifierons quand la ligne sera activée.', 'success');
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
