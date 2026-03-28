@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#1B2A4A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Navette Express">
+  <meta name="description" content="Installer Navette Express sur votre téléphone - Guide d'installation PWA.">
+  
+  <!-- Favicon et icônes -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
+  <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+  
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/app.css">
+  
+  <title>Installer l'application - Navette Express</title>
+</head>
+<body class="no-nav">
+  <!-- Header -->
+  <header class="header">
+    <button class="header-btn" data-action="back" onclick="goBack()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <h1 class="header-title">Installer l'app</h1>
+    <div style="width: 44px;"></div>
+  </header>
+  
+  <!-- Contenu principal -->
+  <main class="page-with-header install-page">
+    <!-- Intro -->
+    <div class="install-intro">
+      <div class="install-icon">
+        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="40" cy="40" r="38" fill="rgba(46, 196, 182, 0.15)" stroke="#2EC4B6" stroke-width="2"/>
+          <path d="M40 20v28M28 36l12 12 12-12" stroke="#2EC4B6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M24 52h32" stroke="#2EC4B6" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h2>Installez Navette Express</h2>
+      <p>Ajoutez l'application à votre écran d'accueil pour un accès rapide, même hors ligne.</p>
+    </div>
+    
+    <!-- Avantages -->
+    <div class="install-benefits">
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+        </div>
+        <div class="benefit-text">
+          <span class="benefit-title">Accès instantané</span>
+          <span class="benefit-desc">Lancez l'app en un tap depuis votre écran d'accueil</span>
+        </div>
+      </div>
+      
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 01-3.46 0"/>
+          </svg>
+        </div>
+        <div class="benefit-text">
+          <span class="benefit-title">Notifications push</span>
+          <span class="benefit-desc">Soyez alerté quand votre bus arrive</span>
+        </div>
+      </div>
+      
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="1" y1="1" x2="23" y2="23"/>
+            <path d="M16.72 11.06A10.94 10.94 0 0119 12.55"/>
+            <path d="M5 12.55a10.94 10.94 0 015.17-2.39"/>
+            <path d="M10.71 5.05A16 16 0 0122.58 9"/>
+            <path d="M1.42 9a15.91 15.91 0 014.7-2.88"/>
+            <path d="M8.53 16.11a6 6 0 016.95 0"/>
+            <line x1="12" y1="20" x2="12.01" y2="20"/>
+          </svg>
+        </div>
+        <div class="benefit-text">
+          <span class="benefit-title">Mode hors ligne</span>
+          <span class="benefit-desc">Consultez vos réservations sans internet</span>
+        </div>
+      </div>
+      
+      <div class="benefit-item">
+        <div class="benefit-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 6v6l4 2"/>
+          </svg>
+        </div>
+        <div class="benefit-text">
+          <span class="benefit-title">Toujours à jour</span>
+          <span class="benefit-desc">Mises à jour automatiques sans téléchargement</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tabs OS -->
+    <div class="os-tabs">
+      <button class="os-tab active" data-os="android" onclick="switchOS('android')">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+          <path d="M17.523 15.341c-.5 0-.907-.407-.907-.907s.406-.906.907-.906c.5 0 .906.406.906.906s-.406.907-.906.907zm-11.046 0c-.5 0-.907-.407-.907-.907s.407-.906.907-.906c.5 0 .907.406.907.906s-.407.907-.907.907zm11.4-6.236l1.993-3.453a.414.414 0 00-.151-.565.414.414 0 00-.565.151l-2.019 3.497C15.32 7.891 13.263 7.341 11 7.341s-4.32.55-6.135 1.394l-2.02-3.497a.414.414 0 00-.565-.151.414.414 0 00-.151.565l1.994 3.453C1.587 10.791 0 13.846 0 17.341h22c0-3.495-1.587-6.55-4.123-8.236z"/>
+        </svg>
+        Android
+      </button>
+      <button class="os-tab" data-os="ios" onclick="switchOS('ios')">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+        iPhone / iPad
+      </button>
+    </div>
+    
+    <!-- Instructions Android -->
+    <div class="install-instructions" id="instructions-android">
+      <h3>Installation sur Android</h3>
+      
+      <div class="install-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Ouvrez Chrome</h4>
+          <p>Assurez-vous d'utiliser le navigateur Google Chrome sur votre téléphone Android.</p>
+        </div>
+      </div>
+      
+      <div class="install-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Appuyez sur le menu</h4>
+          <p>Cliquez sur les 3 points verticaux <strong>⋮</strong> en haut à droite de l'écran.</p>
+          <div class="step-visual">
+            <svg viewBox="0 0 24 48" fill="none">
+              <circle cx="12" cy="8" r="3" fill="#2EC4B6"/>
+              <circle cx="12" cy="24" r="3" fill="#2EC4B6"/>
+              <circle cx="12" cy="40" r="3" fill="#2EC4B6"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <div class="install-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Sélectionnez "Installer l'application"</h4>
+          <p>Dans le menu déroulant, recherchez et appuyez sur <strong>"Installer l'application"</strong> ou <strong>"Ajouter à l'écran d'accueil"</strong>.</p>
+        </div>
+      </div>
+      
+      <div class="install-step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Confirmez l'installation</h4>
+          <p>Appuyez sur <strong>"Installer"</strong> dans la fenêtre qui s'affiche. L'icône Navette Express apparaîtra sur votre écran d'accueil !</p>
+        </div>
+      </div>
+      
+      <!-- Bouton installation automatique (si disponible) -->
+      <button class="btn btn-primary btn-lg btn-install" id="btn-install-android" onclick="installPWA()" style="display: none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Installer maintenant
+      </button>
+    </div>
+    
+    <!-- Instructions iOS -->
+    <div class="install-instructions hidden" id="instructions-ios">
+      <h3>Installation sur iPhone / iPad</h3>
+      
+      <div class="install-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h4>Ouvrez Safari</h4>
+          <p>Cette installation ne fonctionne qu'avec Safari. Ouvrez cette page dans Safari si ce n'est pas déjà fait.</p>
+        </div>
+      </div>
+      
+      <div class="install-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h4>Appuyez sur le bouton Partager</h4>
+          <p>En bas de l'écran (iPhone) ou en haut (iPad), appuyez sur l'icône de partage :</p>
+          <div class="step-visual ios-share">
+            <svg viewBox="0 0 50 50" fill="none">
+              <rect x="10" y="20" width="30" height="25" rx="4" stroke="#2EC4B6" stroke-width="2" fill="none"/>
+              <path d="M25 5v25" stroke="#2EC4B6" stroke-width="2" stroke-linecap="round"/>
+              <path d="M18 12l7-7 7 7" stroke="#2EC4B6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <div class="install-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h4>Faites défiler et appuyez sur "Sur l'écran d'accueil"</h4>
+          <p>Dans le menu qui apparaît, faites défiler vers le bas et sélectionnez <strong>"Sur l'écran d'accueil"</strong> (icône +).</p>
+          <div class="step-visual ios-add">
+            <svg viewBox="0 0 50 50" fill="none">
+              <rect x="5" y="5" width="40" height="40" rx="8" stroke="#2EC4B6" stroke-width="2" fill="none"/>
+              <line x1="25" y1="15" x2="25" y2="35" stroke="#2EC4B6" stroke-width="3" stroke-linecap="round"/>
+              <line x1="15" y1="25" x2="35" y2="25" stroke="#2EC4B6" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <div class="install-step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h4>Confirmez en appuyant sur "Ajouter"</h4>
+          <p>Vous pouvez personnaliser le nom si vous le souhaitez, puis appuyez sur <strong>"Ajouter"</strong> en haut à droite.</p>
+        </div>
+      </div>
+      
+      <div class="ios-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <p>L'icône Navette Express apparaîtra sur votre écran d'accueil comme une application native.</p>
+      </div>
+    </div>
+    
+    <!-- Déjà installé -->
+    <div class="already-installed hidden" id="already-installed">
+      <div class="installed-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+      <h3>Application déjà installée !</h3>
+      <p>Navette Express est déjà installée sur cet appareil. Recherchez l'icône sur votre écran d'accueil.</p>
+      <button class="btn btn-primary" onclick="navigateTo('accueil.html')">
+        Ouvrir l'application
+      </button>
+    </div>
+    
+    <!-- Aide -->
+    <div class="install-help">
+      <p>Besoin d'aide pour l'installation ?</p>
+      <a href="https://wa.me/2250703285359?text=Bonjour, j'ai besoin d'aide pour installer l'application Navette Express." target="_blank" class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        </svg>
+        Contacter le support
+      </a>
+    </div>
+  </main>
+  
+  <!-- Styles spécifiques -->
+  <style>
+    .install-page {
+      padding: var(--spacing-md);
+      padding-bottom: calc(var(--spacing-xl) + var(--safe-area-bottom));
+    }
+    
+    .install-intro {
+      text-align: center;
+      padding: var(--spacing-xl) 0;
+    }
+    
+    .install-icon {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto var(--spacing-lg);
+    }
+    
+    .install-intro h2 {
+      font-size: 22px;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .install-intro p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      max-width: 280px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    
+    .install-benefits {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .benefit-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-md);
+      padding: var(--spacing-sm) 0;
+    }
+    
+    .benefit-item:not(:last-child) {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: var(--spacing-md);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .benefit-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(46, 196, 182, 0.15);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--secondary-turquoise);
+      flex-shrink: 0;
+    }
+    
+    .benefit-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .benefit-text {
+      flex: 1;
+    }
+    
+    .benefit-title {
+      display: block;
+      font-weight: var(--font-semibold);
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+    
+    .benefit-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    
+    .os-tabs {
+      display: flex;
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 4px;
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .os-tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: var(--font-medium);
+      color: var(--text-secondary);
+      transition: all var(--transition-fast);
+    }
+    
+    .os-tab.active {
+      background: var(--secondary-turquoise);
+      color: var(--dark-bg);
+    }
+    
+    .install-instructions {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .install-instructions.hidden {
+      display: none;
+    }
+    
+    .install-instructions h3 {
+      font-size: 16px;
+      margin-bottom: var(--spacing-lg);
+      padding-bottom: var(--spacing-md);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .install-step {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .install-step:last-of-type {
+      margin-bottom: 0;
+    }
+    
+    .step-number {
+      width: 32px;
+      height: 32px;
+      background: var(--secondary-turquoise);
+      color: var(--dark-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: var(--font-bold);
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    
+    .step-content {
+      flex: 1;
+    }
+    
+    .step-content h4 {
+      font-size: 15px;
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .step-content p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    
+    .step-visual {
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: var(--spacing-sm);
+    }
+    
+    .step-visual svg {
+      width: 30px;
+      height: 30px;
+    }
+    
+    .ios-note {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-md);
+      background: rgba(52, 152, 219, 0.1);
+      border-radius: var(--radius-md);
+      margin-top: var(--spacing-lg);
+    }
+    
+    .ios-note svg {
+      color: var(--info);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    
+    .ios-note p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin: 0;
+    }
+    
+    .btn-install {
+      width: 100%;
+      margin-top: var(--spacing-lg);
+    }
+    
+    .btn-install svg {
+      margin-right: var(--spacing-sm);
+    }
+    
+    .already-installed {
+      text-align: center;
+      padding: var(--spacing-xl);
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .already-installed.hidden {
+      display: none;
+    }
+    
+    .installed-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(46, 204, 113, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--spacing-md);
+      color: var(--success);
+    }
+    
+    .installed-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .already-installed h3 {
+      font-size: 18px;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .already-installed p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .install-help {
+      text-align: center;
+      padding: var(--spacing-lg) 0;
+    }
+    
+    .install-help p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .install-help .btn svg {
+      margin-right: var(--spacing-sm);
+    }
+  </style>
+  
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script>
+    /* Variables */
+    let deferredPrompt = null;
+    
+    /* Détecter l'OS */
+    function detectOS() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      
+      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return 'ios';
+      }
+      
+      return 'android';
+    }
+    
+    /* Changer d'onglet OS */
+    function switchOS(os) {
+      document.querySelectorAll('.os-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.os === os);
+      });
+      
+      document.getElementById('instructions-android').classList.toggle('hidden', os !== 'android');
+      document.getElementById('instructions-ios').classList.toggle('hidden', os !== 'ios');
+    }
+    
+    /* Vérifier si déjà installé */
+    function checkIfInstalled() {
+      if (window.matchMedia('(display-mode: standalone)').matches) {
+        document.getElementById('instructions-android').classList.add('hidden');
+        document.getElementById('instructions-ios').classList.add('hidden');
+        document.querySelector('.os-tabs').classList.add('hidden');
+        document.getElementById('already-installed').classList.remove('hidden');
+        return true;
+      }
+      return false;
+    }
+    
+    /* Capturer l'événement beforeinstallprompt */
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      
+      /* Afficher le bouton d'installation */
+      document.getElementById('btn-install-android').style.display = 'flex';
+    });
+    
+    /* Installer la PWA */
+    function installPWA() {
+      if (!deferredPrompt) {
+        showToast('Utilisez le menu du navigateur pour installer', 'info');
+        return;
+      }
+      
+      deferredPrompt.prompt();
+      
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          showToast('Installation en cours...', 'success');
+        }
+        deferredPrompt = null;
+        document.getElementById('btn-install-android').style.display = 'none';
+      });
+    }
+    
+    /* Initialisation */
+    document.addEventListener('DOMContentLoaded', function() {
+      /* Vérifier si déjà installé */
+      if (!checkIfInstalled()) {
+        /* Détecter et afficher l'OS approprié */
+        const os = detectOS();
+        switchOS(os);
+      }
+    });
+    
+    /* Détecter l'installation réussie */
+    window.addEventListener('appinstalled', () => {
+      showToast('Application installée avec succès !', 'success');
+      deferredPrompt = null;
+    });
+  </script>
+</body>
+</html>
