@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#1B2A4A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Navette Express">
+  <meta name="description" content="Réservez votre siège sur Navette Express - Transport confortable à Abidjan.">
+  
+  <!-- Favicon et icônes -->
+  <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
+  <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+  
+  <!-- Manifest PWA -->
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/app.css">
+  
+  <title>Réserver votre trajet - Navette Express</title>
+</head>
+<body class="no-nav">
+  <!-- Header -->
+  <header class="header">
+    <button class="header-btn" data-action="back" onclick="goBack()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    </button>
+    <h1 class="header-title">Réserver votre trajet</h1>
+    <div style="width: 44px;"></div>
+  </header>
+  
+  <!-- Contenu principal -->
+  <main class="page-with-header">
+    <!-- Récapitulatif -->
+    <div class="reservation-summary">
+      <div class="summary-header">
+        <div class="summary-route">
+          <span class="summary-from">Yopougon</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+          <span class="summary-to">Plateau</span>
+        </div>
+        <span class="line-status-badge active">Active</span>
+      </div>
+      
+      <div class="summary-details">
+        <div class="summary-row">
+          <span class="summary-label">Date</span>
+          <span class="summary-value" id="reservation-date">Lundi 15 Janvier 2025</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Départ</span>
+          <span class="summary-value">06:30 - Carrefour Wassakara</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Durée estimée</span>
+          <span class="summary-value">~45 minutes</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Tarif estimé</span>
+          <span class="summary-value summary-total">400 FCFA</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sélection de siège -->
+    <section class="seat-selection">
+      <h3 class="section-title">Choisissez votre siège</h3>
+      
+      <!-- Légende -->
+      <div class="seat-legend">
+        <div class="legend-item">
+          <div class="legend-seat available"></div>
+          <span>Disponible</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-seat selected"></div>
+          <span>Sélectionné</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-seat taken"></div>
+          <span>Occupé</span>
+        </div>
+      </div>
+      
+      <!-- Plan du bus -->
+      <div class="bus-layout">
+        <!-- Avant du bus (chauffeur) -->
+        <div class="bus-front">
+          <div class="driver-seat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 8v4l2 2"/>
+            </svg>
+            <span>Chauffeur</span>
+          </div>
+          <div class="bus-door">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M9 3v18"/>
+            </svg>
+            Porte
+          </div>
+        </div>
+        
+        <!-- Grille des sièges -->
+        <div class="seats-container">
+          <!-- Rangée 1 -->
+          <div class="seats-row">
+            <div class="seat" data-seat="1A">1A</div>
+            <div class="seat" data-seat="1B">1B</div>
+            <div class="seat aisle"></div>
+            <div class="seat taken" data-seat="1C">1C</div>
+            <div class="seat" data-seat="1D">1D</div>
+          </div>
+          
+          <!-- Rangée 2 -->
+          <div class="seats-row">
+            <div class="seat taken" data-seat="2A">2A</div>
+            <div class="seat taken" data-seat="2B">2B</div>
+            <div class="seat aisle"></div>
+            <div class="seat" data-seat="2C">2C</div>
+            <div class="seat" data-seat="2D">2D</div>
+          </div>
+          
+          <!-- Rangée 3 -->
+          <div class="seats-row">
+            <div class="seat" data-seat="3A">3A</div>
+            <div class="seat" data-seat="3B">3B</div>
+            <div class="seat aisle"></div>
+            <div class="seat" data-seat="3C">3C</div>
+            <div class="seat taken" data-seat="3D">3D</div>
+          </div>
+          
+          <!-- Rangée 4 -->
+          <div class="seats-row">
+            <div class="seat taken" data-seat="4A">4A</div>
+            <div class="seat" data-seat="4B">4B</div>
+            <div class="seat aisle"></div>
+            <div class="seat" data-seat="4C">4C</div>
+            <div class="seat" data-seat="4D">4D</div>
+          </div>
+          
+          <!-- Rangée 5 -->
+          <div class="seats-row">
+            <div class="seat" data-seat="5A">5A</div>
+            <div class="seat taken" data-seat="5B">5B</div>
+            <div class="seat aisle"></div>
+            <div class="seat taken" data-seat="5C">5C</div>
+            <div class="seat" data-seat="5D">5D</div>
+          </div>
+          
+          <!-- Rangée 6 -->
+          <div class="seats-row">
+            <div class="seat" data-seat="6A">6A</div>
+            <div class="seat" data-seat="6B">6B</div>
+            <div class="seat aisle"></div>
+            <div class="seat" data-seat="6C">6C</div>
+            <div class="seat taken" data-seat="6D">6D</div>
+          </div>
+          
+          <!-- Rangée 7 (dernière rangée - 5 sièges) -->
+          <div class="seats-row last-row">
+            <div class="seat" data-seat="7A">7A</div>
+            <div class="seat taken" data-seat="7B">7B</div>
+            <div class="seat" data-seat="7C">7C</div>
+            <div class="seat" data-seat="7D">7D</div>
+            <div class="seat" data-seat="7E">7E</div>
+          </div>
+        </div>
+        
+        <!-- Arrière du bus -->
+        <div class="bus-back">
+          <span>Arrière</span>
+        </div>
+      </div>
+      
+      <!-- Info siège sélectionné -->
+      <div class="selected-seat-info" id="selected-seat-info">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <span>Touchez un siège pour le sélectionner</span>
+      </div>
+    </section>
+    
+    <!-- Politique d'annulation -->
+    <div class="cancellation-policy">
+      <h4>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        Politique d'annulation
+      </h4>
+      <p>Réservation annulable jusqu'à <strong>30 minutes</strong> avant le départ, sans frais. Après ce délai, droit de retard de <strong>20%</strong>.</p>
+    </div>
+    
+    <!-- Bouton confirmation -->
+    <div class="reservation-footer">
+      <div class="reservation-total">
+        <span class="total-label">Total à payer</span>
+        <span class="total-amount">400 FCFA</span>
+      </div>
+      <button class="btn btn-primary btn-block btn-lg btn-confirm-reservation" disabled onclick="confirmReservation()">
+        Confirmer la réservation
+      </button>
+    </div>
+  </main>
+  
+  <!-- Styles spécifiques -->
+  <style>
+    .reservation-summary {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      margin: var(--spacing-md);
+    }
+    
+    .summary-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--spacing-md);
+      padding-bottom: var(--spacing-md);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .summary-route {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+    
+    .summary-from, .summary-to {
+      font-weight: var(--font-semibold);
+      font-size: 16px;
+    }
+    
+    .summary-route svg {
+      color: var(--text-muted);
+    }
+    
+    .summary-details {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+    
+    .summary-label {
+      color: var(--text-secondary);
+    }
+    
+    .summary-value {
+      font-weight: var(--font-medium);
+    }
+    
+    .summary-total {
+      color: var(--premium-gold);
+      font-weight: var(--font-bold);
+      font-size: 16px;
+    }
+    
+    .seat-selection {
+      padding: var(--spacing-md);
+    }
+    
+    .seat-legend {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .legend-seat {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+    
+    .legend-seat.available {
+      background: var(--card-bg);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .legend-seat.selected {
+      background: var(--secondary-turquoise);
+    }
+    
+    .legend-seat.taken {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .bus-layout {
+      max-width: 320px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: var(--radius-xl);
+      padding: var(--spacing-lg);
+      border: 2px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .bus-front {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .driver-seat {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    
+    .bus-door {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+    
+    .seats-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .seats-row {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-sm);
+    }
+    
+    .seat {
+      width: 44px;
+      height: 44px;
+      background: var(--card-bg);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: var(--font-semibold);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    .seat:hover:not(.taken):not(.selected):not(.aisle) {
+      border-color: var(--secondary-turquoise);
+      background: rgba(46, 196, 182, 0.1);
+    }
+    
+    .seat:active:not(.taken):not(.aisle) {
+      transform: scale(0.95);
+    }
+    
+    .seat.selected {
+      background: var(--secondary-turquoise);
+      border-color: var(--secondary-turquoise);
+      color: var(--dark-bg);
+      font-weight: var(--font-bold);
+      box-shadow: 0 0 15px rgba(46, 196, 182, 0.4);
+    }
+    
+    .seat.taken {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: transparent;
+      color: var(--text-muted);
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    
+    .seat.aisle {
+      background: transparent;
+      border: none;
+      width: 20px;
+      cursor: default;
+    }
+    
+    .last-row {
+      margin-top: var(--spacing-sm);
+      padding-top: var(--spacing-sm);
+      border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+    
+    .last-row .seat.aisle {
+      display: none;
+    }
+    
+    .bus-back {
+      text-align: center;
+      padding-top: var(--spacing-md);
+      margin-top: var(--spacing-md);
+      border-top: 2px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    
+    .selected-seat-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-lg);
+      padding: var(--spacing-md);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      color: var(--text-secondary);
+      min-height: 52px;
+    }
+    
+    .selected-seat-info.confirmed {
+      background: rgba(46, 196, 182, 0.1);
+      color: var(--secondary-turquoise);
+    }
+    
+    .selected-seat-info.confirmed svg {
+      color: var(--success);
+    }
+    
+    .cancellation-policy {
+      margin: var(--spacing-md);
+      padding: var(--spacing-md);
+      background: rgba(243, 156, 18, 0.1);
+      border-radius: var(--radius-md);
+      border-left: 3px solid var(--warning);
+    }
+    
+    .cancellation-policy h4 {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      font-size: 14px;
+      font-weight: var(--font-semibold);
+      margin-bottom: var(--spacing-sm);
+      color: var(--warning);
+    }
+    
+    .cancellation-policy p {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    
+    .reservation-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: var(--spacing-md);
+      padding-bottom: calc(var(--spacing-md) + var(--safe-area-bottom));
+      background: var(--primary-blue);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .reservation-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .total-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+    
+    .total-amount {
+      font-size: 24px;
+      font-weight: var(--font-bold);
+      color: var(--premium-gold);
+    }
+    
+    /* Espace pour le footer fixe */
+    .seat-selection {
+      padding-bottom: 140px;
+    }
+  </style>
+  
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script>
+    /* Variables */
+    let selectedSeat = null;
+    
+    /* Date du jour */
+    document.addEventListener('DOMContentLoaded', function() {
+      const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      const today = new Date();
+      document.getElementById('reservation-date').textContent = 
+        today.toLocaleDateString('fr-FR', options).replace(/^\w/, c => c.toUpperCase());
+    });
+    
+    /* Gestion des sièges */
+    document.querySelectorAll('.seat:not(.taken):not(.aisle)').forEach(seat => {
+      seat.addEventListener('click', function() {
+        /* Désélectionner le précédent */
+        if (selectedSeat) {
+          selectedSeat.classList.remove('selected');
+        }
+        
+        /* Sélectionner le nouveau */
+        this.classList.add('selected');
+        selectedSeat = this;
+        
+        /* Mettre à jour l'info */
+        const seatId = this.dataset.seat;
+        const infoEl = document.getElementById('selected-seat-info');
+        infoEl.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <span>Siège <strong>${seatId}</strong> sélectionné</span>
+        `;
+        infoEl.classList.add('confirmed');
+        
+        /* Activer le bouton */
+        document.querySelector('.btn-confirm-reservation').disabled = false;
+        
+        /* Petit feedback haptique si disponible */
+        if (navigator.vibrate) {
+          navigator.vibrate(50);
+        }
+      });
+    });
+    
+    /* Confirmation de réservation */
+    function confirmReservation() {
+      if (!selectedSeat) {
+        showToast('Veuillez sélectionner un siège', 'error');
+        return;
+      }
+      
+      const seatId = selectedSeat.dataset.seat;
+      
+      showLoading('Confirmation en cours...');
+      
+      setTimeout(() => {
+        hideLoading();
+        
+        /* Stocker la réservation */
+        const reservation = {
+          ligne: 'Yopougon → Plateau',
+          date: new Date().toISOString(),
+          seat: seatId,
+          price: 400,
+          status: 'confirmed'
+        };
+        
+        localStorage.setItem('lastReservation', JSON.stringify(reservation));
+        
+        /* Rediriger vers le paiement */
+        navigateTo('paiement.html?reservation=' + encodeURIComponent(JSON.stringify(reservation)));
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
