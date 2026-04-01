@@ -4,47 +4,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#1B2A4A">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Navette Express">
   <meta name="description" content="Navette Express - Votre navette en un clic. Sûreté, Rapidité, Confort pour vos trajets à Abidjan.">
   
-  <!-- Favicon et icônes -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
   <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
-  
-  <!-- Manifest PWA -->
   <link rel="manifest" href="manifest.json">
   
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Styles -->
   <link rel="stylesheet" href="css/app.css">
   
   <title>Navette Express - Passagers</title>
   
   <style>
-    /* Styles spécifiques au splash */
     .splash-screen {
-      background: linear-gradient(180deg, #0F1A2E 0%, #1B2A4A 100%);
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 400;
+      overflow: hidden;
     }
     
-    .splash-logo-container {
+    .splash-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+    
+    .splash-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15, 26, 46, 0.3) 0%, rgba(15, 26, 46, 0.8) 100%);
+      z-index: 1;
+    }
+    
+    .splash-content {
       position: relative;
-      margin-bottom: 32px;
+      z-index: 2;
+      text-align: center;
+      padding: 0 32px;
     }
     
     .splash-logo {
-      width: 140px;
-      height: 140px;
-      animation: splash-float 3s ease-in-out infinite;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 24px;
       background: rgba(255, 255, 255, 0.95);
       border-radius: 24px;
       padding: 15px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      animation: splash-float 3s ease-in-out infinite;
     }
     
     .splash-logo img {
@@ -53,34 +73,17 @@
       object-fit: contain;
     }
     
-    .splash-logo-glow {
-      position: absolute;
-      inset: -20px;
-      background: radial-gradient(circle, rgba(46, 196, 182, 0.3) 0%, transparent 70%);
-      filter: blur(20px);
-      animation: splash-glow 2s ease-in-out infinite alternate;
-    }
-    
     @keyframes splash-float {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-10px); }
     }
     
-    @keyframes splash-glow {
-      from { opacity: 0.5; transform: scale(1); }
-      to { opacity: 1; transform: scale(1.1); }
-    }
-    
-    .splash-brand {
-      margin-bottom: 48px;
-    }
-    
     .splash-title {
-      font-size: 36px;
+      font-size: 32px;
       font-weight: 700;
-      color: #F8F9FA;
+      color: #FFFFFF;
       margin-bottom: 8px;
-      letter-spacing: -1px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
     
     .splash-title span {
@@ -89,53 +92,40 @@
     
     .splash-tagline {
       font-size: 16px;
-      color: #A0AEC0;
-      max-width: 280px;
-      line-height: 1.6;
-    }
-    
-    .splash-bottom {
-      position: absolute;
-      bottom: 80px;
-      left: 0;
-      right: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 48px;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     }
     
     .splash-loader {
       width: 48px;
       height: 48px;
-      position: relative;
+      margin: 0 auto 24px;
     }
     
     .splash-loader-ring {
-      position: absolute;
-      inset: 0;
-      border: 3px solid rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-    }
-    
-    .splash-loader-progress {
-      position: absolute;
-      inset: 0;
-      border: 3px solid transparent;
+      width: 100%;
+      height: 100%;
+      border: 3px solid rgba(255, 255, 255, 0.2);
       border-top-color: #2EC4B6;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
     
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
     .splash-slogan {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 12px;
       font-size: 13px;
       font-weight: 600;
       color: #2EC4B6;
       text-transform: uppercase;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
     }
     
     .splash-slogan-dot {
@@ -148,43 +138,45 @@
     .splash-credits {
       position: absolute;
       bottom: 24px;
+      left: 0;
+      right: 0;
+      text-align: center;
       font-size: 11px;
-      color: #6B7280;
+      color: rgba(255, 255, 255, 0.6);
+      z-index: 2;
     }
     
     .splash-credits a {
-      color: #A0AEC0;
+      color: rgba(255, 255, 255, 0.8);
     }
   </style>
 </head>
 <body class="no-nav">
   <div class="splash-screen">
-    <!-- Logo avec effet glow -->
-    <div class="splash-logo-container">
-      <div class="splash-logo-glow"></div>
-      <picture class="splash-logo">
-        <source srcset="images/logo/logo-jaebets.webp" type="image/webp">
-        <img src="images/logo/logo-jaebets.png" alt="Logo Navette Express" width="140" height="140">
-      </picture>
-    </div>
+    <!-- Image de fond Runway -->
+    <picture>
+      <source srcset="images/ecrans/passagers-splash.webp" type="image/webp">
+      <img src="images/ecrans/passagers-splash.jpg" alt="" class="splash-bg" loading="eager">
+    </picture>
     
-    <!-- Marque -->
-    <div class="splash-brand">
+    <div class="splash-overlay"></div>
+    
+    <div class="splash-content">
+      <!-- Logo -->
+      <div class="splash-logo">
+        <picture>
+          <source srcset="images/logo/logo-jaebets.webp" type="image/webp">
+          <img src="images/logo/logo-jaebets.png" alt="Logo Navette Express">
+        </picture>
+      </div>
+      
+      <!-- Titre -->
       <h1 class="splash-title">Navette <span>Express</span></h1>
       <p class="splash-tagline">Votre navette en un clic</p>
-    </div>
-    
-    <!-- Accroche -->
-    <p class="splash-tagline" style="margin-top: -24px;">
-      Navette Express : sûr, rapide et confortable pour vos trajets à Abidjan
-    </p>
-    
-    <!-- Section bas -->
-    <div class="splash-bottom">
+      
       <!-- Loader -->
       <div class="splash-loader">
         <div class="splash-loader-ring"></div>
-        <div class="splash-loader-progress"></div>
       </div>
       
       <!-- Slogan -->
@@ -203,7 +195,6 @@
     </div>
   </div>
   
-  <!-- Scripts -->
   <script src="js/app.js"></script>
 </body>
 </html>
