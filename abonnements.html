@@ -4,291 +4,371 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#1B2A4A">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Navette Express">
-  <meta name="description" content="Abonnements mensuels Navette Express - Trajets quotidiens sans stress à Abidjan.">
+  <meta name="description" content="Abonnez-vous à Navette Express - Économisez sur vos trajets quotidiens avec nos forfaits mensuels.">
   
-  <!-- Favicon et icônes -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
   <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
-  
-  <!-- Manifest PWA -->
   <link rel="manifest" href="manifest.json">
   
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Styles -->
   <link rel="stylesheet" href="css/app.css">
   
   <title>Abonnements - Navette Express</title>
+  
+  <style>
+    .hero-banner {
+      position: relative;
+      height: 180px;
+      margin: 16px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    
+    .hero-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(15, 26, 46, 0.95) 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px;
+    }
+    
+    .hero-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .hero-subtitle {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .plans-section {
+      padding: 0 16px;
+      margin-bottom: 24px;
+    }
+    
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+    
+    .plan-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .plan-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .plan-card.premium {
+      border-color: rgba(200, 169, 81, 0.5);
+      background: linear-gradient(135deg, rgba(200, 169, 81, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
+    }
+    
+    .plan-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    
+    .plan-name {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    
+    .plan-card.premium .plan-name {
+      color: #C8A951;
+    }
+    
+    .plan-badge {
+      padding: 4px 10px;
+      font-size: 10px;
+      font-weight: 600;
+      background: #C8A951;
+      color: #0F1A2E;
+      border-radius: 10px;
+    }
+    
+    .plan-price {
+      font-size: 28px;
+      font-weight: 700;
+      color: #2EC4B6;
+      margin-bottom: 4px;
+    }
+    
+    .plan-period {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 16px;
+    }
+    
+    .plan-features {
+      list-style: none;
+    }
+    
+    .plan-features li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 10px;
+    }
+    
+    .plan-features li:last-child {
+      margin-bottom: 0;
+    }
+    
+    .plan-features svg {
+      width: 18px;
+      height: 18px;
+      color: #2EC4B6;
+      flex-shrink: 0;
+    }
+    
+    .plan-btn {
+      width: 100%;
+      padding: 14px;
+      margin-top: 16px;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    
+    .plan-btn.secondary {
+      background: rgba(46, 196, 182, 0.2);
+      color: #2EC4B6;
+    }
+    
+    .plan-btn.primary {
+      background: #C8A951;
+      color: #0F1A2E;
+    }
+    
+    .faq-section {
+      padding: 0 16px 100px;
+    }
+    
+    .faq-item {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .faq-question svg {
+      width: 20px;
+      height: 20px;
+      color: rgba(255, 255, 255, 0.5);
+      transition: transform 0.3s ease;
+    }
+    
+    .faq-item.open .faq-question svg {
+      transform: rotate(180deg);
+    }
+    
+    .faq-answer {
+      padding: 0 16px 16px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.6;
+      display: none;
+    }
+    
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+  </style>
 </head>
 <body class="with-nav">
   <!-- Header -->
   <header class="header">
-    <button class="header-btn" data-action="back" onclick="goBack()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <button class="header-btn" onclick="history.back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
         <polyline points="15 18 9 12 15 6"/>
       </svg>
     </button>
     <h1 class="header-title">Abonnements</h1>
-    <div style="width: 44px;"></div>
+    <div style="width: 24px;"></div>
   </header>
   
-  <!-- Contenu principal -->
   <main class="page-with-header">
-    <!-- Introduction -->
-    <div class="subscription-intro">
-      <div class="intro-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-        </svg>
-      </div>
-      <h2 class="intro-title">Abonnements quotidiens</h2>
-      <p class="intro-text">Trajets quotidiens sans stress, tarif réduit par rapport au paiement à la carte, priorité dans le choix des sièges, suivi de vos trajets dans l'historique.</p>
-    </div>
-    
-    <!-- Plans d'abonnement -->
-    <div class="plans-container">
-      <!-- Plan 10km -->
-      <div class="card plan-card" data-plan="10km">
-        <div class="plan-header">
-          <span class="plan-name">Essentiel</span>
-          <span class="plan-distance">10 km</span>
-        </div>
-        
-        <div class="plan-price">
-          <span class="plan-amount">18 000</span>
-          <span class="plan-currency">FCFA</span>
-          <span class="plan-period">/mois</span>
-        </div>
-        
-        <div class="plan-features">
-          <div class="plan-feature">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-            <span>Trajet jusqu'à <strong>10 km</strong> inclus</span>
-          </div>
-          <div class="plan-feature">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-            <span><strong>1 trajet</strong> aller ou retour par jour</span>
-          </div>
-          <div class="plan-feature">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-            <span>Annulation gratuite <strong>30 min</strong> avant</span>
-          </div>
-          <div class="plan-feature">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-            <span>Priorité de réservation</span>
-          </div>
-          <div class="plan-feature">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-            <span>Historique mensuel détaillé</span>
-          </div>
-        </div>
-        
-        <button class="btn btn-secondary btn-block" onclick="selectPlan('10km', 18000)">
-          Souscrire maintenant
-        </button>
-      </div>
-      
-      <!-- Plan 20km (Recommandé) -->
-      <div class="card plan-card recommended" data-plan="20km">
-        <div class="plan-badge">Recommandé</div>
-        
-        <div class="plan-header">
-          <span class="plan-name">Confort</span>
-          <span class="plan-distance">20 km</span>
-        </div>
-        
-        <div class="plan-price">
-          <span class="plan-amount">25 000</span>
-          <span class="plan-currency">FCFA</span>
-          <span class="plan-period">/mois</span>
-        </div>
-        
-        <div class="plan-features">
-          <div class="plan-feature">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-            <span>Trajet jusqu'à <strong>20 km</strong> inclus</span>
-          </div>
-          <div class="plan-feature highlight">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-            <span><strong>1 aller + 1 retour</strong> par jour</span>
-          </div>
-          <div class="plan-feature highlight">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-            <span>Parking sécurisé au point de ramassage</span>
-          </div>
-          <div class="plan-feature">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-            <span>Priorité de réservation</span>
-          </div>
-          <div class="plan-feature">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-            <span>Suivi mensuel des trajets</span>
-          </div>
-        </div>
-        
-        <button class="btn btn-primary btn-block" onclick="selectPlan('20km', 25000)">
-          Souscrire maintenant
-        </button>
-        
-        <p class="plan-savings">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-            <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
-          </svg>
-          Économisez jusqu'à <strong>30%</strong> par rapport au paiement à la carte
-        </p>
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <picture>
+        <source srcset="images/ecrans/passagers-abonnement.webp" type="image/webp">
+        <img src="images/ecrans/passagers-abonnement.jpg" alt="Abonnements" loading="eager">
+      </picture>
+      <div class="hero-overlay">
+        <h2 class="hero-title">Économisez chaque mois</h2>
+        <p class="hero-subtitle">10 trajets pour le prix de 9 !</p>
       </div>
     </div>
     
-    <!-- Comparaison -->
-    <div class="comparison-section">
-      <h3 class="section-title">Pourquoi s'abonner ?</h3>
+    <!-- Plans -->
+    <div class="plans-section">
+      <h3 class="section-title">Choisissez votre forfait</h3>
       
-      <div class="comparison-table">
-        <div class="comparison-row header">
-          <div class="comparison-cell"></div>
-          <div class="comparison-cell">À la carte</div>
-          <div class="comparison-cell highlight">Abonnement</div>
+      <!-- Plan Standard -->
+      <div class="plan-card" onclick="selectPlan('standard')">
+        <div class="plan-header">
+          <span class="plan-name">Forfait 10 km</span>
         </div>
-        <div class="comparison-row">
-          <div class="comparison-cell label">Coût mensuel (20 trajets)</div>
-          <div class="comparison-cell">~32 000 FCFA</div>
-          <div class="comparison-cell highlight">25 000 FCFA</div>
+        <div class="plan-price">18 000 FCFA</div>
+        <div class="plan-period">par mois • 20 trajets inclus</div>
+        <ul class="plan-features">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Trajets illimités jusqu'à 10 km
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Réservation prioritaire
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Support client dédié
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Annulation flexible
+          </li>
+        </ul>
+        <button class="plan-btn secondary">Souscrire</button>
+      </div>
+      
+      <!-- Plan Premium -->
+      <div class="plan-card premium" onclick="selectPlan('premium')">
+        <div class="plan-header">
+          <span class="plan-name">Forfait 20 km</span>
+          <span class="plan-badge">Populaire</span>
         </div>
-        <div class="comparison-row">
-          <div class="comparison-cell label">Réservation prioritaire</div>
-          <div class="comparison-cell">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="15" y1="9" x2="9" y2="15"/>
-              <line x1="9" y1="9" x2="15" y2="15"/>
+        <div class="plan-price">25 000 FCFA</div>
+        <div class="plan-period">par mois • Trajets illimités</div>
+        <ul class="plan-features">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
             </svg>
-          </div>
-          <div class="comparison-cell highlight">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
+            Trajets illimités jusqu'à 20 km
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
             </svg>
-          </div>
-        </div>
-        <div class="comparison-row">
-          <div class="comparison-cell label">Parking inclus</div>
-          <div class="comparison-cell">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="15" y1="9" x2="9" y2="15"/>
-              <line x1="9" y1="9" x2="15" y2="15"/>
+            Siège garanti à l'avant
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
             </svg>
-          </div>
-          <div class="comparison-cell highlight">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
+            Accès bus climatisés VIP
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
             </svg>
-            <span class="text-xs">(Plan 20km)</span>
-          </div>
-        </div>
+            Support prioritaire 24/7
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Report trajets non utilisés
+          </li>
+        </ul>
+        <button class="plan-btn primary">Souscrire maintenant</button>
       </div>
     </div>
     
     <!-- FAQ -->
-    <section class="faq-section">
+    <div class="faq-section">
       <h3 class="section-title">Questions fréquentes</h3>
       
-      <div class="faq-item">
-        <button class="faq-question">
-          <span>Puis-je changer de ligne avec mon abonnement ?</span>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span>Comment fonctionne l'abonnement ?</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
-        </button>
+        </div>
         <div class="faq-answer">
-          <div class="faq-answer-content">
-            Oui, votre abonnement est valable sur toutes les lignes jusqu'à la distance incluse dans votre forfait. Vous pouvez changer de ligne à tout moment.
-          </div>
+          Votre abonnement est activé dès le paiement et valable pendant 30 jours. Vous pouvez réserver vos trajets sans limite dans la zone couverte par votre forfait.
         </div>
       </div>
       
-      <div class="faq-item">
-        <button class="faq-question">
-          <span>Que se passe-t-il si je ne voyage pas tous les jours ?</span>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span>Puis-je annuler mon abonnement ?</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
-        </button>
+        </div>
         <div class="faq-answer">
-          <div class="faq-answer-content">
-            Les trajets non utilisés ne sont pas reportés au mois suivant. L'abonnement vous donne droit à un certain nombre de trajets par jour, utilisables ou non.
-          </div>
+          Oui, vous pouvez annuler à tout moment. L'abonnement reste actif jusqu'à la fin de la période payée et ne sera pas renouvelé automatiquement.
         </div>
       </div>
       
-      <div class="faq-item">
-        <button class="faq-question">
-          <span>Comment résilier mon abonnement ?</span>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span>Que se passe-t-il si je dépasse ma zone ?</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
-        </button>
+        </div>
         <div class="faq-answer">
-          <div class="faq-answer-content">
-            Vous pouvez résilier votre abonnement à tout moment depuis votre profil. L'abonnement reste actif jusqu'à la fin du mois en cours, sans renouvellement automatique.
-          </div>
+          Si votre trajet dépasse la distance couverte par votre forfait, vous paierez uniquement la différence au tarif normal. Pas de surprise !
         </div>
       </div>
-      
-      <div class="faq-item">
-        <button class="faq-question">
-          <span>L'abonnement est-il remboursable ?</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-answer-content">
-            L'abonnement n'est pas remboursable une fois activé. Nous vous conseillons de bien vérifier votre choix avant de souscrire. En cas de problème, contactez notre service client.
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- Espace pour bottom nav -->
-    <div style="height: 24px;"></div>
+    </div>
   </main>
   
   <!-- Bottom Navigation -->
@@ -303,8 +383,7 @@
     <a href="lignes.html" class="nav-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="12" cy="12" r="10"/>
-        <path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/>
-        <circle cx="12" cy="12" r="2"/>
+        <circle cx="12" cy="12" r="3"/>
       </svg>
       <span>Lignes</span>
     </a>
@@ -320,8 +399,9 @@
         <path d="M13.73 21a2 2 0 01-3.46 0"/>
       </svg>
       <span>Notifs</span>
+      <span class="nav-badge">3</span>
     </a>
-    <a href="profil.html" class="nav-item active">
+    <a href="profil.html" class="nav-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
         <circle cx="12" cy="7" r="4"/>
@@ -330,316 +410,15 @@
     </a>
   </nav>
   
-  <!-- Bouton WhatsApp flottant -->
-  <a href="https://wa.me/2250703285359" target="_blank" class="whatsapp-fab" aria-label="Contacter sur WhatsApp">
-    <svg viewBox="0 0 24 24" fill="currentColor">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-    </svg>
-  </a>
-  
-  <!-- Styles spécifiques -->
-  <style>
-    .subscription-intro {
-      text-align: center;
-      padding: var(--spacing-xl);
-      background: linear-gradient(180deg, rgba(200, 169, 81, 0.1) 0%, transparent 100%);
-    }
-    
-    .intro-icon {
-      width: 64px;
-      height: 64px;
-      background: rgba(200, 169, 81, 0.15);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto var(--spacing-md);
-      color: var(--premium-gold);
-    }
-    
-    .intro-icon svg {
-      width: 32px;
-      height: 32px;
-    }
-    
-    .intro-title {
-      font-size: 22px;
-      font-weight: var(--font-bold);
-      margin-bottom: var(--spacing-sm);
-    }
-    
-    .intro-text {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-      max-width: 320px;
-      margin: 0 auto;
-    }
-    
-    .plans-container {
-      padding: var(--spacing-md);
-    }
-    
-    .plan-card {
-      margin-bottom: var(--spacing-md);
-      position: relative;
-      overflow: visible;
-    }
-    
-    .plan-card.recommended {
-      border: 2px solid var(--premium-gold);
-      background: linear-gradient(135deg, rgba(200, 169, 81, 0.1) 0%, rgba(200, 169, 81, 0.02) 100%);
-    }
-    
-    .plan-badge {
-      position: absolute;
-      top: -12px;
-      right: 16px;
-      background: var(--premium-gold);
-      color: var(--dark-bg);
-      font-size: 11px;
-      font-weight: var(--font-bold);
-      padding: 6px 16px;
-      border-radius: var(--radius-full);
-      text-transform: uppercase;
-    }
-    
-    .plan-header {
-      display: flex;
-      align-items: baseline;
-      gap: var(--spacing-sm);
-      margin-bottom: var(--spacing-md);
-    }
-    
-    .plan-name {
-      font-size: 20px;
-      font-weight: var(--font-bold);
-    }
-    
-    .plan-distance {
-      font-size: 14px;
-      color: var(--text-secondary);
-      padding: 4px 10px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: var(--radius-sm);
-    }
-    
-    .plan-price {
-      margin-bottom: var(--spacing-lg);
-      display: flex;
-      align-items: baseline;
-      gap: 4px;
-    }
-    
-    .plan-amount {
-      font-size: 36px;
-      font-weight: var(--font-bold);
-      color: var(--premium-gold);
-    }
-    
-    .plan-currency {
-      font-size: 16px;
-      font-weight: var(--font-semibold);
-      color: var(--premium-gold);
-    }
-    
-    .plan-period {
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-    
-    .plan-features {
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    .plan-feature {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--spacing-sm);
-      padding: var(--spacing-sm) 0;
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-    
-    .plan-feature svg {
-      width: 18px;
-      height: 18px;
-      color: var(--success);
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    
-    .plan-feature strong {
-      color: var(--text-primary);
-    }
-    
-    .plan-feature.highlight {
-      color: var(--premium-gold);
-    }
-    
-    .plan-feature.highlight strong {
-      color: var(--premium-gold);
-    }
-    
-    .plan-savings {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--spacing-sm);
-      font-size: 12px;
-      color: var(--success);
-      margin-top: var(--spacing-md);
-      padding-top: var(--spacing-md);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    
-    .comparison-section {
-      padding: var(--spacing-md);
-    }
-    
-    .comparison-table {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-    
-    .comparison-row {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .comparison-row:last-child {
-      border-bottom: none;
-    }
-    
-    .comparison-row.header {
-      background: rgba(255, 255, 255, 0.03);
-    }
-    
-    .comparison-cell {
-      padding: var(--spacing-md);
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-    
-    .comparison-cell.label {
-      justify-content: flex-start;
-      text-align: left;
-      color: var(--text-secondary);
-    }
-    
-    .comparison-cell.highlight {
-      background: rgba(46, 196, 182, 0.05);
-      color: var(--secondary-turquoise);
-      font-weight: var(--font-semibold);
-    }
-    
-    .comparison-cell svg {
-      flex-shrink: 0;
-    }
-    
-    .comparison-row.header .comparison-cell {
-      font-weight: var(--font-semibold);
-      font-size: 12px;
-      text-transform: uppercase;
-    }
-    
-    .comparison-cell .text-xs {
-      font-size: 10px;
-      margin-left: 4px;
-      opacity: 0.7;
-    }
-    
-    .faq-section {
-      padding: var(--spacing-md);
-    }
-    
-    .faq-item {
-      background: var(--card-bg);
-      border-radius: var(--radius-md);
-      margin-bottom: var(--spacing-sm);
-      overflow: hidden;
-    }
-    
-    .faq-question {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: var(--spacing-md);
-      text-align: left;
-      font-size: 14px;
-      font-weight: var(--font-medium);
-      color: var(--text-primary);
-      background: transparent;
-    }
-    
-    .faq-question svg {
-      width: 20px;
-      height: 20px;
-      color: var(--text-muted);
-      flex-shrink: 0;
-      transition: transform var(--transition-normal);
-    }
-    
-    .faq-item.active .faq-question svg {
-      transform: rotate(180deg);
-    }
-    
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height var(--transition-normal);
-    }
-    
-    .faq-item.active .faq-answer {
-      max-height: 200px;
-    }
-    
-    .faq-answer-content {
-      padding: 0 var(--spacing-md) var(--spacing-md);
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-  </style>
-  
-  <!-- Scripts -->
   <script src="js/app.js"></script>
   <script>
-    /* Sélection de plan */
-    function selectPlan(plan, price) {
-      const subscription = {
-        plan: plan,
-        price: price,
-        type: plan === '10km' ? 'Essentiel' : 'Confort'
-      };
-      
-      localStorage.setItem('selectedSubscription', JSON.stringify(subscription));
-      navigateTo('paiement.html?type=abonnement&plan=' + plan + '&price=' + price);
+    function selectPlan(plan) {
+      navigateTo('paiement.html?plan=' + plan);
     }
     
-    /* FAQ Toggle */
-    document.querySelectorAll('.faq-question').forEach(question => {
-      question.addEventListener('click', function() {
-        const item = this.closest('.faq-item');
-        const isActive = item.classList.contains('active');
-        
-        /* Fermer tous les autres */
-        document.querySelectorAll('.faq-item').forEach(i => {
-          i.classList.remove('active');
-        });
-        
-        /* Toggle celui-ci */
-        if (!isActive) {
-          item.classList.add('active');
-        }
-      });
-    });
+    function toggleFaq(element) {
+      element.classList.toggle('open');
+    }
   </script>
 </body>
 </html>
