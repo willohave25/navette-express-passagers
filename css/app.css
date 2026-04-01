@@ -1004,13 +1004,16 @@ h5, .h5 {
   width: 80px;
   height: 80px;
   margin: 0 auto var(--spacing-lg);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-lg);
+  padding: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .auth-logo img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  border-radius: var(--radius-lg);
 }
 
 .auth-title {
