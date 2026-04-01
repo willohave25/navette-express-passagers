@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#1B2A4A">
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Navette Express">
-  <meta name="description" content="Navette Express - Votre navette en un clic. Sûreté, Rapidité, Confort pour vos trajets à Abidjan.">
+  <meta name="description" content="Navette Express - Transport collectif premium à Abidjan. Réservez votre place, suivez votre bus en temps réel.">
   
   <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
   <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
@@ -15,37 +16,46 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="css/app.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <title>Navette Express - Passagers</title>
   
   <style>
-    .splash-screen {
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #0F1A2E;
+      color: #FFFFFF;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    
+    .splash {
       position: fixed;
       inset: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      z-index: 400;
-      overflow: hidden;
     }
     
     .splash-bg {
       position: absolute;
       inset: 0;
+      z-index: 0;
+    }
+    
+    .splash-bg img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: 0;
     }
     
     .splash-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(15, 26, 46, 0.3) 0%, rgba(15, 26, 46, 0.8) 100%);
+      background: linear-gradient(180deg, rgba(15,26,46,0.3) 0%, rgba(15,26,46,0.95) 100%);
       z-index: 1;
     }
     
@@ -53,60 +63,53 @@
       position: relative;
       z-index: 2;
       text-align: center;
-      padding: 0 32px;
+      padding: 40px;
     }
     
-    .splash-logo {
+    .logo-container {
       width: 120px;
       height: 120px;
       margin: 0 auto 24px;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 24px;
-      padding: 15px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      animation: splash-float 3s ease-in-out infinite;
+      background: rgba(255,255,255,0.1);
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      animation: pulse 2s infinite;
     }
     
-    .splash-logo img {
-      width: 100%;
-      height: 100%;
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .logo-container img {
+      width: 80px;
+      height: 80px;
       object-fit: contain;
     }
     
-    @keyframes splash-float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    
-    .splash-title {
-      font-size: 32px;
+    .logo-text {
+      font-size: 28px;
       font-weight: 700;
-      color: #FFFFFF;
       margin-bottom: 8px;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
     
-    .splash-title span {
+    .logo-text span {
       color: #C8A951;
     }
     
-    .splash-tagline {
+    .tagline {
       font-size: 16px;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 48px;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 40px;
     }
     
-    .splash-loader {
-      width: 48px;
-      height: 48px;
-      margin: 0 auto 24px;
-    }
-    
-    .splash-loader-ring {
-      width: 100%;
-      height: 100%;
-      border: 3px solid rgba(255, 255, 255, 0.2);
+    .loader {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255,255,255,0.1);
       border-top-color: #2EC4B6;
       border-radius: 50%;
       animation: spin 1s linear infinite;
@@ -116,85 +119,74 @@
       to { transform: rotate(360deg); }
     }
     
-    .splash-slogan {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #2EC4B6;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-    
-    .splash-slogan-dot {
-      width: 4px;
-      height: 4px;
-      background: #C8A951;
-      border-radius: 50%;
-    }
-    
-    .splash-credits {
+    .splash-footer {
       position: absolute;
-      bottom: 24px;
+      bottom: 40px;
       left: 0;
       right: 0;
       text-align: center;
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.6);
       z-index: 2;
     }
     
-    .splash-credits a {
-      color: rgba(255, 255, 255, 0.8);
+    .powered-by {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 4px;
+    }
+    
+    .company {
+      font-size: 14px;
+      font-weight: 600;
+      color: #C8A951;
     }
   </style>
 </head>
-<body class="no-nav">
-  <div class="splash-screen">
-    <!-- Image de fond Runway -->
-    <picture>
-      <source srcset="images/ecrans/passagers-splash.webp" type="image/webp">
-      <img src="images/ecrans/passagers-splash.jpg" alt="" class="splash-bg" loading="eager">
-    </picture>
-    
+<body>
+  <div class="splash">
+    <div class="splash-bg">
+      <picture>
+        <source srcset="images/ecrans/passagers-splash.webp" type="image/webp">
+        <img src="images/ecrans/passagers-splash.jpg" alt="Navette Express" loading="eager">
+      </picture>
+    </div>
     <div class="splash-overlay"></div>
     
     <div class="splash-content">
-      <!-- Logo -->
-      <div class="splash-logo">
-        <picture>
-          <source srcset="images/logo/logo-jaebets.webp" type="image/webp">
-          <img src="images/logo/logo-jaebets.png" alt="Logo Navette Express">
-        </picture>
+      <div class="logo-container">
+        <img src="images/logo/logo-navette-express.png" alt="Logo" onerror="this.style.display='none'">
       </div>
-      
-      <!-- Titre -->
-      <h1 class="splash-title">Navette <span>Express</span></h1>
-      <p class="splash-tagline">Votre navette en un clic</p>
-      
-      <!-- Loader -->
-      <div class="splash-loader">
-        <div class="splash-loader-ring"></div>
-      </div>
-      
-      <!-- Slogan -->
-      <div class="splash-slogan">
-        <span>Sûreté</span>
-        <span class="splash-slogan-dot"></span>
-        <span>Rapidité</span>
-        <span class="splash-slogan-dot"></span>
-        <span>Confort</span>
-      </div>
+      <h1 class="logo-text">Navette <span>Express</span></h1>
+      <p class="tagline">Transport collectif premium</p>
+      <div class="loader"></div>
     </div>
     
-    <!-- Crédits -->
-    <div class="splash-credits">
-      Développé par <a href="https://w2k-digital.com" target="_blank">W2K-Digital</a>
+    <div class="splash-footer">
+      <p class="powered-by">Powered by</p>
+      <p class="company">JAEBETS HOLDING</p>
     </div>
   </div>
   
-  <script src="js/app.js"></script>
+  <script>
+    // Redirection après 2.5 secondes
+    setTimeout(function() {
+      const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
+      
+      if (!hasSeenOnboarding) {
+        window.location.href = 'onboarding.html';
+      } else if (!isLoggedIn) {
+        window.location.href = 'connexion.html';
+      } else {
+        window.location.href = 'accueil.html';
+      }
+    }, 2500);
+    
+    // Enregistrement Service Worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function(err) {
+        console.log('SW registration failed:', err);
+      });
+    }
+  </script>
 </body>
 </html>
