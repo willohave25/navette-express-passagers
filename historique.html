@@ -4,893 +4,96 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#1B2A4A">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Navette Express">
-  <meta name="description" content="Historique de mes trajets - Navette Express Abidjan.">
-  
-  <!-- Favicon et icônes -->
-  <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
-  <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
-  
-  <!-- Manifest PWA -->
   <link rel="manifest" href="manifest.json">
-  
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css">
-  
   <title>Historique - Navette Express</title>
+  <style>
+    .hero-banner { position: relative; height: 160px; margin: 16px; border-radius: 16px; overflow: hidden; }
+    .hero-banner img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, rgba(15,26,46,0.95) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; }
+    .hero-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .hero-subtitle { font-size: 14px; color: rgba(255,255,255,0.7); }
+    .filters { display: flex; gap: 8px; padding: 0 16px; margin-bottom: 16px; overflow-x: auto; }
+    .filter-btn { flex-shrink: 0; padding: 8px 16px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.1); border: none; border-radius: 20px; cursor: pointer; font-family: inherit; }
+    .filter-btn.active { color: #0F1A2E; background: #2EC4B6; }
+    .history-section { padding: 0 16px 100px; }
+    .date-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 12px; }
+    .trip-card { display: flex; gap: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+    .trip-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(46,196,182,0.15); border-radius: 10px; }
+    .trip-icon svg { width: 22px; height: 22px; color: #2EC4B6; }
+    .trip-content { flex: 1; }
+    .trip-route { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .trip-details { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+    .trip-footer { display: flex; justify-content: space-between; align-items: center; }
+    .trip-price { font-size: 14px; font-weight: 600; color: #C8A951; }
+    .trip-status { padding: 3px 10px; font-size: 11px; font-weight: 600; border-radius: 10px; background: rgba(46,196,182,0.2); color: #2EC4B6; }
+  </style>
 </head>
 <body class="with-nav">
-  <!-- Header -->
   <header class="header">
-    <button class="header-btn" data-action="back" onclick="goBack()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="15 18 9 12 15 6"/>
-      </svg>
-    </button>
+    <button class="header-btn" onclick="history.back()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><polyline points="15 18 9 12 15 6"/></svg></button>
     <h1 class="header-title">Historique</h1>
-    <button class="header-btn" onclick="openModal('filter-modal')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="4" y1="21" x2="4" y2="14"/>
-        <line x1="4" y1="10" x2="4" y2="3"/>
-        <line x1="12" y1="21" x2="12" y2="12"/>
-        <line x1="12" y1="8" x2="12" y2="3"/>
-        <line x1="20" y1="21" x2="20" y2="16"/>
-        <line x1="20" y1="12" x2="20" y2="3"/>
-        <line x1="1" y1="14" x2="7" y2="14"/>
-        <line x1="9" y1="8" x2="15" y2="8"/>
-        <line x1="17" y1="16" x2="23" y2="16"/>
-      </svg>
-    </button>
+    <div style="width:24px;"></div>
   </header>
   
-  <!-- Contenu principal -->
   <main class="page-with-header">
-    <!-- Résumé mensuel -->
-    <div class="history-summary">
-      <div class="summary-month">
-        <button class="month-nav" onclick="changeMonth(-1)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="15 18 9 12 15 6"/>
-          </svg>
-        </button>
-        <span id="current-month">Janvier 2025</span>
-        <button class="month-nav" onclick="changeMonth(1)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="9 18 15 12 9 6"/>
-          </svg>
-        </button>
-      </div>
-      
-      <div class="summary-stats">
-        <div class="summary-stat">
-          <span class="summary-stat-value" id="summary-trips">12</span>
-          <span class="summary-stat-label">trajets</span>
-        </div>
-        <div class="summary-stat">
-          <span class="summary-stat-value" id="summary-km">156</span>
-          <span class="summary-stat-label">km</span>
-        </div>
-        <div class="summary-stat">
-          <span class="summary-stat-value" id="summary-spent">4 800</span>
-          <span class="summary-stat-label">FCFA</span>
-        </div>
+    <div class="hero-banner">
+      <picture>
+        <source srcset="images/ecrans/passagers-historique.webp" type="image/webp">
+        <img src="images/ecrans/passagers-historique.jpg" alt="Historique" loading="eager">
+      </picture>
+      <div class="hero-overlay">
+        <h2 class="hero-title">Vos trajets</h2>
+        <p class="hero-subtitle">42 trajets effectués</p>
       </div>
     </div>
     
-    <!-- Liste des trajets -->
-    <div class="history-list">
-      <!-- Groupe Aujourd'hui -->
-      <div class="history-group">
-        <h3 class="history-date">Aujourd'hui</h3>
-        
-        <div class="history-item stagger-item" onclick="openTripDetail(1)">
-          <div class="history-icon completed">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-          </div>
-          <div class="history-content">
-            <div class="history-route">
-              <span>Yopougon</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-              <span>Plateau</span>
-            </div>
-            <p class="history-time">06:30 - 07:15 • Siège 3B</p>
-          </div>
-          <div class="history-price">
-            <span>400</span>
-            <small>FCFA</small>
+    <div class="filters">
+      <button class="filter-btn active">Tous</button>
+      <button class="filter-btn">Ce mois</button>
+      <button class="filter-btn">Complétés</button>
+      <button class="filter-btn">Annulés</button>
+    </div>
+    
+    <div class="history-section">
+      <p class="date-label">Aujourd'hui</p>
+      <div class="trip-card">
+        <div class="trip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="trip-content">
+          <p class="trip-route">Yopougon → Plateau</p>
+          <p class="trip-details">06:30 • 45 min • Siège 7</p>
+          <div class="trip-footer">
+            <span class="trip-price">400 FCFA</span>
+            <span class="trip-status">Complété</span>
           </div>
         </div>
       </div>
       
-      <!-- Groupe Hier -->
-      <div class="history-group">
-        <h3 class="history-date">Hier</h3>
-        
-        <div class="history-item stagger-item" onclick="openTripDetail(2)">
-          <div class="history-icon completed">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-          </div>
-          <div class="history-content">
-            <div class="history-route">
-              <span>Plateau</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-              <span>Yopougon</span>
-            </div>
-            <p class="history-time">17:30 - 18:20 • Siège 5A</p>
-          </div>
-          <div class="history-price">
-            <span>400</span>
-            <small>FCFA</small>
-          </div>
-        </div>
-        
-        <div class="history-item stagger-item" onclick="openTripDetail(3)">
-          <div class="history-icon completed">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-          </div>
-          <div class="history-content">
-            <div class="history-route">
-              <span>Yopougon</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-              <span>Plateau</span>
-            </div>
-            <p class="history-time">06:30 - 07:18 • Siège 2C</p>
-          </div>
-          <div class="history-price">
-            <span>400</span>
-            <small>FCFA</small>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Groupe Semaine dernière -->
-      <div class="history-group">
-        <h3 class="history-date">Lundi 13 Janvier</h3>
-        
-        <div class="history-item stagger-item" onclick="openTripDetail(4)">
-          <div class="history-icon cancelled">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="15" y1="9" x2="9" y2="15"/>
-              <line x1="9" y1="9" x2="15" y2="15"/>
-            </svg>
-          </div>
-          <div class="history-content">
-            <div class="history-route">
-              <span>Yopougon</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-              <span>Plateau</span>
-            </div>
-            <p class="history-time">Annulé • Remboursé</p>
-          </div>
-          <div class="history-price refunded">
-            <span>0</span>
-            <small>FCFA</small>
-          </div>
-        </div>
-        
-        <div class="history-item stagger-item" onclick="openTripDetail(5)">
-          <div class="history-icon completed">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-          </div>
-          <div class="history-content">
-            <div class="history-route">
-              <span>Plateau</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-              <span>Yopougon</span>
-            </div>
-            <p class="history-time">17:45 - 18:35 • Siège 4D</p>
-          </div>
-          <div class="history-price">
-            <span>400</span>
-            <small>FCFA</small>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Groupe Location événement -->
-      <div class="history-group">
-        <h3 class="history-date">Samedi 11 Janvier</h3>
-        
-        <div class="history-item event stagger-item" onclick="openTripDetail(6)">
-          <div class="history-icon event">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
-            </svg>
-          </div>
-          <div class="history-content">
-            <div class="history-route">
-              <span>Location Mariage</span>
-            </div>
-            <p class="history-time">Yopougon → Grand-Bassam • Bus 30 places</p>
-          </div>
-          <div class="history-price event">
-            <span>150 000</span>
-            <small>FCFA</small>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Plus de trajets -->
-      <div class="history-group">
-        <h3 class="history-date">Vendredi 10 Janvier</h3>
-        
-        <div class="history-item stagger-item" onclick="openTripDetail(7)">
-          <div class="history-icon completed">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-          </div>
-          <div class="history-content">
-            <div class="history-route">
-              <span>Yopougon</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-                <line x1="5" y1="12" x2="19" y2="12"/>
-                <polyline points="12 5 19 12 12 19"/>
-              </svg>
-              <span>Plateau</span>
-            </div>
-            <p class="history-time">06:30 - 07:12 • Siège 1A</p>
-          </div>
-          <div class="history-price">
-            <span>400</span>
-            <small>FCFA</small>
+      <p class="date-label" style="margin-top:24px;">Hier</p>
+      <div class="trip-card">
+        <div class="trip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="trip-content">
+          <p class="trip-route">Plateau → Yopougon</p>
+          <p class="trip-details">18:00 • 50 min • Siège 3</p>
+          <div class="trip-footer">
+            <span class="trip-price">400 FCFA</span>
+            <span class="trip-status">Complété</span>
           </div>
         </div>
       </div>
     </div>
-    
-    <!-- Bouton charger plus -->
-    <div class="load-more">
-      <button class="btn btn-ghost" onclick="loadMoreTrips()">
-        Voir plus de trajets
-      </button>
-    </div>
-    
-    <!-- Espace pour bottom nav -->
-    <div style="height: 24px;"></div>
   </main>
   
-  <!-- Modal détail trajet -->
-  <div class="modal-overlay" id="trip-detail-modal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 class="modal-title">Détail du trajet</h3>
-        <button class="modal-close" onclick="closeModal('trip-detail-modal')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-      </div>
-      <div class="modal-content">
-        <div class="trip-detail-status completed">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-            <polyline points="22 4 12 14.01 9 11.01"/>
-          </svg>
-          <span>Trajet effectué</span>
-        </div>
-        
-        <div class="trip-detail-route">
-          <div class="route-point">
-            <div class="route-dot start"></div>
-            <div>
-              <p class="route-label">Départ</p>
-              <p class="route-name" id="detail-from">Yopougon Wassakara</p>
-              <p class="route-time" id="detail-start-time">06:30</p>
-            </div>
-          </div>
-          <div class="route-line-vertical"></div>
-          <div class="route-point">
-            <div class="route-dot end"></div>
-            <div>
-              <p class="route-label">Arrivée</p>
-              <p class="route-name" id="detail-to">Plateau Centre</p>
-              <p class="route-time" id="detail-end-time">07:15</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="trip-detail-info">
-          <div class="detail-row">
-            <span class="detail-label">Date</span>
-            <span class="detail-value" id="detail-date">Mardi 14 Janvier 2025</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Durée</span>
-            <span class="detail-value" id="detail-duration">45 minutes</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Siège</span>
-            <span class="detail-value" id="detail-seat">3B</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Bus</span>
-            <span class="detail-value" id="detail-bus">Hyundai County • AB 1234 CI</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Chauffeur</span>
-            <span class="detail-value" id="detail-driver">Kouassi Bernard</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Paiement</span>
-            <span class="detail-value" id="detail-payment">Orange Money</span>
-          </div>
-        </div>
-        
-        <div class="trip-detail-total">
-          <span class="total-label">Montant payé</span>
-          <span class="total-value" id="detail-total">400 FCFA</span>
-        </div>
-        
-        <div class="trip-detail-actions">
-          <button class="btn btn-secondary" onclick="downloadReceipt()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-            Télécharger reçu
-          </button>
-          <button class="btn btn-ghost" onclick="reportProblem()">
-            Signaler un problème
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Modal filtres -->
-  <div class="modal-overlay" id="filter-modal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 class="modal-title">Filtrer l'historique</h3>
-        <button class="modal-close" onclick="closeModal('filter-modal')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-      </div>
-      <div class="modal-content">
-        <div class="filter-section">
-          <h4 class="filter-title">Type</h4>
-          <div class="filter-options">
-            <label class="form-check">
-              <input type="checkbox" name="type" value="trips" class="form-check-input" checked>
-              <span class="form-check-label">Trajets réguliers</span>
-            </label>
-            <label class="form-check">
-              <input type="checkbox" name="type" value="events" class="form-check-input" checked>
-              <span class="form-check-label">Locations événements</span>
-            </label>
-          </div>
-        </div>
-        
-        <div class="filter-section">
-          <h4 class="filter-title">Statut</h4>
-          <div class="filter-options">
-            <label class="form-check">
-              <input type="checkbox" name="status" value="completed" class="form-check-input" checked>
-              <span class="form-check-label">Effectués</span>
-            </label>
-            <label class="form-check">
-              <input type="checkbox" name="status" value="cancelled" class="form-check-input">
-              <span class="form-check-label">Annulés</span>
-            </label>
-          </div>
-        </div>
-        
-        <div class="filter-section">
-          <h4 class="filter-title">Période</h4>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Du</label>
-              <input type="date" class="form-input" id="filter-from">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Au</label>
-              <input type="date" class="form-input" id="filter-to">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-ghost" onclick="resetHistoryFilters()">Réinitialiser</button>
-        <button class="btn btn-primary" onclick="applyHistoryFilters()">Appliquer</button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Bottom Navigation -->
   <nav class="bottom-nav">
-    <a href="accueil.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-        <polyline points="9 22 9 12 15 12 15 22"/>
-      </svg>
-      <span>Accueil</span>
-    </a>
-    <a href="lignes.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/>
-        <circle cx="12" cy="12" r="2"/>
-      </svg>
-      <span>Lignes</span>
-    </a>
-    <a href="suivi.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polygon points="3 11 22 2 13 21 11 13 3 11"/>
-      </svg>
-      <span>Suivi</span>
-    </a>
-    <a href="notifications.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-        <path d="M13.73 21a2 2 0 01-3.46 0"/>
-      </svg>
-      <span>Notifs</span>
-    </a>
-    <a href="profil.html" class="nav-item active">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-        <circle cx="12" cy="7" r="4"/>
-      </svg>
-      <span>Profil</span>
-    </a>
+    <a href="accueil.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Accueil</span></a>
+    <a href="lignes.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg><span>Lignes</span></a>
+    <a href="suivi.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg><span>Suivi</span></a>
+    <a href="notifications.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Notifs</span></a>
+    <a href="profil.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profil</span></a>
   </nav>
-  
-  <!-- Styles spécifiques -->
-  <style>
-    .history-summary {
-      background: var(--card-bg);
-      margin: var(--spacing-md);
-      border-radius: var(--radius-lg);
-      padding: var(--spacing-lg);
-    }
-    
-    .summary-month {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--spacing-lg);
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    .summary-month span {
-      font-size: 18px;
-      font-weight: var(--font-semibold);
-      min-width: 150px;
-      text-align: center;
-    }
-    
-    .month-nav {
-      width: 36px;
-      height: 36px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-secondary);
-    }
-    
-    .month-nav svg {
-      width: 20px;
-      height: 20px;
-    }
-    
-    .summary-stats {
-      display: flex;
-      justify-content: space-around;
-    }
-    
-    .summary-stat {
-      text-align: center;
-    }
-    
-    .summary-stat-value {
-      display: block;
-      font-size: 24px;
-      font-weight: var(--font-bold);
-      color: var(--secondary-turquoise);
-    }
-    
-    .summary-stat-label {
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-    
-    .history-list {
-      padding: 0 var(--spacing-md);
-    }
-    
-    .history-group {
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    .history-date {
-      font-size: 13px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      padding: var(--spacing-sm) 0;
-    }
-    
-    .history-item {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-md);
-      padding: var(--spacing-md);
-      background: var(--card-bg);
-      border-radius: var(--radius-md);
-      margin-bottom: var(--spacing-sm);
-      cursor: pointer;
-    }
-    
-    .history-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    
-    .history-icon svg {
-      width: 22px;
-      height: 22px;
-    }
-    
-    .history-icon.completed {
-      background: rgba(46, 204, 113, 0.15);
-      color: var(--success);
-    }
-    
-    .history-icon.cancelled {
-      background: rgba(231, 76, 60, 0.15);
-      color: var(--error);
-    }
-    
-    .history-icon.event {
-      background: rgba(200, 169, 81, 0.15);
-      color: var(--premium-gold);
-    }
-    
-    .history-content {
-      flex: 1;
-      min-width: 0;
-    }
-    
-    .history-route {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-xs);
-      font-weight: var(--font-semibold);
-      font-size: 15px;
-      margin-bottom: 4px;
-    }
-    
-    .history-route svg {
-      color: var(--text-muted);
-      flex-shrink: 0;
-    }
-    
-    .history-time {
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-    
-    .history-price {
-      text-align: right;
-      flex-shrink: 0;
-    }
-    
-    .history-price span {
-      display: block;
-      font-size: 16px;
-      font-weight: var(--font-bold);
-      color: var(--text-primary);
-    }
-    
-    .history-price small {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-    
-    .history-price.refunded span {
-      color: var(--text-muted);
-      text-decoration: line-through;
-    }
-    
-    .history-price.event span {
-      color: var(--premium-gold);
-    }
-    
-    .load-more {
-      padding: var(--spacing-md);
-      text-align: center;
-    }
-    
-    /* Modal détail */
-    .trip-detail-status {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--spacing-sm);
-      padding: var(--spacing-md);
-      border-radius: var(--radius-md);
-      margin-bottom: var(--spacing-lg);
-      font-weight: var(--font-semibold);
-    }
-    
-    .trip-detail-status.completed {
-      background: rgba(46, 204, 113, 0.15);
-      color: var(--success);
-    }
-    
-    .trip-detail-route {
-      position: relative;
-      padding-left: 32px;
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    .route-point {
-      display: flex;
-      gap: var(--spacing-md);
-      padding: var(--spacing-sm) 0;
-    }
-    
-    .route-dot {
-      position: absolute;
-      left: 0;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-    }
-    
-    .route-dot.start {
-      background: var(--secondary-turquoise);
-      top: 12px;
-    }
-    
-    .route-dot.end {
-      background: var(--premium-gold);
-      bottom: 12px;
-    }
-    
-    .route-line-vertical {
-      position: absolute;
-      left: 7px;
-      top: 32px;
-      bottom: 32px;
-      width: 2px;
-      background: linear-gradient(180deg, var(--secondary-turquoise), var(--premium-gold));
-    }
-    
-    .route-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
-    
-    .route-name {
-      font-weight: var(--font-semibold);
-      margin: 2px 0;
-    }
-    
-    .route-time {
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-    
-    .trip-detail-info {
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: var(--radius-md);
-      padding: var(--spacing-md);
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    .detail-row {
-      display: flex;
-      justify-content: space-between;
-      padding: var(--spacing-sm) 0;
-      font-size: 14px;
-    }
-    
-    .detail-label {
-      color: var(--text-secondary);
-    }
-    
-    .detail-value {
-      font-weight: var(--font-medium);
-    }
-    
-    .trip-detail-total {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: var(--spacing-md);
-      background: rgba(46, 196, 182, 0.1);
-      border-radius: var(--radius-md);
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    .total-label {
-      font-weight: var(--font-semibold);
-    }
-    
-    .total-value {
-      font-size: 24px;
-      font-weight: var(--font-bold);
-      color: var(--secondary-turquoise);
-    }
-    
-    .trip-detail-actions {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-sm);
-    }
-    
-    .trip-detail-actions .btn svg {
-      margin-right: var(--spacing-sm);
-    }
-    
-    .filter-section {
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    .filter-title {
-      font-size: 14px;
-      font-weight: var(--font-semibold);
-      margin-bottom: var(--spacing-md);
-    }
-    
-    .filter-options {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-sm);
-    }
-    
-    .form-row {
-      display: flex;
-      gap: var(--spacing-md);
-    }
-    
-    .form-row .form-group {
-      flex: 1;
-    }
-    
-    .modal-footer {
-      display: flex;
-      gap: var(--spacing-md);
-      padding: var(--spacing-md);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    
-    .modal-footer .btn {
-      flex: 1;
-    }
-  </style>
-  
-  <!-- Scripts -->
   <script src="js/app.js"></script>
-  <script>
-    /* Variables */
-    let currentMonthIndex = 0;
-    const months = [
-      'Janvier 2025', 'Décembre 2024', 'Novembre 2024', 
-      'Octobre 2024', 'Septembre 2024'
-    ];
-    
-    /* Navigation mois */
-    function changeMonth(direction) {
-      currentMonthIndex += direction;
-      if (currentMonthIndex < 0) currentMonthIndex = 0;
-      if (currentMonthIndex >= months.length) currentMonthIndex = months.length - 1;
-      
-      document.getElementById('current-month').textContent = months[currentMonthIndex];
-      
-      /* Simuler mise à jour des stats */
-      updateMonthStats();
-    }
-    
-    function updateMonthStats() {
-      /* Données simulées */
-      const stats = [
-        { trips: 12, km: 156, spent: '4 800' },
-        { trips: 18, km: 234, spent: '7 200' },
-        { trips: 15, km: 195, spent: '6 000' },
-        { trips: 20, km: 260, spent: '8 000' },
-        { trips: 14, km: 182, spent: '5 600' }
-      ];
-      
-      const data = stats[currentMonthIndex];
-      document.getElementById('summary-trips').textContent = data.trips;
-      document.getElementById('summary-km').textContent = data.km;
-      document.getElementById('summary-spent').textContent = data.spent;
-    }
-    
-    /* Ouvrir détail trajet */
-    function openTripDetail(tripId) {
-      openModal('trip-detail-modal');
-    }
-    
-    /* Télécharger reçu */
-    function downloadReceipt() {
-      showToast('Téléchargement du reçu...', 'info');
-      closeModal('trip-detail-modal');
-    }
-    
-    /* Signaler problème */
-    function reportProblem() {
-      window.open('https://wa.me/2250703285359?text=Bonjour, je souhaite signaler un problème concernant mon trajet.', '_blank');
-      closeModal('trip-detail-modal');
-    }
-    
-    /* Charger plus */
-    function loadMoreTrips() {
-      showLoading('Chargement...');
-      
-      setTimeout(() => {
-        hideLoading();
-        showToast('Tous les trajets sont affichés', 'info');
-      }, 1000);
-    }
-    
-    /* Filtres */
-    function resetHistoryFilters() {
-      document.querySelectorAll('#filter-modal input[type="checkbox"]').forEach(cb => {
-        cb.checked = true;
-      });
-      document.getElementById('filter-from').value = '';
-      document.getElementById('filter-to').value = '';
-    }
-    
-    function applyHistoryFilters() {
-      closeModal('filter-modal');
-      showToast('Filtres appliqués', 'success');
-    }
-  </script>
 </body>
 </html>
