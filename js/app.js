@@ -497,12 +497,11 @@ function initOnboarding() {
   let currentSlide = 0;
   const slides = document.querySelectorAll('.onboarding-slide');
   const dots = document.querySelectorAll('.onboarding-dot');
+  const nextBtn = document.querySelector('.onboarding-next');
+  const skipBtn = document.querySelector('.onboarding-skip');
   const totalSlides = slides.length;
   
   if (!slides.length) return;
-  
-  /* Afficher le premier slide */
-  updateSlide(0);
   
   /* Swipe detection */
   let startX = 0;
@@ -520,11 +519,9 @@ function initOnboarding() {
       
       if (Math.abs(diff) > 50) {
         if (diff > 0 && currentSlide < totalSlides - 1) {
-          /* Swipe left - next */
           currentSlide++;
           updateSlide(currentSlide);
         } else if (diff < 0 && currentSlide > 0) {
-          /* Swipe right - prev */
           currentSlide--;
           updateSlide(currentSlide);
         }
@@ -532,8 +529,10 @@ function initOnboarding() {
     }, { passive: true });
   }
   
+  /* Afficher le premier slide */
+  updateSlide(0);
+  
   /* Bouton suivant/CTA */
-  const nextBtn = document.querySelector('.onboarding-next');
   if (nextBtn) {
     nextBtn.addEventListener('click', () => {
       if (currentSlide < totalSlides - 1) {
@@ -546,7 +545,6 @@ function initOnboarding() {
   }
   
   /* Bouton skip */
-  const skipBtn = document.querySelector('.onboarding-skip');
   if (skipBtn) {
     skipBtn.addEventListener('click', finishOnboarding);
   }
