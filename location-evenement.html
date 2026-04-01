@@ -4,1170 +4,129 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#1B2A4A">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Navette Express">
-  <meta name="description" content="Location de bus pour événements - Mariage, funérailles, sortie scolaire - Navette Express Abidjan.">
-  
-  <!-- Favicon et icônes -->
-  <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
-  <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
-  
-  <!-- Manifest PWA -->
   <link rel="manifest" href="manifest.json">
-  
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/app.css">
-  
-  <title>Location bus événement - Navette Express</title>
+  <title>Location Événement - Navette Express</title>
+  <style>
+    .hero-banner { position: relative; height: 220px; margin: 16px; border-radius: 16px; overflow: hidden; }
+    .hero-banner img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, rgba(15,26,46,0.95) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; }
+    .hero-title { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+    .hero-subtitle { font-size: 14px; color: rgba(255,255,255,0.7); }
+    .event-section { padding: 0 16px; margin-bottom: 24px; }
+    .section-title { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .event-types { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .event-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .event-card:hover { background: rgba(255,255,255,0.08); }
+    .event-card.selected { border-color: #2EC4B6; background: rgba(46,196,182,0.1); }
+    .event-icon { width: 50px; height: 50px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; background: rgba(200,169,81,0.15); border-radius: 12px; }
+    .event-icon svg { width: 26px; height: 26px; color: #C8A951; }
+    .event-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .event-price { font-size: 13px; color: #2EC4B6; }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.7); margin-bottom: 8px; }
+    .form-input { width: 100%; padding: 14px 16px; font-size: 15px; font-family: inherit; color: #FFFFFF; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; }
+    .form-input:focus { outline: none; border-color: #2EC4B6; }
+    .submit-btn { width: 100%; padding: 16px; margin-top: 24px; font-size: 16px; font-weight: 600; color: #0F1A2E; background: #C8A951; border: none; border-radius: 12px; cursor: pointer; font-family: inherit; }
+    .features { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .feature { display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: rgba(46,196,182,0.1); border-radius: 20px; font-size: 13px; color: #2EC4B6; }
+    .feature svg { width: 16px; height: 16px; }
+  </style>
 </head>
 <body class="no-nav">
-  <!-- Header -->
   <header class="header">
-    <button class="header-btn" data-action="back" onclick="handleBack()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="15 18 9 12 15 6"/>
-      </svg>
-    </button>
-    <h1 class="header-title">Location événement</h1>
-    <div style="width: 44px;"></div>
+    <button class="header-btn" onclick="history.back()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <h1 class="header-title">Location Événement</h1>
+    <div style="width:24px;"></div>
   </header>
   
-  <!-- Progress bar -->
-  <div class="wizard-progress">
-    <div class="wizard-progress-bar" id="progress-bar" style="width: 16.66%;"></div>
-  </div>
-  <div class="wizard-steps-indicator">
-    <span id="current-step">1</span> / 6
-  </div>
-  
-  <!-- Contenu principal -->
-  <main class="page-with-header wizard-content">
-    <!-- Étape 1 : Type d'événement -->
-    <div class="wizard-step active" data-step="1">
-      <div class="step-header">
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-            <line x1="16" y1="2" x2="16" y2="6"/>
-            <line x1="8" y1="2" x2="8" y2="6"/>
-            <line x1="3" y1="10" x2="21" y2="10"/>
-          </svg>
-        </div>
-        <h2 class="step-title">Quel type d'événement ?</h2>
-        <p class="step-subtitle">Sélectionnez le type d'événement pour lequel vous avez besoin d'un bus.</p>
+  <main class="page-with-header" style="padding-bottom:40px;">
+    <div class="hero-banner">
+      <picture>
+        <source srcset="images/ecrans/passagers-evenement.webp" type="image/webp">
+        <img src="images/ecrans/passagers-evenement.jpg" alt="Location Événement" loading="eager">
+      </picture>
+      <div class="hero-overlay">
+        <h2 class="hero-title">Privatisez un bus</h2>
+        <p class="hero-subtitle">Mariages, séminaires, excursions...</p>
       </div>
-      
+    </div>
+    
+    <div class="event-section">
+      <h3 class="section-title">Type d'événement</h3>
       <div class="event-types">
-        <button class="event-type-btn" data-type="mariage" onclick="selectEventType(this)">
-          <span class="event-emoji">💒</span>
-          <span class="event-name">Mariage</span>
-        </button>
-        <button class="event-type-btn" data-type="funerailles" onclick="selectEventType(this)">
-          <span class="event-emoji">🕯️</span>
-          <span class="event-name">Funérailles</span>
-        </button>
-        <button class="event-type-btn" data-type="sortie-scolaire" onclick="selectEventType(this)">
-          <span class="event-emoji">🎒</span>
-          <span class="event-name">Sortie scolaire</span>
-        </button>
-        <button class="event-type-btn" data-type="meeting" onclick="selectEventType(this)">
-          <span class="event-emoji">🎤</span>
-          <span class="event-name">Meeting / Conférence</span>
-        </button>
-        <button class="event-type-btn" data-type="excursion" onclick="selectEventType(this)">
-          <span class="event-emoji">🏖️</span>
-          <span class="event-name">Excursion</span>
-        </button>
-        <button class="event-type-btn" data-type="autre" onclick="selectEventType(this)">
-          <span class="event-emoji">📅</span>
-          <span class="event-name">Autre événement</span>
-        </button>
-      </div>
-    </div>
-    
-    <!-- Étape 2 : Date et heure -->
-    <div class="wizard-step" data-step="2">
-      <div class="step-header">
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
-          </svg>
+        <div class="event-card selected">
+          <div class="event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+          <p class="event-name">Mariage</p>
+          <p class="event-price">À partir de 150 000 FCFA</p>
         </div>
-        <h2 class="step-title">Date et heure</h2>
-        <p class="step-subtitle">Quand avez-vous besoin du bus ?</p>
-      </div>
-      
-      <div class="form-group">
-        <label for="event-date" class="form-label">Date de l'événement</label>
-        <input type="date" id="event-date" class="form-input" required>
-      </div>
-      
-      <div class="form-row">
-        <div class="form-group">
-          <label for="event-start" class="form-label">Heure de départ</label>
-          <input type="time" id="event-start" class="form-input" value="08:00" required>
+        <div class="event-card">
+          <div class="event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+          <p class="event-name">Séminaire</p>
+          <p class="event-price">À partir de 100 000 FCFA</p>
         </div>
-        <div class="form-group">
-          <label for="event-end" class="form-label">Heure de retour</label>
-          <input type="time" id="event-end" class="form-input" value="18:00" required>
+        <div class="event-card">
+          <div class="event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
+          <p class="event-name">Excursion</p>
+          <p class="event-price">À partir de 80 000 FCFA</p>
         </div>
-      </div>
-      
-      <div class="duration-info">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="12" y1="8" x2="12" y2="12"/>
-          <line x1="12" y1="16" x2="12.01" y2="16"/>
-        </svg>
-        <span>Durée estimée : <strong id="duration-display">10 heures</strong></span>
-      </div>
-    </div>
-    
-    <!-- Étape 3 : Itinéraire -->
-    <div class="wizard-step" data-step="3">
-      <div class="step-header">
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-            <circle cx="12" cy="10" r="3"/>
-          </svg>
-        </div>
-        <h2 class="step-title">Itinéraire</h2>
-        <p class="step-subtitle">Définissez le point de départ et la destination.</p>
-      </div>
-      
-      <div class="form-group">
-        <label for="pickup-location" class="form-label">Point de ramassage</label>
-        <input type="text" id="pickup-location" class="form-input" placeholder="Ex : Yopougon Maroc, devant l'église" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="destination" class="form-label">Destination</label>
-        <input type="text" id="destination" class="form-input" placeholder="Ex : Grand-Bassam, Hôtel Étoile" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="distance-estimate" class="form-label">Distance estimée (aller simple)</label>
-        <select id="distance-estimate" class="form-input form-select" required>
-          <option value="" disabled selected>Sélectionner la distance</option>
-          <option value="20">Moins de 20 km</option>
-          <option value="50">20 - 50 km</option>
-          <option value="100">50 - 100 km</option>
-          <option value="150">100 - 150 km</option>
-          <option value="200">Plus de 150 km</option>
-        </select>
-      </div>
-      
-      <div class="route-note">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="12" y1="8" x2="12" y2="12"/>
-          <line x1="12" y1="16" x2="12.01" y2="16"/>
-        </svg>
-        <span>Le tarif inclut l'aller et le retour. Des arrêts intermédiaires peuvent être ajoutés.</span>
-      </div>
-    </div>
-    
-    <!-- Étape 4 : Type de bus -->
-    <div class="wizard-step" data-step="4">
-      <div class="step-header">
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="14" rx="2"/>
-            <path d="M3 10h18"/>
-            <circle cx="7" cy="18" r="2"/>
-            <circle cx="17" cy="18" r="2"/>
-          </svg>
-        </div>
-        <h2 class="step-title">Type de bus</h2>
-        <p class="step-subtitle">Choisissez le bus adapté à vos besoins.</p>
-      </div>
-      
-      <div class="bus-options">
-        <!-- Bus Standard 30 places -->
-        <div class="bus-option" data-bus="standard-30" onclick="selectBusType(this)">
-          <div class="bus-option-header">
-            <span class="bus-capacity">30 places</span>
-            <span class="bus-price">500 FCFA/km</span>
-          </div>
-          <h4 class="bus-name">Bus Standard</h4>
-          <p class="bus-desc">Hyundai County • Climatisé</p>
-          <div class="bus-features">
-            <span class="bus-feature">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-              Climatisation
-            </span>
-            <span class="bus-feature">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-              Sièges inclinables
-            </span>
-          </div>
-        </div>
-        
-        <!-- Bus Standard 60 places -->
-        <div class="bus-option" data-bus="standard-60" onclick="selectBusType(this)">
-          <div class="bus-option-header">
-            <span class="bus-capacity">60 places</span>
-            <span class="bus-price">700 FCFA/km</span>
-          </div>
-          <h4 class="bus-name">Grand Bus</h4>
-          <p class="bus-desc">Mercedes-Benz • Climatisé</p>
-          <div class="bus-features">
-            <span class="bus-feature">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-              Climatisation
-            </span>
-            <span class="bus-feature">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-              Grand coffre
-            </span>
-          </div>
-        </div>
-        
-        <!-- Bus VIP -->
-        <div class="bus-option premium" data-bus="vip" onclick="selectBusType(this)">
-          <div class="bus-badge">Premium</div>
-          <div class="bus-option-header">
-            <span class="bus-capacity">25 places</span>
-            <span class="bus-price gold">1 000 FCFA/km</span>
-          </div>
-          <h4 class="bus-name">Bus VIP</h4>
-          <p class="bus-desc">Toyota Coaster Luxury • Full options</p>
-          <div class="bus-features">
-            <span class="bus-feature">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-              Climatisation
-            </span>
-            <span class="bus-feature">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-              Sièges cuir
-            </span>
-            <span class="bus-feature">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-              WiFi + USB
-            </span>
-            <span class="bus-feature">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-              TV écran
-            </span>
-          </div>
+        <div class="event-card">
+          <div class="event-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <p class="event-name">Autre</p>
+          <p class="event-price">Sur devis</p>
         </div>
       </div>
     </div>
     
-    <!-- Étape 5 : Informations contact -->
-    <div class="wizard-step" data-step="5">
-      <div class="step-header">
-        <div class="step-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-            <circle cx="12" cy="7" r="4"/>
-          </svg>
-        </div>
-        <h2 class="step-title">Vos coordonnées</h2>
-        <p class="step-subtitle">Nous vous contacterons pour confirmer votre demande.</p>
-      </div>
-      
+    <div class="event-section">
+      <h3 class="section-title">Détails de la réservation</h3>
       <div class="form-group">
-        <label for="contact-name" class="form-label">Nom complet</label>
-        <input type="text" id="contact-name" class="form-input" placeholder="Jean-Marc Kouadio" required>
+        <label class="form-label">Date de l'événement</label>
+        <input type="date" class="form-input">
       </div>
-      
       <div class="form-group">
-        <label for="contact-phone" class="form-label">Numéro de téléphone</label>
-        <div class="phone-input-wrapper">
-          <span class="phone-prefix">+225</span>
-          <input type="tel" id="contact-phone" class="form-input" placeholder="07 XX XX XX XX" required>
-        </div>
+        <label class="form-label">Nombre de passagers</label>
+        <input type="number" class="form-input" placeholder="Ex: 30" min="10" max="50">
       </div>
-      
       <div class="form-group">
-        <label for="contact-email" class="form-label">Email (optionnel)</label>
-        <input type="email" id="contact-email" class="form-input" placeholder="jean.kouadio@email.com">
+        <label class="form-label">Point de départ</label>
+        <input type="text" class="form-input" placeholder="Adresse de départ">
       </div>
-      
       <div class="form-group">
-        <label for="contact-notes" class="form-label">Notes supplémentaires (optionnel)</label>
-        <textarea id="contact-notes" class="form-input form-textarea" placeholder="Ex : Besoin de plusieurs arrêts, présence de personnes âgées, bagages volumineux..." rows="3"></textarea>
+        <label class="form-label">Destination</label>
+        <input type="text" class="form-input" placeholder="Adresse d'arrivée">
       </div>
     </div>
     
-    <!-- Étape 6 : Récapitulatif -->
-    <div class="wizard-step" data-step="6">
-      <div class="step-header">
-        <div class="step-icon success">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-            <polyline points="22 4 12 14.01 9 11.01"/>
-          </svg>
-        </div>
-        <h2 class="step-title">Récapitulatif</h2>
-        <p class="step-subtitle">Vérifiez les informations avant de soumettre.</p>
+    <div class="event-section">
+      <h3 class="section-title">Inclus dans le service</h3>
+      <div class="features">
+        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Chauffeur professionnel</div>
+        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Bus climatisé</div>
+        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Eau à bord</div>
+        <div class="feature"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Wifi gratuit</div>
       </div>
       
-      <div class="recap-card">
-        <div class="recap-section">
-          <h4 class="recap-section-title">Événement</h4>
-          <div class="recap-row">
-            <span class="recap-label">Type</span>
-            <span class="recap-value" id="recap-event-type">Mariage</span>
-          </div>
-          <div class="recap-row">
-            <span class="recap-label">Date</span>
-            <span class="recap-value" id="recap-date">Samedi 20 Janvier 2025</span>
-          </div>
-          <div class="recap-row">
-            <span class="recap-label">Horaires</span>
-            <span class="recap-value" id="recap-hours">08:00 - 18:00</span>
-          </div>
-        </div>
-        
-        <div class="recap-section">
-          <h4 class="recap-section-title">Itinéraire</h4>
-          <div class="recap-row">
-            <span class="recap-label">Départ</span>
-            <span class="recap-value" id="recap-pickup">Yopougon Maroc</span>
-          </div>
-          <div class="recap-row">
-            <span class="recap-label">Destination</span>
-            <span class="recap-value" id="recap-destination">Grand-Bassam</span>
-          </div>
-          <div class="recap-row">
-            <span class="recap-label">Distance estimée</span>
-            <span class="recap-value" id="recap-distance">~100 km A/R</span>
-          </div>
-        </div>
-        
-        <div class="recap-section">
-          <h4 class="recap-section-title">Bus</h4>
-          <div class="recap-row">
-            <span class="recap-label">Type</span>
-            <span class="recap-value" id="recap-bus">Bus Standard 30 places</span>
-          </div>
-          <div class="recap-row">
-            <span class="recap-label">Tarif</span>
-            <span class="recap-value" id="recap-tarif">500 FCFA/km</span>
-          </div>
-        </div>
-        
-        <div class="recap-total">
-          <div class="recap-total-row">
-            <span class="recap-total-label">Estimation totale</span>
-            <span class="recap-total-amount" id="recap-total">100 000 FCFA</span>
-          </div>
-          <p class="recap-note">* Prix indicatif, sous réserve de confirmation par notre équipe.</p>
-        </div>
-      </div>
-      
-      <div class="terms-check">
-        <label class="form-check">
-          <input type="checkbox" id="accept-terms" class="form-check-input" required>
-          <span class="form-check-label">J'accepte les <a href="#" onclick="openModal('terms-modal'); return false;">conditions générales</a> et la politique de confidentialité.</span>
-        </label>
-      </div>
+      <button class="submit-btn" onclick="submitRequest()">Demander un devis</button>
     </div>
   </main>
   
-  <!-- Footer avec boutons navigation -->
-  <div class="wizard-footer">
-    <button class="btn btn-ghost btn-prev" id="btn-prev" onclick="prevStep()" style="visibility: hidden;">
-      Précédent
-    </button>
-    <button class="btn btn-primary btn-next" id="btn-next" onclick="nextStep()" disabled>
-      Suivant
-    </button>
-  </div>
-  
-  <!-- Modal CGU -->
-  <div class="modal-overlay" id="terms-modal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 class="modal-title">Conditions générales</h3>
-        <button class="modal-close" onclick="closeModal('terms-modal')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-      </div>
-      <div class="modal-content modal-scroll">
-        <h4>1. Réservation</h4>
-        <p>Toute demande de location est soumise à disponibilité. Un acompte de 30% est requis pour confirmer la réservation.</p>
-        
-        <h4>2. Annulation</h4>
-        <p>Annulation gratuite jusqu'à 48h avant l'événement. Au-delà, l'acompte n'est pas remboursable.</p>
-        
-        <h4>3. Tarification</h4>
-        <p>Le tarif minimum est de 100 000 FCFA. Les dépassements d'horaire sont facturés à 10 000 FCFA/heure supplémentaire.</p>
-        
-        <h4>4. Responsabilité</h4>
-        <p>Le client est responsable de tout dommage causé au véhicule par les passagers.</p>
-        
-        <h4>5. Contact</h4>
-        <p>Pour toute question : +225 07 03 28 53 59 ou infos@jaebets-holding.com</p>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Styles spécifiques -->
-  <style>
-    .wizard-progress {
-      height: 4px;
-      background: rgba(255, 255, 255, 0.1);
-    }
-    
-    .wizard-progress-bar {
-      height: 100%;
-      background: var(--secondary-turquoise);
-      transition: width var(--transition-normal);
-    }
-    
-    .wizard-steps-indicator {
-      text-align: center;
-      padding: var(--spacing-sm);
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-    
-    .wizard-content {
-      padding-bottom: 100px;
-    }
-    
-    .wizard-step {
-      display: none;
-      padding: var(--spacing-md);
-      animation: fadeIn 0.3s ease;
-    }
-    
-    .wizard-step.active {
-      display: block;
-    }
-    
-    .step-header {
-      text-align: center;
-      margin-bottom: var(--spacing-xl);
-    }
-    
-    .step-icon {
-      width: 64px;
-      height: 64px;
-      background: rgba(46, 196, 182, 0.15);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto var(--spacing-md);
-      color: var(--secondary-turquoise);
-    }
-    
-    .step-icon svg {
-      width: 32px;
-      height: 32px;
-    }
-    
-    .step-icon.success {
-      background: rgba(46, 204, 113, 0.15);
-      color: var(--success);
-    }
-    
-    .step-title {
-      font-size: 22px;
-      font-weight: var(--font-bold);
-      margin-bottom: var(--spacing-sm);
-    }
-    
-    .step-subtitle {
-      font-size: 14px;
-      color: var(--text-secondary);
-    }
-    
-    /* Types d'événements */
-    .event-types {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--spacing-md);
-    }
-    
-    .event-type-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--spacing-sm);
-      padding: var(--spacing-lg);
-      background: var(--card-bg);
-      border: 2px solid transparent;
-      border-radius: var(--radius-lg);
-      transition: all var(--transition-fast);
-    }
-    
-    .event-type-btn:hover {
-      background: var(--card-bg-hover);
-    }
-    
-    .event-type-btn.selected {
-      border-color: var(--secondary-turquoise);
-      background: rgba(46, 196, 182, 0.1);
-    }
-    
-    .event-emoji {
-      font-size: 32px;
-    }
-    
-    .event-name {
-      font-size: 13px;
-      font-weight: var(--font-medium);
-      text-align: center;
-    }
-    
-    /* Formulaires */
-    .form-row {
-      display: flex;
-      gap: var(--spacing-md);
-    }
-    
-    .form-row .form-group {
-      flex: 1;
-    }
-    
-    .duration-info, .route-note {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      padding: var(--spacing-md);
-      background: rgba(46, 196, 182, 0.1);
-      border-radius: var(--radius-md);
-      font-size: 14px;
-      color: var(--text-secondary);
-      margin-top: var(--spacing-md);
-    }
-    
-    .duration-info svg, .route-note svg {
-      color: var(--secondary-turquoise);
-      flex-shrink: 0;
-    }
-    
-    .phone-input-wrapper {
-      display: flex;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-    }
-    
-    .phone-input-wrapper:focus-within {
-      border-color: var(--secondary-turquoise);
-    }
-    
-    .phone-prefix {
-      padding: 14px 12px;
-      color: var(--text-secondary);
-      font-weight: var(--font-medium);
-      border-right: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.03);
-    }
-    
-    .phone-input-wrapper .form-input {
-      border: none;
-      background: transparent;
-    }
-    
-    .phone-input-wrapper .form-input:focus {
-      box-shadow: none;
-    }
-    
-    /* Options bus */
-    .bus-options {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-md);
-    }
-    
-    .bus-option {
-      position: relative;
-      padding: var(--spacing-lg);
-      background: var(--card-bg);
-      border: 2px solid transparent;
-      border-radius: var(--radius-lg);
-      cursor: pointer;
-      transition: all var(--transition-fast);
-    }
-    
-    .bus-option:hover {
-      background: var(--card-bg-hover);
-    }
-    
-    .bus-option.selected {
-      border-color: var(--secondary-turquoise);
-      background: rgba(46, 196, 182, 0.1);
-    }
-    
-    .bus-option.premium {
-      border-color: rgba(200, 169, 81, 0.3);
-    }
-    
-    .bus-option.premium.selected {
-      border-color: var(--premium-gold);
-      background: rgba(200, 169, 81, 0.1);
-    }
-    
-    .bus-badge {
-      position: absolute;
-      top: -10px;
-      right: 16px;
-      background: var(--premium-gold);
-      color: var(--dark-bg);
-      font-size: 10px;
-      font-weight: var(--font-bold);
-      padding: 4px 12px;
-      border-radius: var(--radius-full);
-      text-transform: uppercase;
-    }
-    
-    .bus-option-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: var(--spacing-sm);
-    }
-    
-    .bus-capacity {
-      font-size: 12px;
-      padding: 4px 10px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: var(--radius-sm);
-    }
-    
-    .bus-price {
-      font-weight: var(--font-bold);
-      color: var(--secondary-turquoise);
-    }
-    
-    .bus-price.gold {
-      color: var(--premium-gold);
-    }
-    
-    .bus-name {
-      font-size: 18px;
-      font-weight: var(--font-semibold);
-      margin-bottom: 4px;
-    }
-    
-    .bus-desc {
-      font-size: 13px;
-      color: var(--text-secondary);
-      margin-bottom: var(--spacing-md);
-    }
-    
-    .bus-features {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--spacing-sm);
-    }
-    
-    .bus-feature {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 12px;
-      color: var(--success);
-    }
-    
-    /* Récapitulatif */
-    .recap-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-    
-    .recap-section {
-      padding: var(--spacing-md);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .recap-section:last-of-type {
-      border-bottom: none;
-    }
-    
-    .recap-section-title {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: var(--spacing-sm);
-    }
-    
-    .recap-row {
-      display: flex;
-      justify-content: space-between;
-      padding: var(--spacing-xs) 0;
-      font-size: 14px;
-    }
-    
-    .recap-label {
-      color: var(--text-secondary);
-    }
-    
-    .recap-value {
-      font-weight: var(--font-medium);
-    }
-    
-    .recap-total {
-      padding: var(--spacing-lg);
-      background: rgba(200, 169, 81, 0.1);
-    }
-    
-    .recap-total-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .recap-total-label {
-      font-size: 16px;
-      font-weight: var(--font-semibold);
-    }
-    
-    .recap-total-amount {
-      font-size: 28px;
-      font-weight: var(--font-bold);
-      color: var(--premium-gold);
-    }
-    
-    .recap-note {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: var(--spacing-sm);
-    }
-    
-    .terms-check {
-      margin-top: var(--spacing-lg);
-    }
-    
-    .terms-check a {
-      color: var(--secondary-turquoise);
-      text-decoration: underline;
-    }
-    
-    /* Footer wizard */
-    .wizard-footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      display: flex;
-      gap: var(--spacing-md);
-      padding: var(--spacing-md);
-      padding-bottom: calc(var(--spacing-md) + var(--safe-area-bottom));
-      background: var(--primary-blue);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .wizard-footer .btn {
-      flex: 1;
-    }
-    
-    .modal-scroll {
-      max-height: 60vh;
-      overflow-y: auto;
-    }
-    
-    .modal-scroll h4 {
-      margin-top: var(--spacing-md);
-      margin-bottom: var(--spacing-sm);
-      font-size: 14px;
-    }
-    
-    .modal-scroll p {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-  </style>
-  
-  <!-- Scripts -->
   <script src="js/app.js"></script>
   <script>
-    /* Variables */
-    let currentStep = 1;
-    const totalSteps = 6;
-    
-    const formData = {
-      eventType: null,
-      date: null,
-      startTime: '08:00',
-      endTime: '18:00',
-      pickup: null,
-      destination: null,
-      distance: null,
-      busType: null,
-      busPrice: 500,
-      name: null,
-      phone: null,
-      email: null,
-      notes: null
-    };
-    
-    /* Navigation */
-    function handleBack() {
-      if (currentStep > 1) {
-        prevStep();
-      } else {
-        goBack();
-      }
-    }
-    
-    function nextStep() {
-      if (!validateStep(currentStep)) return;
-      
-      if (currentStep < totalSteps) {
-        currentStep++;
-        updateWizard();
-      } else {
-        submitForm();
-      }
-    }
-    
-    function prevStep() {
-      if (currentStep > 1) {
-        currentStep--;
-        updateWizard();
-      }
-    }
-    
-    function updateWizard() {
-      /* Masquer toutes les étapes */
-      document.querySelectorAll('.wizard-step').forEach(step => {
-        step.classList.remove('active');
+    document.querySelectorAll('.event-card').forEach(card => {
+      card.addEventListener('click', function() {
+        document.querySelectorAll('.event-card').forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
       });
-      
-      /* Afficher l'étape actuelle */
-      document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
-      
-      /* Mettre à jour la barre de progression */
-      const progress = (currentStep / totalSteps) * 100;
-      document.getElementById('progress-bar').style.width = progress + '%';
-      document.getElementById('current-step').textContent = currentStep;
-      
-      /* Boutons */
-      document.getElementById('btn-prev').style.visibility = currentStep > 1 ? 'visible' : 'hidden';
-      
-      const btnNext = document.getElementById('btn-next');
-      if (currentStep === totalSteps) {
-        btnNext.textContent = 'Envoyer la demande';
-        btnNext.classList.add('btn-success');
-      } else {
-        btnNext.textContent = 'Suivant';
-        btnNext.classList.remove('btn-success');
-      }
-      
-      /* Préparer l'étape */
-      prepareStep(currentStep);
+    });
+    
+    function submitRequest() {
+      alert('Demande envoyée ! Nous vous contacterons sous 24h.');
+      navigateTo('accueil.html');
     }
-    
-    function prepareStep(step) {
-      if (step === 2) {
-        /* Date minimum = demain */
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        document.getElementById('event-date').min = tomorrow.toISOString().split('T')[0];
-      } else if (step === 5) {
-        /* Préremplir avec données localStorage */
-        const userName = localStorage.getItem('userName');
-        const userPhone = localStorage.getItem('userPhone');
-        if (userName) document.getElementById('contact-name').value = userName;
-        if (userPhone) document.getElementById('contact-phone').value = userPhone;
-      } else if (step === 6) {
-        /* Préparer le récapitulatif */
-        updateRecap();
-      }
-      
-      validateStep(step);
-    }
-    
-    function validateStep(step) {
-      let isValid = false;
-      
-      switch (step) {
-        case 1:
-          isValid = formData.eventType !== null;
-          break;
-        case 2:
-          const date = document.getElementById('event-date').value;
-          const start = document.getElementById('event-start').value;
-          const end = document.getElementById('event-end').value;
-          isValid = date && start && end;
-          if (isValid) {
-            formData.date = date;
-            formData.startTime = start;
-            formData.endTime = end;
-            updateDuration();
-          }
-          break;
-        case 3:
-          const pickup = document.getElementById('pickup-location').value;
-          const dest = document.getElementById('destination').value;
-          const dist = document.getElementById('distance-estimate').value;
-          isValid = pickup && dest && dist;
-          if (isValid) {
-            formData.pickup = pickup;
-            formData.destination = dest;
-            formData.distance = parseInt(dist);
-          }
-          break;
-        case 4:
-          isValid = formData.busType !== null;
-          break;
-        case 5:
-          const name = document.getElementById('contact-name').value;
-          const phone = document.getElementById('contact-phone').value;
-          isValid = name && phone && phone.length >= 8;
-          if (isValid) {
-            formData.name = name;
-            formData.phone = phone;
-            formData.email = document.getElementById('contact-email').value;
-            formData.notes = document.getElementById('contact-notes').value;
-          }
-          break;
-        case 6:
-          isValid = document.getElementById('accept-terms').checked;
-          break;
-      }
-      
-      document.getElementById('btn-next').disabled = !isValid;
-      return isValid;
-    }
-    
-    /* Sélections */
-    function selectEventType(btn) {
-      document.querySelectorAll('.event-type-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      formData.eventType = btn.dataset.type;
-      validateStep(1);
-    }
-    
-    function selectBusType(option) {
-      document.querySelectorAll('.bus-option').forEach(o => o.classList.remove('selected'));
-      option.classList.add('selected');
-      formData.busType = option.dataset.bus;
-      
-      /* Définir le prix selon le type */
-      const prices = {
-        'standard-30': 500,
-        'standard-60': 700,
-        'vip': 1000
-      };
-      formData.busPrice = prices[formData.busType];
-      validateStep(4);
-    }
-    
-    /* Calculs */
-    function updateDuration() {
-      const start = document.getElementById('event-start').value;
-      const end = document.getElementById('event-end').value;
-      
-      if (start && end) {
-        const startParts = start.split(':');
-        const endParts = end.split(':');
-        const startMinutes = parseInt(startParts[0]) * 60 + parseInt(startParts[1]);
-        const endMinutes = parseInt(endParts[0]) * 60 + parseInt(endParts[1]);
-        let duration = endMinutes - startMinutes;
-        if (duration < 0) duration += 24 * 60;
-        
-        const hours = Math.floor(duration / 60);
-        document.getElementById('duration-display').textContent = hours + ' heures';
-      }
-    }
-    
-    function calculateTotal() {
-      if (!formData.distance || !formData.busPrice) return 100000;
-      
-      /* Distance aller-retour */
-      const distanceAR = formData.distance * 2;
-      let total = distanceAR * formData.busPrice;
-      
-      /* Minimum 100 000 FCFA */
-      return Math.max(total, 100000);
-    }
-    
-    function updateRecap() {
-      const eventTypes = {
-        'mariage': 'Mariage',
-        'funerailles': 'Funérailles',
-        'sortie-scolaire': 'Sortie scolaire',
-        'meeting': 'Meeting / Conférence',
-        'excursion': 'Excursion',
-        'autre': 'Autre événement'
-      };
-      
-      const busTypes = {
-        'standard-30': 'Bus Standard 30 places',
-        'standard-60': 'Grand Bus 60 places',
-        'vip': 'Bus VIP 25 places'
-      };
-      
-      const date = new Date(formData.date);
-      const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-      
-      document.getElementById('recap-event-type').textContent = eventTypes[formData.eventType] || '-';
-      document.getElementById('recap-date').textContent = date.toLocaleDateString('fr-FR', options);
-      document.getElementById('recap-hours').textContent = `${formData.startTime} - ${formData.endTime}`;
-      document.getElementById('recap-pickup').textContent = formData.pickup || '-';
-      document.getElementById('recap-destination').textContent = formData.destination || '-';
-      document.getElementById('recap-distance').textContent = `~${formData.distance * 2} km A/R`;
-      document.getElementById('recap-bus').textContent = busTypes[formData.busType] || '-';
-      document.getElementById('recap-tarif').textContent = `${formData.busPrice} FCFA/km`;
-      
-      const total = calculateTotal();
-      document.getElementById('recap-total').textContent = new Intl.NumberFormat('fr-FR').format(total) + ' FCFA';
-    }
-    
-    /* Soumission */
-    function submitForm() {
-      showLoading('Envoi de votre demande...');
-      
-      /* Simuler l'envoi */
-      setTimeout(() => {
-        hideLoading();
-        
-        /* Afficher confirmation */
-        const main = document.querySelector('.wizard-content');
-        main.innerHTML = `
-          <div class="success-screen">
-            <div class="success-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-              </svg>
-            </div>
-            <h2>Demande envoyée !</h2>
-            <p>Nous avons bien reçu votre demande de location. Notre équipe vous contactera dans les <strong>24 heures</strong> pour confirmer les détails.</p>
-            <div class="success-info">
-              <p><strong>Prochaines étapes :</strong></p>
-              <ol>
-                <li>Confirmation par téléphone ou WhatsApp</li>
-                <li>Versement de l'acompte (30%)</li>
-                <li>Réservation confirmée</li>
-              </ol>
-            </div>
-            <button class="btn btn-primary btn-block" onclick="navigateTo('accueil.html')">
-              Retour à l'accueil
-            </button>
-            <a href="https://wa.me/2250703285359" class="btn btn-secondary btn-block" target="_blank">
-              <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18" style="margin-right: 8px;">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-              </svg>
-              Contacter sur WhatsApp
-            </a>
-          </div>
-        `;
-        
-        /* Cacher le footer */
-        document.querySelector('.wizard-footer').style.display = 'none';
-        document.querySelector('.wizard-progress').style.display = 'none';
-        document.querySelector('.wizard-steps-indicator').style.display = 'none';
-        
-      }, 2000);
-    }
-    
-    /* Event listeners */
-    document.getElementById('event-date').addEventListener('change', () => validateStep(2));
-    document.getElementById('event-start').addEventListener('change', () => validateStep(2));
-    document.getElementById('event-end').addEventListener('change', () => validateStep(2));
-    
-    document.getElementById('pickup-location').addEventListener('input', () => validateStep(3));
-    document.getElementById('destination').addEventListener('input', () => validateStep(3));
-    document.getElementById('distance-estimate').addEventListener('change', () => validateStep(3));
-    
-    document.getElementById('contact-name').addEventListener('input', () => validateStep(5));
-    document.getElementById('contact-phone').addEventListener('input', () => validateStep(5));
-    
-    document.getElementById('accept-terms').addEventListener('change', () => validateStep(6));
   </script>
-  
-  <style>
-    .success-screen {
-      text-align: center;
-      padding: var(--spacing-xl);
-    }
-    
-    .success-icon {
-      width: 80px;
-      height: 80px;
-      background: rgba(46, 204, 113, 0.15);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto var(--spacing-lg);
-      color: var(--success);
-    }
-    
-    .success-icon svg {
-      width: 40px;
-      height: 40px;
-    }
-    
-    .success-screen h2 {
-      font-size: 24px;
-      margin-bottom: var(--spacing-md);
-    }
-    
-    .success-screen > p {
-      color: var(--text-secondary);
-      margin-bottom: var(--spacing-lg);
-    }
-    
-    .success-info {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      padding: var(--spacing-lg);
-      text-align: left;
-      margin-bottom: var(--spacing-xl);
-    }
-    
-    .success-info ol {
-      margin: var(--spacing-md) 0 0 var(--spacing-lg);
-      color: var(--text-secondary);
-    }
-    
-    .success-info li {
-      padding: var(--spacing-xs) 0;
-    }
-    
-    .success-screen .btn {
-      margin-bottom: var(--spacing-sm);
-    }
-  </style>
 </body>
 </html>
