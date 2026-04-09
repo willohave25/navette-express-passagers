@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#1B2A4A">
+  <link rel="manifest" href="manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+  <title>Historique - Navette Express</title>
+  <style>
+    .hero-banner { position: relative; height: 160px; margin: 16px; border-radius: 16px; overflow: hidden; }
+    .hero-banner img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 0%, rgba(15,26,46,0.95) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 20px; }
+    .hero-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .hero-subtitle { font-size: 14px; color: rgba(255,255,255,0.7); }
+    .filters { display: flex; gap: 8px; padding: 0 16px; margin-bottom: 16px; overflow-x: auto; }
+    .filter-btn { flex-shrink: 0; padding: 8px 16px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.1); border: none; border-radius: 20px; cursor: pointer; font-family: inherit; }
+    .filter-btn.active { color: #0F1A2E; background: #2EC4B6; }
+    .history-section { padding: 0 16px 100px; }
+    .date-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 12px; }
+    .trip-card { display: flex; gap: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 14px; margin-bottom: 10px; }
+    .trip-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: rgba(46,196,182,0.15); border-radius: 10px; }
+    .trip-icon svg { width: 22px; height: 22px; color: #2EC4B6; }
+    .trip-content { flex: 1; }
+    .trip-route { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .trip-details { font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+    .trip-footer { display: flex; justify-content: space-between; align-items: center; }
+    .trip-price { font-size: 14px; font-weight: 600; color: #C8A951; }
+    .trip-status { padding: 3px 10px; font-size: 11px; font-weight: 600; border-radius: 10px; background: rgba(46,196,182,0.2); color: #2EC4B6; }
+  </style>
+</head>
+<body class="with-nav">
+  <header class="header">
+    <button class="header-btn" onclick="history.back()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <h1 class="header-title">Historique</h1>
+    <div style="width:24px;"></div>
+  </header>
+  
+  <main class="page-with-header">
+    <div class="hero-banner">
+      <picture>
+        <source srcset="images/ecrans/passagers-historique.webp" type="image/webp">
+        <img src="images/ecrans/passagers-historique.jpg" alt="Historique" loading="eager">
+      </picture>
+      <div class="hero-overlay">
+        <h2 class="hero-title">Vos trajets</h2>
+        <p class="hero-subtitle">42 trajets effectués</p>
+      </div>
+    </div>
+    
+    <div class="filters">
+      <button class="filter-btn active">Tous</button>
+      <button class="filter-btn">Ce mois</button>
+      <button class="filter-btn">Complétés</button>
+      <button class="filter-btn">Annulés</button>
+    </div>
+    
+    <div class="history-section">
+      <p class="date-label">Aujourd'hui</p>
+      <div class="trip-card">
+        <div class="trip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="trip-content">
+          <p class="trip-route">Yopougon → Plateau</p>
+          <p class="trip-details">06:30 • 45 min • Siège 7</p>
+          <div class="trip-footer">
+            <span class="trip-price">400 FCFA</span>
+            <span class="trip-status">Complété</span>
+          </div>
+        </div>
+      </div>
+      
+      <p class="date-label" style="margin-top:24px;">Hier</p>
+      <div class="trip-card">
+        <div class="trip-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="trip-content">
+          <p class="trip-route">Plateau → Yopougon</p>
+          <p class="trip-details">18:00 • 50 min • Siège 3</p>
+          <div class="trip-footer">
+            <span class="trip-price">400 FCFA</span>
+            <span class="trip-status">Complété</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <nav class="bottom-nav">
+    <a href="accueil.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Accueil</span></a>
+    <a href="lignes.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg><span>Lignes</span></a>
+    <a href="suivi.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg><span>Suivi</span></a>
+    <a href="notifications.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Notifs</span></a>
+    <a href="profil.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profil</span></a>
+  </nav>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const ICONE_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+
+    function formaterDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+    }
+
+    function formaterStatut(statut) {
+      const map = { confirme: 'Confirmé', annule: 'Annulé', termine: 'Complété' };
+      return map[statut] || statut;
+    }
+
+    function construireCartes(trajets) {
+      if (!trajets.length) {
+        return '<p style="text-align:center;color:rgba(255,255,255,0.5);padding:40px 0;">Aucun trajet effectué.</p>';
+      }
+
+      /* Regrouper par date */
+      const groupes = {};
+      trajets.forEach(t => {
+        const label = formaterDate(t.date_trajet);
+        if (!groupes[label]) groupes[label] = [];
+        groupes[label].push(t);
+      });
+
+      let html = '';
+      for (const [date, items] of Object.entries(groupes)) {
+        html += `<p class="date-label">${date}</p>`;
+        items.forEach(t => {
+          const ligne = t.ligne || {};
+          const route = ligne.depart && ligne.destination ? `${ligne.depart} → ${ligne.destination}` : (ligne.nom || 'Trajet');
+          const heure = t.heure_depart ? t.heure_depart.substring(0, 5) : '--:--';
+          const siege = t.siege ? `• Siège ${t.siege}` : '';
+          const montant = t.montant ? t.montant.toLocaleString('fr-FR') + ' FCFA' : '—';
+          const statut = formaterStatut(t.statut);
+          html += `
+            <div class="trip-card">
+              <div class="trip-icon">${ICONE_SVG}</div>
+              <div class="trip-content">
+                <p class="trip-route">${route}</p>
+                <p class="trip-details">${heure} ${siege}</p>
+                <div class="trip-footer">
+                  <span class="trip-price">${montant}</span>
+                  <span class="trip-status">${statut}</span>
+                </div>
+              </div>
+            </div>`;
+        });
+      }
+      return html;
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      const container = document.querySelector('.history-section');
+      container.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.5);padding:40px 0;">Chargement...</p>';
+
+      try {
+        const trajets = await getHistorique();
+        document.querySelector('.hero-subtitle').textContent = `${trajets.length} trajet${trajets.length !== 1 ? 's' : ''} effectué${trajets.length !== 1 ? 's' : ''}`;
+        container.innerHTML = construireCartes(trajets);
+      } catch (err) {
+        container.innerHTML = '<p style="text-align:center;color:#E74C3C;padding:40px 0;">Erreur lors du chargement.</p>';
+      }
+    });
+  </script>
+</body>
+</html>
