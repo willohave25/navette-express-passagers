@@ -324,32 +324,48 @@
     <p class="cancellation-note">Annulation gratuite jusqu'à 2h avant le départ</p>
   </div>
   
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="js/app.js"></script>
   <script>
     let selectedSeat = null;
-    
+
+    /* Récupérer les paramètres de l'URL (ligne_id, date, montant) */
+    const params = new URLSearchParams(window.location.search);
+    const ligneId  = params.get('ligne_id') || null;
+    const dateTrajet = params.get('date') || new Date().toISOString().split('T')[0];
+    const montantBase = parseInt(params.get('montant') || '0', 10);
+
     function selectSeat(element, seatNumber) {
-      // Désélectionner l'ancien
-      const previousSelected = document.querySelector('.seat.selected');
-      if (previousSelected) {
-        previousSelected.classList.remove('selected');
-        previousSelected.classList.add('available');
+      const previous = document.querySelector('.seat.selected');
+      if (previous) {
+        previous.classList.remove('selected');
+        previous.classList.add('available');
       }
-      
-      // Sélectionner le nouveau
       element.classList.remove('available');
       element.classList.add('selected');
       selectedSeat = seatNumber;
-      
-      // Activer le bouton
+
       const btn = document.getElementById('confirm-btn');
       btn.disabled = false;
       btn.textContent = 'Confirmer le siège ' + seatNumber;
     }
-    
-    function confirmBooking() {
-      if (selectedSeat) {
-        navigateTo('paiement.html?seat=' + selectedSeat);
+
+    async function confirmBooking() {
+      if (!selectedSeat) return;
+
+      const btn = document.getElementById('confirm-btn');
+      btn.disabled = true;
+      btn.textContent = 'Enregistrement...';
+
+      try {
+        const reservation = await creerReservation(ligneId, dateTrajet, String(selectedSeat), montantBase);
+        /* Passer l'ID réservation à la page paiement */
+        navigateTo('paiement.html?seat=' + selectedSeat + '&reservation_id=' + reservation.id + '&montant=' + montantBase);
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Confirmer le siège ' + selectedSeat;
+        alert('Erreur lors de la réservation. Veuillez réessayer.');
       }
     }
   </script>

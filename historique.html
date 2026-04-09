@@ -94,6 +94,74 @@
     <a href="notifications.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Notifs</span></a>
     <a href="profil.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profil</span></a>
   </nav>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="js/app.js"></script>
+  <script>
+    const ICONE_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+
+    function formaterDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+    }
+
+    function formaterStatut(statut) {
+      const map = { confirme: 'Confirmé', annule: 'Annulé', termine: 'Complété' };
+      return map[statut] || statut;
+    }
+
+    function construireCartes(trajets) {
+      if (!trajets.length) {
+        return '<p style="text-align:center;color:rgba(255,255,255,0.5);padding:40px 0;">Aucun trajet effectué.</p>';
+      }
+
+      /* Regrouper par date */
+      const groupes = {};
+      trajets.forEach(t => {
+        const label = formaterDate(t.date_trajet);
+        if (!groupes[label]) groupes[label] = [];
+        groupes[label].push(t);
+      });
+
+      let html = '';
+      for (const [date, items] of Object.entries(groupes)) {
+        html += `<p class="date-label">${date}</p>`;
+        items.forEach(t => {
+          const ligne = t.ligne || {};
+          const route = ligne.depart && ligne.destination ? `${ligne.depart} → ${ligne.destination}` : (ligne.nom || 'Trajet');
+          const heure = t.heure_depart ? t.heure_depart.substring(0, 5) : '--:--';
+          const siege = t.siege ? `• Siège ${t.siege}` : '';
+          const montant = t.montant ? t.montant.toLocaleString('fr-FR') + ' FCFA' : '—';
+          const statut = formaterStatut(t.statut);
+          html += `
+            <div class="trip-card">
+              <div class="trip-icon">${ICONE_SVG}</div>
+              <div class="trip-content">
+                <p class="trip-route">${route}</p>
+                <p class="trip-details">${heure} ${siege}</p>
+                <div class="trip-footer">
+                  <span class="trip-price">${montant}</span>
+                  <span class="trip-status">${statut}</span>
+                </div>
+              </div>
+            </div>`;
+        });
+      }
+      return html;
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      const container = document.querySelector('.history-section');
+      container.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.5);padding:40px 0;">Chargement...</p>';
+
+      try {
+        const trajets = await getHistorique();
+        document.querySelector('.hero-subtitle').textContent = `${trajets.length} trajet${trajets.length !== 1 ? 's' : ''} effectué${trajets.length !== 1 ? 's' : ''}`;
+        container.innerHTML = construireCartes(trajets);
+      } catch (err) {
+        container.innerHTML = '<p style="text-align:center;color:#E74C3C;padding:40px 0;">Erreur lors du chargement.</p>';
+      }
+    });
+  </script>
 </body>
 </html>

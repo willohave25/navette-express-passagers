@@ -435,25 +435,47 @@
     </a>
   </nav>
   
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="js/app.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const name = localStorage.getItem('userName') || 'Utilisateur';
-      const email = localStorage.getItem('userEmail') || 'user@email.com';
-      const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
-      
-      document.getElementById('userName').textContent = name;
-      document.getElementById('userEmail').textContent = email;
-      document.getElementById('avatar').textContent = initials || 'U';
+    document.addEventListener('DOMContentLoaded', async function() {
+      /* Chargement profil depuis Supabase */
+      try {
+        const user = await getProfil();
+        if (user) {
+          const initiales = user.full_name
+            ? user.full_name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2)
+            : 'U';
+          document.getElementById('userName').textContent = user.full_name || 'Utilisateur';
+          document.getElementById('userEmail').textContent = user.phone || user.email || '';
+          document.getElementById('avatar').textContent = initiales;
+        }
+      } catch (err) {
+        /* Fallback localStorage si pas connecté */
+        const name = localStorage.getItem('userName') || 'Utilisateur';
+        const phone = localStorage.getItem('userPhone') || '';
+        const initiales = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+        document.getElementById('userName').textContent = name;
+        document.getElementById('userEmail').textContent = phone;
+        document.getElementById('avatar').textContent = initiales || 'U';
+      }
+
+      /* Compteur notifications */
+      try {
+        const count = await compterNotificationsNonLues();
+        if (count > 0) {
+          document.querySelector('.nav-badge').textContent = count;
+        }
+      } catch (_) {}
     });
-    
+
     function logout() {
       if (confirm('Voulez-vous vraiment vous déconnecter ?')) {
-        localStorage.clear();
-        window.location.href = 'connexion.html';
+        deconnecterUtilisateur();
       }
     }
-    
+
     function deleteAccount() {
       if (confirm('Cette action est irréversible. Supprimer votre compte ?')) {
         localStorage.clear();

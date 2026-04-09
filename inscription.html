@@ -4,211 +4,304 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#1B2A4A">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Navette Express">
-  <meta name="description" content="Créez votre compte Navette Express pour réserver vos trajets à Abidjan.">
+  <meta name="description" content="Créer un compte Navette Express - Inscrivez-vous pour réserver vos trajets à Abidjan.">
   
-  <!-- Favicon et icônes -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
   <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
-  
-  <!-- Manifest PWA -->
   <link rel="manifest" href="manifest.json">
   
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Styles -->
   <link rel="stylesheet" href="css/app.css">
   
   <title>Inscription - Navette Express</title>
+  
+  <style>
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      padding-top: calc(40px + env(safe-area-inset-top, 0px));
+      padding-bottom: 40px;
+    }
+    
+    .auth-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .logo-container {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 12px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .logo-container img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
+    
+    .auth-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    
+    .auth-subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+    }
+    
+    .auth-form {
+      flex: 1;
+    }
+    
+    .form-group {
+      margin-bottom: 16px;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 6px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-family: inherit;
+      color: #FFFFFF;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      transition: all 0.2s;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #2EC4B6;
+      background: rgba(46,196,182,0.05);
+    }
+    
+    .form-input::placeholder {
+      color: rgba(255,255,255,0.3);
+    }
+    
+    .form-select {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-family: inherit;
+      color: #FFFFFF;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 20px;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    
+    .form-hint {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 4px;
+    }
+    
+    .horaires-group {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .horaire-option {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .horaire-option.selected {
+      color: #0F1A2E;
+      background: #2EC4B6;
+      border-color: #2EC4B6;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #0F1A2E;
+      background: #C8A951;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .terms-text {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+    
+    .terms-text a {
+      color: #2EC4B6;
+      text-decoration: none;
+    }
+    
+    .auth-footer {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 24px;
+    }
+    
+    .auth-footer p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+    }
+    
+    .auth-footer a {
+      color: #2EC4B6;
+      text-decoration: none;
+      font-weight: 500;
+    }
+  </style>
 </head>
 <body class="no-nav">
-  <div class="auth-page">
+  <div class="auth-container">
     <!-- Header -->
     <div class="auth-header">
-      <picture class="auth-logo">
-        <source srcset="images/logo/logo-jaebets.webp" type="image/webp">
-        <img src="images/logo/logo-jaebets.png" alt="Logo Navette Express" width="80" height="80">
-      </picture>
+      <div class="logo-container">
+        <picture>
+          <source srcset="images/logo/logo-jaebets.webp" type="image/webp">
+          <img src="images/logo/logo-jaebets.png" alt="Logo" loading="eager">
+        </picture>
+      </div>
       <h1 class="auth-title">Créer votre compte Navette Express</h1>
-      <p class="auth-subtitle">Rejoignez des milliers de passagers à Abidjan</p>
+      <p class="auth-subtitle">Rejoignez-nous pour simplifier vos trajets</p>
     </div>
     
     <!-- Formulaire -->
-    <div class="auth-form">
-      <form id="inscription-form" novalidate>
-        <!-- Nom complet -->
+    <form class="auth-form" onsubmit="handleRegister(event)">
+      <div class="form-group">
+        <label class="form-label">Nom complet</label>
+        <input type="text" class="form-input" id="fullName" placeholder="Ex : Jean-Marc Kouadio" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Téléphone</label>
+        <input type="tel" class="form-input" id="phone" placeholder="Ex : 07 03 28 53 59" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" id="email" placeholder="Ex : jean@email.com" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Mot de passe</label>
+        <input type="password" class="form-input" id="password" placeholder="8 caractères minimum" minlength="8" required>
+        <p class="form-hint">8 caractères minimum</p>
+      </div>
+      
+      <div class="form-row">
         <div class="form-group">
-          <label for="fullname" class="form-label">Nom complet</label>
-          <input 
-            type="text" 
-            id="fullname" 
-            name="fullname" 
-            class="form-input" 
-            placeholder="Ex : Kouadio Jean-Marc"
-            required
-            autocomplete="name"
-          >
-        </div>
-        
-        <!-- Téléphone -->
-        <div class="form-group">
-          <label for="phone" class="form-label">Téléphone</label>
-          <input 
-            type="tel" 
-            id="phone" 
-            name="phone" 
-            class="form-input" 
-            placeholder="Ex : 07 03 28 53 59"
-            required
-            autocomplete="tel"
-          >
-          <p class="form-hint">Numéro utilisé pour les notifications et paiements</p>
-        </div>
-        
-        <!-- Email -->
-        <div class="form-group">
-          <label for="email" class="form-label">Email</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            class="form-input" 
-            placeholder="Ex : jean.kouadio@email.com"
-            required
-            autocomplete="email"
-          >
-        </div>
-        
-        <!-- Mot de passe -->
-        <div class="form-group">
-          <label for="password" class="form-label">Mot de passe</label>
-          <div class="password-input-wrapper">
-            <input 
-              type="password" 
-              id="password" 
-              name="password" 
-              class="form-input" 
-              placeholder="8 caractères minimum"
-              required
-              minlength="8"
-              autocomplete="new-password"
-            >
-            <button type="button" class="password-toggle" onclick="togglePassword('password')">
-              <!-- Icône œil -->
-              <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-              <svg class="eye-closed hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/>
-                <line x1="1" y1="1" x2="23" y2="23"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        <!-- Quartier domicile -->
-        <div class="form-group">
-          <label for="quartier" class="form-label">Quartier domicile</label>
-          <select id="quartier" name="quartier" class="form-input form-select" required>
-            <option value="" disabled selected>Sélectionnez votre quartier</option>
+          <label class="form-label">Quartier domicile</label>
+          <select class="form-select" id="quartier" required>
+            <option value="">Sélectionner</option>
             <option value="yopougon">Yopougon</option>
             <option value="abobo">Abobo</option>
             <option value="cocody">Cocody</option>
             <option value="adjame">Adjamé</option>
             <option value="marcory">Marcory</option>
-            <option value="koumassi">Koumassi</option>
             <option value="treichville">Treichville</option>
+            <option value="koumassi">Koumassi</option>
             <option value="port-bouet">Port-Bouët</option>
-            <option value="anyama">Anyama</option>
             <option value="bingerville">Bingerville</option>
-            <option value="songon">Songon</option>
-            <option value="plateau">Plateau</option>
-            <option value="attiecoube">Attécoubé</option>
-            <option value="autre">Autre</option>
+            <option value="anyama">Anyama</option>
           </select>
         </div>
         
-        <!-- Lieu de travail -->
         <div class="form-group">
-          <label for="workplace" class="form-label">Lieu de travail</label>
-          <select id="workplace" name="workplace" class="form-input form-select" required>
-            <option value="" disabled selected>Sélectionnez votre destination</option>
+          <label class="form-label">Lieu de travail</label>
+          <select class="form-select" id="travail" required>
+            <option value="">Sélectionner</option>
             <option value="plateau">Plateau</option>
             <option value="marcory">Marcory</option>
             <option value="cocody">Cocody</option>
+            <option value="zone4">Zone 4</option>
             <option value="treichville">Treichville</option>
-            <option value="zone-industrielle">Zone Industrielle</option>
-            <option value="vridi">Vridi</option>
-            <option value="riviera">Riviera</option>
-            <option value="deux-plateaux">Deux Plateaux</option>
-            <option value="angre">Angré</option>
+            <option value="yopougon">Yopougon</option>
             <option value="autre">Autre</option>
           </select>
         </div>
-        
-        <!-- Horaires préférés -->
-        <div class="form-group">
-          <label class="form-label">Horaires de trajet</label>
-          <div class="horaires-grid">
-            <label class="form-check horaire-option">
-              <input type="checkbox" name="horaires" value="matin" class="form-check-input" checked>
-              <span class="horaire-card">
-                <span class="horaire-icon">
-                  <!-- Icône soleil levant -->
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
-                    <path d="M17 18a5 5 0 00-10 0"/>
-                    <line x1="12" y1="2" x2="12" y2="9"/>
-                    <line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/>
-                    <line x1="1" y1="18" x2="3" y2="18"/>
-                    <line x1="21" y1="18" x2="23" y2="18"/>
-                    <line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/>
-                  </svg>
-                </span>
-                <span class="horaire-label">Matin</span>
-                <span class="horaire-time">06h - 09h</span>
-              </span>
-            </label>
-            <label class="form-check horaire-option">
-              <input type="checkbox" name="horaires" value="soir" class="form-check-input" checked>
-              <span class="horaire-card">
-                <span class="horaire-icon">
-                  <!-- Icône soleil couchant -->
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
-                    <path d="M17 18a5 5 0 00-10 0"/>
-                    <line x1="12" y1="9" x2="12" y2="2"/>
-                    <line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/>
-                    <line x1="1" y1="18" x2="3" y2="18"/>
-                    <line x1="21" y1="18" x2="23" y2="18"/>
-                    <line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/>
-                  </svg>
-                </span>
-                <span class="horaire-label">Après-midi</span>
-                <span class="horaire-time">16h - 19h</span>
-              </span>
-            </label>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Horaires préférés</label>
+        <div class="horaires-group">
+          <div class="horaire-option selected" onclick="selectHoraire(this, 'matin')">
+            <span>Matin</span><br>
+            <small style="opacity:0.7">06h–09h</small>
+          </div>
+          <div class="horaire-option" onclick="selectHoraire(this, 'aprem')">
+            <span>Après-midi</span><br>
+            <small style="opacity:0.7">16h–19h</small>
+          </div>
+          <div class="horaire-option" onclick="selectHoraire(this, 'both')">
+            <span>Les deux</span><br>
+            <small style="opacity:0.7">Aller-retour</small>
           </div>
         </div>
-        
-        <!-- Bouton inscription -->
-        <button type="submit" class="btn btn-primary btn-block btn-lg">
-          Créer mon compte
-        </button>
-      </form>
+        <input type="hidden" id="horaires" value="matin">
+      </div>
       
-      <!-- Conditions -->
-      <p class="auth-terms">
-        En créant un compte, vous acceptez les 
-        <a href="cgv.html">Conditions Générales d'Utilisation</a> 
-        et la 
-        <a href="confidentialite.html">Politique de Confidentialité</a>.
+      <button type="submit" class="submit-btn" id="submitBtn">Créer mon compte</button>
+      
+      <p class="terms-text">
+        En créant un compte, vous acceptez les <a href="#">Conditions Générales d'Utilisation</a> et la <a href="#">Politique de Confidentialité</a>.
       </p>
-    </div>
+    </form>
     
     <!-- Footer -->
     <div class="auth-footer">
@@ -216,104 +309,57 @@
     </div>
   </div>
   
-  <!-- Styles spécifiques -->
-  <style>
-    .password-input-wrapper {
-      position: relative;
-    }
-    
-    .password-input-wrapper .form-input {
-      padding-right: 48px;
-    }
-    
-    .password-toggle {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      padding: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .password-toggle .hidden {
-      display: none;
-    }
-    
-    .horaires-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--spacing-md);
-    }
-    
-    .horaire-option {
-      cursor: pointer;
-    }
-    
-    .horaire-option .form-check-input {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-    }
-    
-    .horaire-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: var(--spacing-md);
-      background: var(--card-bg);
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--radius-md);
-      transition: all var(--transition-fast);
-    }
-    
-    .horaire-option .form-check-input:checked + .horaire-card {
-      border-color: var(--secondary-turquoise);
-      background: rgba(46, 196, 182, 0.1);
-    }
-    
-    .horaire-icon {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--premium-gold);
-      margin-bottom: var(--spacing-sm);
-    }
-    
-    .horaire-label {
-      font-weight: var(--font-semibold);
-      font-size: 14px;
-      margin-bottom: 2px;
-    }
-    
-    .horaire-time {
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-  </style>
-  
-  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="js/app.js"></script>
   <script>
-    /* Toggle visibilité mot de passe */
-    function togglePassword(inputId) {
-      const input = document.getElementById(inputId);
-      const wrapper = input.closest('.password-input-wrapper');
-      const eyeOpen = wrapper.querySelector('.eye-open');
-      const eyeClosed = wrapper.querySelector('.eye-closed');
-      
-      if (input.type === 'password') {
-        input.type = 'text';
-        eyeOpen.classList.add('hidden');
-        eyeClosed.classList.remove('hidden');
-      } else {
-        input.type = 'password';
-        eyeOpen.classList.remove('hidden');
-        eyeClosed.classList.add('hidden');
+    function selectHoraire(element, value) {
+      document.querySelectorAll('.horaire-option').forEach(el => el.classList.remove('selected'));
+      element.classList.add('selected');
+      document.getElementById('horaires').value = value;
+    }
+
+    /* Afficher un message d'erreur sous le formulaire */
+    function afficherErreur(msg) {
+      let el = document.getElementById('erreurMsg');
+      if (!el) {
+        el = document.createElement('p');
+        el.id = 'erreurMsg';
+        el.style.cssText = 'color:#E74C3C;font-size:14px;text-align:center;margin-top:12px;';
+        document.getElementById('submitBtn').after(el);
+      }
+      el.textContent = msg;
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = 'Création en cours...';
+      btn.disabled = true;
+
+      const data = {
+        full_name:   document.getElementById('fullName').value.trim(),
+        phone:       document.getElementById('phone').value.trim(),
+        email:       document.getElementById('email').value.trim(),
+        password:    document.getElementById('password').value,
+        quartier:    document.getElementById('quartier').value,
+        lieu_travail: document.getElementById('travail').value,
+        horaires:    document.getElementById('horaires').value
+      };
+
+      try {
+        await inscrireUtilisateur(data);
+        localStorage.setItem('hasSeenOnboarding', 'true');
+        window.location.href = 'lignes-suggerees.html';
+      } catch (err) {
+        btn.textContent = 'Créer mon compte';
+        btn.disabled = false;
+        if (err.message && err.message.includes('duplicate')) {
+          afficherErreur('Ce numéro ou cet email est déjà utilisé.');
+        } else {
+          afficherErreur('Erreur lors de la création du compte. Réessayez.');
+        }
       }
     }
   </script>

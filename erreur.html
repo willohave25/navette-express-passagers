@@ -4,216 +4,215 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#1B2A4A">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Navette Express">
-  <meta name="description" content="Page non trouvée - Navette Express Abidjan.">
+  <meta name="description" content="Page erreur Navette Express">
   
-  <!-- Favicon et icônes -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
   <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
-  
-  <!-- Manifest PWA -->
   <link rel="manifest" href="manifest.json">
   
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Styles -->
   <link rel="stylesheet" href="css/app.css">
   
-  <title>Page non trouvée - Navette Express</title>
-</head>
-<body class="no-nav">
-  <!-- Contenu principal -->
-  <main class="error-page">
-    <!-- Illustration SVG -->
-    <div class="error-illustration">
-      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Cercle de fond -->
-        <circle cx="100" cy="100" r="90" fill="rgba(46, 196, 182, 0.05)" stroke="rgba(46, 196, 182, 0.2)" stroke-width="2"/>
-        
-        <!-- Route en pointillés -->
-        <path d="M30 140 Q60 100 100 100 T170 60" stroke="rgba(46, 196, 182, 0.3)" stroke-width="4" stroke-dasharray="8 6" fill="none"/>
-        
-        <!-- Bus perdu -->
-        <g transform="translate(85, 85)">
-          <!-- Corps du bus -->
-          <rect x="0" y="0" width="30" height="20" rx="4" fill="#1B2A4A" stroke="#2EC4B6" stroke-width="2"/>
-          <!-- Fenêtres -->
-          <rect x="4" y="4" width="6" height="5" rx="1" fill="#2EC4B6" opacity="0.5"/>
-          <rect x="12" y="4" width="6" height="5" rx="1" fill="#2EC4B6" opacity="0.5"/>
-          <rect x="20" y="4" width="6" height="5" rx="1" fill="#2EC4B6" opacity="0.5"/>
-          <!-- Roues -->
-          <circle cx="8" cy="20" r="4" fill="#0F1A2E" stroke="#2EC4B6" stroke-width="1.5"/>
-          <circle cx="22" cy="20" r="4" fill="#0F1A2E" stroke="#2EC4B6" stroke-width="1.5"/>
-        </g>
-        
-        <!-- Point d'interrogation -->
-        <g transform="translate(120, 60)">
-          <circle cx="15" cy="15" r="18" fill="rgba(200, 169, 81, 0.2)" stroke="#C8A951" stroke-width="2"/>
-          <text x="15" y="22" text-anchor="middle" fill="#C8A951" font-size="20" font-weight="bold">?</text>
-        </g>
-        
-        <!-- Panneau de signalisation -->
-        <g transform="translate(40, 50)">
-          <rect x="0" y="0" width="30" height="25" rx="3" fill="#E74C3C"/>
-          <line x1="5" y1="5" x2="25" y2="20" stroke="white" stroke-width="3" stroke-linecap="round"/>
-          <line x1="25" y1="5" x2="5" y2="20" stroke="white" stroke-width="3" stroke-linecap="round"/>
-          <rect x="13" y="25" width="4" height="20" fill="#A0AEC0"/>
-        </g>
-      </svg>
-    </div>
-    
-    <!-- Code erreur -->
-    <div class="error-code" id="error-code">404</div>
-    
-    <!-- Message -->
-    <h1 class="error-title">Page non trouvée</h1>
-    <p class="error-message" id="error-message">
-      Oups ! Il semble que cette page ait pris un autre itinéraire. 
-      Elle n'existe pas ou a été déplacée.
-    </p>
-    
-    <!-- Actions -->
-    <div class="error-actions">
-      <button class="btn btn-primary btn-lg" onclick="navigateTo('accueil.html')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-          <polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
-        Retour à l'accueil
-      </button>
-      
-      <button class="btn btn-ghost" onclick="history.back()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
-          <polyline points="15 18 9 12 15 6"/>
-        </svg>
-        Page précédente
-      </button>
-    </div>
-    
-    <!-- Aide -->
-    <div class="error-help">
-      <p>Besoin d'aide ?</p>
-      <a href="https://wa.me/2250703285359" target="_blank" class="help-link">
-        <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
-          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-        </svg>
-        Contacter le support
-      </a>
-    </div>
-  </main>
+  <title>Erreur - Navette Express</title>
   
-  <!-- Styles spécifiques -->
   <style>
-    .error-page {
+    .error-container {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: var(--spacing-xl);
+      padding: 40px 24px;
       text-align: center;
-      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-bg) 100%);
     }
     
     .error-illustration {
       width: 200px;
       height: 200px;
-      margin-bottom: var(--spacing-lg);
-      animation: float 3s ease-in-out infinite;
+      margin-bottom: 32px;
     }
     
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    
-    .error-code {
-      font-size: 96px;
-      font-weight: var(--font-bold);
-      color: var(--secondary-turquoise);
-      line-height: 1;
-      margin-bottom: var(--spacing-sm);
-      text-shadow: 0 0 40px rgba(46, 196, 182, 0.3);
+    .error-illustration svg {
+      width: 100%;
+      height: 100%;
     }
     
     .error-title {
       font-size: 24px;
-      font-weight: var(--font-bold);
-      margin-bottom: var(--spacing-md);
+      font-weight: 700;
+      margin-bottom: 12px;
     }
     
-    .error-message {
+    .error-text {
       font-size: 15px;
-      color: var(--text-secondary);
-      max-width: 300px;
       line-height: 1.6;
-      margin-bottom: var(--spacing-xl);
+      color: rgba(255,255,255,0.7);
+      max-width: 300px;
+      margin-bottom: 32px;
     }
     
-    .error-actions {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-md);
-      width: 100%;
-      max-width: 280px;
-      margin-bottom: var(--spacing-xl);
-    }
-    
-    .error-actions .btn svg {
-      margin-right: var(--spacing-sm);
-    }
-    
-    .error-help {
-      padding-top: var(--spacing-lg);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .error-help p {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-bottom: var(--spacing-sm);
-    }
-    
-    .help-link {
+    .error-btn {
       display: inline-flex;
       align-items: center;
-      gap: var(--spacing-sm);
-      color: #25D366;
-      font-size: 14px;
-      font-weight: var(--font-medium);
-      text-decoration: none;
+      gap: 8px;
+      padding: 14px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #0F1A2E;
+      background: #C8A951;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      margin-bottom: 16px;
     }
     
-    .help-link:hover {
-      text-decoration: underline;
+    .error-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .error-btn.secondary {
+      background: rgba(46,196,182,0.2);
+      color: #2EC4B6;
+    }
+    
+    .error-link {
+      font-size: 14px;
+      color: #2EC4B6;
+      text-decoration: none;
     }
   </style>
+</head>
+<body>
+  <div class="error-container" id="errorContainer">
+    <!-- Contenu dynamique selon le type d'erreur -->
+  </div>
   
-  <!-- Scripts -->
   <script src="js/app.js"></script>
   <script>
-    /* Détecter le type d'erreur via URL params */
-    document.addEventListener('DOMContentLoaded', function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const errorType = urlParams.get('type');
-      
-      if (errorType === '500' || errorType === 'server') {
-        document.getElementById('error-code').textContent = '500';
-        document.querySelector('.error-title').textContent = 'Erreur serveur';
-        document.getElementById('error-message').textContent = 
-          'Notre serveur rencontre des difficultés techniques. Veuillez réessayer dans quelques instants.';
-      } else if (errorType === 'offline') {
-        document.getElementById('error-code').textContent = '📡';
-        document.querySelector('.error-title').textContent = 'Hors connexion';
-        document.getElementById('error-message').textContent = 
-          'Vous semblez être hors ligne. Vérifiez votre connexion internet et réessayez.';
+    // Types d'erreur possibles
+    const errorTypes = {
+      'connexion': {
+        title: 'Impossible de se connecter',
+        text: 'Vérifiez votre connexion Internet et réessayez.',
+        icon: 'wifi',
+        btnText: 'Réessayer',
+        btnAction: 'retry'
+      },
+      'paiement': {
+        title: 'Paiement non validé',
+        text: 'Le paiement n\'a pas été validé. Vérifiez vos fonds ou votre carte, puis réessayez.',
+        icon: 'card',
+        btnText: 'Réessayer le paiement',
+        btnAction: 'payment'
+      },
+      'vide-trajets': {
+        title: 'Aucun trajet',
+        text: 'Vous n\'avez encore aucun trajet enregistré. Réservez votre première navette pour commencer.',
+        icon: 'bus',
+        btnText: 'Réserver une navette',
+        btnAction: 'booking'
+      },
+      'vide-notifications': {
+        title: 'Aucune notification',
+        text: 'Vous n\'avez aucune notification pour le moment. Nous vous tiendrons informé de vos prochains déplacements.',
+        icon: 'bell',
+        btnText: 'Retour à l\'accueil',
+        btnAction: 'home'
+      },
+      '404': {
+        title: 'Page introuvable',
+        text: 'La page que vous recherchez n\'existe pas ou a été déplacée.',
+        icon: 'search',
+        btnText: 'Retour à l\'accueil',
+        btnAction: 'home'
       }
-    });
+    };
+    
+    // Illustrations SVG
+    const icons = {
+      wifi: `<svg viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="80" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.3)" stroke-width="2"/>
+        <path d="M100 140 L100 140" stroke="#E74C3C" stroke-width="8" stroke-linecap="round"/>
+        <path d="M70 110 Q100 80 130 110" stroke="#E74C3C" stroke-width="6" stroke-linecap="round" fill="none"/>
+        <path d="M50 90 Q100 50 150 90" stroke="#E74C3C" stroke-width="6" stroke-linecap="round" fill="none"/>
+        <line x1="60" y1="60" x2="140" y2="140" stroke="#E74C3C" stroke-width="4" stroke-linecap="round"/>
+      </svg>`,
+      card: `<svg viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="80" fill="rgba(239,68,68,0.1)" stroke="rgba(239,68,68,0.3)" stroke-width="2"/>
+        <rect x="50" y="70" width="100" height="60" rx="8" fill="rgba(255,255,255,0.1)" stroke="#E74C3C" stroke-width="3"/>
+        <line x1="50" y1="90" x2="150" y2="90" stroke="#E74C3C" stroke-width="3"/>
+        <circle cx="130" cy="110" r="8" stroke="#E74C3C" stroke-width="2" fill="none"/>
+        <line x1="60" y1="60" x2="140" y2="140" stroke="#E74C3C" stroke-width="4" stroke-linecap="round"/>
+      </svg>`,
+      bus: `<svg viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="80" fill="rgba(46,196,182,0.1)" stroke="rgba(46,196,182,0.3)" stroke-width="2"/>
+        <rect x="60" y="60" width="80" height="70" rx="10" fill="rgba(255,255,255,0.1)" stroke="#2EC4B6" stroke-width="3"/>
+        <rect x="70" y="70" width="25" height="20" rx="3" fill="rgba(46,196,182,0.3)"/>
+        <rect x="105" y="70" width="25" height="20" rx="3" fill="rgba(46,196,182,0.3)"/>
+        <circle cx="80" cy="140" r="10" stroke="#2EC4B6" stroke-width="3" fill="none"/>
+        <circle cx="120" cy="140" r="10" stroke="#2EC4B6" stroke-width="3" fill="none"/>
+      </svg>`,
+      bell: `<svg viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="80" fill="rgba(200,169,81,0.1)" stroke="rgba(200,169,81,0.3)" stroke-width="2"/>
+        <path d="M100 50 L100 60" stroke="#C8A951" stroke-width="3" stroke-linecap="round"/>
+        <path d="M70 130 L130 130" stroke="#C8A951" stroke-width="3" stroke-linecap="round"/>
+        <path d="M75 130 L75 90 Q75 65 100 65 Q125 65 125 90 L125 130" stroke="#C8A951" stroke-width="3" fill="none"/>
+        <circle cx="100" cy="145" r="10" stroke="#C8A951" stroke-width="3" fill="none"/>
+      </svg>`,
+      search: `<svg viewBox="0 0 200 200" fill="none">
+        <circle cx="100" cy="100" r="80" fill="rgba(46,196,182,0.1)" stroke="rgba(46,196,182,0.3)" stroke-width="2"/>
+        <circle cx="90" cy="90" r="30" stroke="#2EC4B6" stroke-width="4" fill="none"/>
+        <line x1="112" y1="112" x2="135" y2="135" stroke="#2EC4B6" stroke-width="4" stroke-linecap="round"/>
+        <text x="82" y="98" fill="#2EC4B6" font-size="24" font-weight="bold">?</text>
+      </svg>`
+    };
+    
+    // Déterminer le type d'erreur
+    const urlParams = new URLSearchParams(window.location.search);
+    const errorType = urlParams.get('type') || 'connexion';
+    const error = errorTypes[errorType] || errorTypes['connexion'];
+    
+    // Afficher l'erreur
+    document.getElementById('errorContainer').innerHTML = `
+      <div class="error-illustration">
+        ${icons[error.icon]}
+      </div>
+      <h1 class="error-title">${error.title}</h1>
+      <p class="error-text">${error.text}</p>
+      <button class="error-btn" onclick="handleAction('${error.btnAction}')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="23 4 23 10 17 10"/>
+          <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+        </svg>
+        ${error.btnText}
+      </button>
+      <a href="accueil.html" class="error-link">Retour à l'accueil</a>
+    `;
+    
+    function handleAction(action) {
+      switch(action) {
+        case 'retry':
+          location.reload();
+          break;
+        case 'payment':
+          window.location.href = 'paiement.html';
+          break;
+        case 'booking':
+          window.location.href = 'lignes.html';
+          break;
+        case 'home':
+        default:
+          window.location.href = 'accueil.html';
+      }
+    }
   </script>
 </body>
 </html>

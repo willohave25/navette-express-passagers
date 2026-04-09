@@ -103,6 +103,73 @@
     <a href="notifications.html" class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span>Notifs</span></a>
     <a href="profil.html" class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profil</span></a>
   </nav>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="js/app.js"></script>
+  <script>
+    /* Icônes par type de notification */
+    const ICONES = {
+      rappel:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>`,
+      confirmation:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+      paiement:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>`,
+      changement:    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>`,
+      nouvelle_ligne:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>`,
+      promo:         `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+      info:          `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
+    };
+
+    const TYPES_OR = ['promo', 'paiement'];
+
+    function tempsRelatif(dateStr) {
+      const diff = Date.now() - new Date(dateStr).getTime();
+      const min = Math.floor(diff / 60000);
+      if (min < 60) return `Il y a ${min} min`;
+      const h = Math.floor(min / 60);
+      if (h < 24) return `Il y a ${h}h`;
+      return new Date(dateStr).toLocaleDateString('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+    }
+
+    function construireNotifs(notifs) {
+      if (!notifs.length) {
+        return '<p style="text-align:center;color:rgba(255,255,255,0.5);padding:40px 0;">Aucune notification.</p>';
+      }
+      return notifs.map(n => {
+        const icone = ICONES[n.type] || ICONES.info;
+        const classeOr = TYPES_OR.includes(n.type) ? ' gold' : '';
+        const classeUnread = !n.lu ? ' unread' : '';
+        return `
+          <div class="notif-card${classeUnread}" onclick="lireNotif('${n.id}', this)">
+            <div class="notif-icon${classeOr}">${icone}</div>
+            <div class="notif-content">
+              <p class="notif-title">${n.titre}</p>
+              <p class="notif-text">${n.message}</p>
+              <p class="notif-time">${tempsRelatif(n.created_at)}</p>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    async function lireNotif(id, element) {
+      if (element.classList.contains('unread')) {
+        element.classList.remove('unread');
+        try { await marquerNotificationLue(id); } catch (_) {}
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      const container = document.querySelector('.notif-section');
+      container.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.5);padding:40px 0;">Chargement...</p>';
+
+      try {
+        const notifs = await getNotifications();
+        const nonLues = notifs.filter(n => !n.lu).length;
+        document.querySelector('.hero-subtitle').textContent =
+          nonLues > 0 ? `${nonLues} nouvelle${nonLues > 1 ? 's' : ''}` : 'Toutes lues';
+        container.innerHTML = construireNotifs(notifs);
+      } catch (err) {
+        container.innerHTML = '<p style="text-align:center;color:#E74C3C;padding:40px 0;">Erreur lors du chargement.</p>';
+      }
+    });
+  </script>
 </body>
 </html>

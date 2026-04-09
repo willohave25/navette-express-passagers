@@ -4,341 +4,400 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#1B2A4A">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Navette Express">
-  <meta name="description" content="À propos de Navette Express - JAEBETS HOLDING, transport de passagers à Abidjan.">
+  <meta name="description" content="À propos de Navette Express - Transport collectif premium par JAEBETS HOLDING à Abidjan.">
   
-  <!-- Favicon et icônes -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
   <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
-  
-  <!-- Manifest PWA -->
   <link rel="manifest" href="manifest.json">
   
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Styles -->
   <link rel="stylesheet" href="css/app.css">
   
   <title>À propos - Navette Express</title>
+  
+  <style>
+    .about-header {
+      text-align: center;
+      padding: 24px 16px 32px;
+    }
+    
+    .logo-container {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 16px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .logo-container img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+    
+    .app-name {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .app-name span {
+      color: #C8A951;
+    }
+    
+    .app-version {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+    }
+    
+    .about-section {
+      padding: 0 16px;
+      margin-bottom: 24px;
+    }
+    
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    
+    .about-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 20px;
+    }
+    
+    .about-text {
+      font-size: 15px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.8);
+    }
+    
+    .mission-vision {
+      display: grid;
+      gap: 12px;
+    }
+    
+    .mv-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    
+    .mv-card.mission {
+      border-left: 3px solid #2EC4B6;
+    }
+    
+    .mv-card.vision {
+      border-left: 3px solid #C8A951;
+    }
+    
+    .mv-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    
+    .mv-card.mission .mv-label {
+      color: #2EC4B6;
+    }
+    
+    .mv-card.vision .mv-label {
+      color: #C8A951;
+    }
+    
+    .mv-text {
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.8);
+    }
+    
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .contact-item:hover {
+      background: rgba(255,255,255,0.08);
+    }
+    
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(46,196,182,0.15);
+      border-radius: 10px;
+    }
+    
+    .contact-icon svg {
+      width: 20px;
+      height: 20px;
+      color: #2EC4B6;
+    }
+    
+    .contact-info {
+      flex: 1;
+    }
+    
+    .contact-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 2px;
+    }
+    
+    .contact-value {
+      font-size: 15px;
+      font-weight: 500;
+    }
+    
+    .links-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .link-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      background: rgba(255,255,255,0.02);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .link-item:hover {
+      background: rgba(255,255,255,0.05);
+    }
+    
+    .link-item span {
+      font-size: 15px;
+    }
+    
+    .link-item svg {
+      width: 20px;
+      height: 20px;
+      color: rgba(255,255,255,0.3);
+    }
+    
+    .holding-banner {
+      margin: 0 16px 24px;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(200,169,81,0.15) 0%, rgba(46,196,182,0.1) 100%);
+      border: 1px solid rgba(200,169,81,0.3);
+      border-radius: 16px;
+      text-align: center;
+    }
+    
+    .holding-logo {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 12px;
+      object-fit: contain;
+    }
+    
+    .holding-text {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 4px;
+    }
+    
+    .holding-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #C8A951;
+    }
+    
+    .copyright {
+      text-align: center;
+      padding: 20px 16px 100px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+    }
+  </style>
 </head>
 <body class="with-nav">
   <!-- Header -->
   <header class="header">
-    <button class="header-btn" data-action="back" onclick="goBack()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <button class="header-btn" onclick="history.back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
         <polyline points="15 18 9 12 15 6"/>
       </svg>
     </button>
     <h1 class="header-title">À propos</h1>
-    <div style="width: 44px;"></div>
+    <div style="width: 24px;"></div>
   </header>
   
-  <!-- Contenu principal -->
   <main class="page-with-header">
-    <!-- Logo et nom -->
+    <!-- Logo App -->
     <div class="about-header">
-      <div class="about-logo">
-        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Fond cercle -->
-          <circle cx="40" cy="40" r="38" fill="#1B2A4A" stroke="#2EC4B6" stroke-width="2"/>
-          <!-- Bus stylisé -->
-          <rect x="18" y="28" width="44" height="24" rx="6" fill="#2EC4B6"/>
-          <rect x="22" y="32" width="10" height="8" rx="2" fill="#0F1A2E"/>
-          <rect x="35" y="32" width="10" height="8" rx="2" fill="#0F1A2E"/>
-          <rect x="48" y="32" width="10" height="8" rx="2" fill="#0F1A2E"/>
-          <circle cx="28" cy="52" r="5" fill="#0F1A2E" stroke="#C8A951" stroke-width="2"/>
-          <circle cx="52" cy="52" r="5" fill="#0F1A2E" stroke="#C8A951" stroke-width="2"/>
-          <!-- Ligne dorée -->
-          <rect x="18" y="44" width="44" height="3" fill="#C8A951"/>
-        </svg>
+      <div class="logo-container">
+        <picture>
+          <source srcset="images/logo/logo-jaebets.webp" type="image/webp">
+          <img src="images/logo/logo-jaebets.png" alt="Logo JAEBETS" loading="eager">
+        </picture>
       </div>
-      <h2 class="about-name">Navette Express</h2>
-      <p class="about-tagline">Transport intelligent pour Abidjan</p>
-      <span class="about-version">Version 1.0.0</span>
+      <h1 class="app-name">Navette <span>Express</span></h1>
+      <p class="app-version">Version 1.0</p>
     </div>
     
-    <!-- Description -->
-    <section class="about-section">
-      <h3 class="section-title">Notre mission</h3>
-      <p class="about-text">
-        Navette Express révolutionne le transport urbain à Abidjan en offrant une alternative 
-        moderne, fiable et confortable aux transports en commun traditionnels. Grâce à notre 
-        réseau de navettes climatisées et notre application intuitive, nous connectons les 
-        quartiers résidentiels aux zones d'activités économiques.
-      </p>
-    </section>
+    <!-- À propos -->
+    <div class="about-section">
+      <h2 class="section-title">À propos de Navette Express</h2>
+      <div class="about-card">
+        <p class="about-text">
+          Navette Express est un service de transport urbain développé par JAEBETS HOLDING pour simplifier les déplacements à Abidjan. Nous proposons des lignes régulières pour travailleurs, des abonnements mensuels et la location de bus pour événements (mariage, funérailles, sorties scolaires, tourisme). Nos bus proposent climatisation, hôtesse et chauffeurs professionnels, avec un système de paiement sécurisé via FineoPay (Orange Money, MTN, Moov, CB). Notre objectif est de rendre les trajets quotidiens plus sûrs, plus rapides et plus confortables pour tous les Abidjanais.
+        </p>
+      </div>
+    </div>
     
-    <!-- Chiffres clés -->
-    <section class="about-stats">
-      <div class="about-stat">
-        <span class="about-stat-value">15+</span>
-        <span class="about-stat-label">Lignes actives</span>
-      </div>
-      <div class="about-stat">
-        <span class="about-stat-value">50+</span>
-        <span class="about-stat-label">Bus en service</span>
-      </div>
-      <div class="about-stat">
-        <span class="about-stat-value">10K+</span>
-        <span class="about-stat-label">Passagers/mois</span>
-      </div>
-    </section>
-    
-    <!-- JAEBETS HOLDING -->
-    <section class="about-section">
-      <h3 class="section-title">JAEBETS HOLDING</h3>
-      <div class="company-card">
-        <div class="company-logo">
-          <svg viewBox="0 0 60 60" fill="none">
-            <rect width="60" height="60" rx="12" fill="#1B2A4A"/>
-            <text x="30" y="38" text-anchor="middle" fill="#C8A951" font-size="18" font-weight="bold">JH</text>
-          </svg>
+    <!-- Mission & Vision -->
+    <div class="about-section">
+      <h2 class="section-title">Notre engagement</h2>
+      <div class="mission-vision">
+        <div class="mv-card mission">
+          <p class="mv-label">Notre Mission</p>
+          <p class="mv-text">Proposer un transport de qualité, régulier et abordable pour les habitants d'Abidjan.</p>
         </div>
-        <div class="company-info">
-          <h4>JAEBETS HOLDING</h4>
-          <p>Société ivoirienne spécialisée dans le transport de passagers et la logistique urbaine.</p>
+        <div class="mv-card vision">
+          <p class="mv-label">Notre Vision</p>
+          <p class="mv-text">Devenir le leader des solutions de mobilité urbaine en Afrique francophone.</p>
         </div>
       </div>
-    </section>
+    </div>
     
     <!-- Contact -->
-    <section class="about-section">
-      <h3 class="section-title">Nous contacter</h3>
-      
-      <a href="tel:+2250703285359" class="contact-item">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
-          </svg>
-        </div>
-        <div class="contact-info">
-          <span class="contact-label">Téléphone</span>
-          <span class="contact-value">+225 07 03 28 53 59</span>
-        </div>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" class="contact-arrow">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </a>
-      
-      <a href="tel:+2250544039393" class="contact-item">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
-          </svg>
-        </div>
-        <div class="contact-info">
-          <span class="contact-label">Ligne support</span>
-          <span class="contact-value">+225 05 44 03 93 93</span>
-        </div>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" class="contact-arrow">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </a>
-      
-      <a href="https://wa.me/2250703285359" target="_blank" class="contact-item whatsapp">
-        <div class="contact-icon whatsapp">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-          </svg>
-        </div>
-        <div class="contact-info">
-          <span class="contact-label">WhatsApp</span>
-          <span class="contact-value">Discuter avec nous</span>
-        </div>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" class="contact-arrow">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </a>
-      
-      <a href="mailto:infos@jaebets-holding.com" class="contact-item">
-        <div class="contact-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-            <polyline points="22,6 12,13 2,6"/>
-          </svg>
-        </div>
-        <div class="contact-info">
-          <span class="contact-label">Email</span>
-          <span class="contact-value">infos@jaebets-holding.com</span>
-        </div>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" class="contact-arrow">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </a>
-    </section>
-    
-    <!-- Légal -->
-    <section class="about-section">
-      <h3 class="section-title">Informations légales</h3>
-      
-      <button class="legal-item" onclick="openModal('cgu-modal')">
-        <span>Conditions générales d'utilisation</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </button>
-      
-      <button class="legal-item" onclick="openModal('privacy-modal')">
-        <span>Politique de confidentialité</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </button>
-      
-      <button class="legal-item" onclick="openModal('mentions-modal')">
-        <span>Mentions légales</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </button>
-    </section>
-    
-    <!-- Réseaux sociaux -->
-    <section class="about-section">
-      <h3 class="section-title">Suivez-nous</h3>
-      <div class="social-links">
-        <a href="#" class="social-link" target="_blank">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-          </svg>
+    <div class="about-section">
+      <h2 class="section-title">Nous contacter</h2>
+      <div class="contact-list">
+        <a href="tel:+2250703285359" class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+            </svg>
+          </div>
+          <div class="contact-info">
+            <p class="contact-label">Téléphone principal</p>
+            <p class="contact-value">+225 07 03 28 53 59</p>
+          </div>
         </a>
-        <a href="#" class="social-link" target="_blank">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-          </svg>
+        
+        <a href="tel:+2250544039393" class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+            </svg>
+          </div>
+          <div class="contact-info">
+            <p class="contact-label">Téléphone secondaire</p>
+            <p class="contact-value">+225 05 44 03 93 93</p>
+          </div>
         </a>
-        <a href="#" class="social-link" target="_blank">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-          </svg>
+        
+        <a href="tel:+2252731947165" class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+            </svg>
+          </div>
+          <div class="contact-info">
+            <p class="contact-label">Fixe</p>
+            <p class="contact-value">+225 27 31 94 71 65</p>
+          </div>
         </a>
-        <a href="#" class="social-link linkedin" target="_blank">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-          </svg>
+        
+        <a href="mailto:infos@jaebets-holding.com" class="contact-item">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div class="contact-info">
+            <p class="contact-label">Email</p>
+            <p class="contact-value">infos@jaebets-holding.com</p>
+          </div>
         </a>
       </div>
-    </section>
+    </div>
+    
+    <!-- Liens légaux -->
+    <div class="about-section">
+      <h2 class="section-title">Informations légales</h2>
+      <div class="links-list">
+        <div class="link-item" onclick="alert('CGV à venir')">
+          <span>Conditions Générales de Vente</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+        <div class="link-item" onclick="alert('Politique de confidentialité à venir')">
+          <span>Politique de Confidentialité</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+        <div class="link-item" onclick="window.open('https://jaebets-holding.com', '_blank')">
+          <span>Site JAEBETS HOLDING</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Holding Banner -->
+    <div class="holding-banner">
+      <picture>
+        <source srcset="images/logo/logo-jaebets.webp" type="image/webp">
+        <img src="images/logo/logo-jaebets.png" alt="JAEBETS HOLDING" class="holding-logo" loading="lazy">
+      </picture>
+      <p class="holding-text">Une filiale de</p>
+      <p class="holding-name">JAEBETS HOLDING</p>
+    </div>
     
     <!-- Copyright -->
-    <div class="about-footer">
-      <p>© 2025 JAEBETS HOLDING. Tous droits réservés.</p>
-      <p>Développé avec ❤️ à Abidjan</p>
-    </div>
+    <p class="copyright">
+      © 2025 Navette Express - JAEBETS HOLDING<br>
+      Tous droits réservés<br><br>
+      Conçu par W2K-Digital
+    </p>
   </main>
-  
-  <!-- Modal CGU -->
-  <div class="modal-overlay" id="cgu-modal">
-    <div class="modal modal-full">
-      <div class="modal-header">
-        <h3 class="modal-title">Conditions générales</h3>
-        <button class="modal-close" onclick="closeModal('cgu-modal')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-      </div>
-      <div class="modal-content modal-scroll">
-        <h4>1. Objet</h4>
-        <p>Les présentes conditions générales régissent l'utilisation de l'application Navette Express et des services de transport associés.</p>
-        
-        <h4>2. Inscription</h4>
-        <p>L'utilisation de l'application nécessite la création d'un compte avec des informations exactes. L'utilisateur est responsable de la confidentialité de ses identifiants.</p>
-        
-        <h4>3. Réservation et paiement</h4>
-        <p>Les réservations sont confirmées après paiement. Les moyens de paiement acceptés sont Orange Money, MTN Mobile Money, Moov Money et les cartes bancaires.</p>
-        
-        <h4>4. Annulation</h4>
-        <p>Toute annulation effectuée plus de 2 heures avant le départ donne droit à un remboursement intégral. En deçà de ce délai, des frais peuvent s'appliquer.</p>
-        
-        <h4>5. Responsabilité</h4>
-        <p>JAEBETS HOLDING s'engage à assurer un service de qualité. En cas de retard ou d'annulation de notre fait, un remboursement ou une solution alternative sera proposée.</p>
-        
-        <h4>6. Comportement</h4>
-        <p>Les passagers s'engagent à respecter les règles de bonne conduite à bord des véhicules et à suivre les consignes du personnel.</p>
-        
-        <h4>7. Modification</h4>
-        <p>Ces conditions peuvent être modifiées à tout moment. Les utilisateurs seront informés des changements significatifs.</p>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Modal Confidentialité -->
-  <div class="modal-overlay" id="privacy-modal">
-    <div class="modal modal-full">
-      <div class="modal-header">
-        <h3 class="modal-title">Confidentialité</h3>
-        <button class="modal-close" onclick="closeModal('privacy-modal')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-      </div>
-      <div class="modal-content modal-scroll">
-        <h4>Données collectées</h4>
-        <p>Nous collectons : nom, numéro de téléphone, email, données de localisation (avec votre consentement), historique des trajets.</p>
-        
-        <h4>Utilisation des données</h4>
-        <p>Vos données servent à : fournir le service de transport, améliorer l'expérience utilisateur, envoyer des notifications de service, proposer des offres personnalisées.</p>
-        
-        <h4>Partage des données</h4>
-        <p>Vos données ne sont jamais vendues. Elles peuvent être partagées avec nos partenaires de paiement (FineoPay) dans le cadre strict du traitement des transactions.</p>
-        
-        <h4>Sécurité</h4>
-        <p>Nous utilisons des mesures de sécurité avancées pour protéger vos données : chiffrement, accès restreint, audits réguliers.</p>
-        
-        <h4>Vos droits</h4>
-        <p>Vous pouvez à tout moment : accéder à vos données, les modifier, demander leur suppression, retirer votre consentement.</p>
-        
-        <h4>Contact</h4>
-        <p>Pour toute question relative à vos données : infos@jaebets-holding.com</p>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Modal Mentions légales -->
-  <div class="modal-overlay" id="mentions-modal">
-    <div class="modal modal-full">
-      <div class="modal-header">
-        <h3 class="modal-title">Mentions légales</h3>
-        <button class="modal-close" onclick="closeModal('mentions-modal')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-      </div>
-      <div class="modal-content modal-scroll">
-        <h4>Éditeur</h4>
-        <p>
-          <strong>JAEBETS HOLDING</strong><br>
-          Société à responsabilité limitée<br>
-          Siège social : Abidjan, Côte d'Ivoire<br>
-          Téléphone : +225 07 03 28 53 59<br>
-          Email : infos@jaebets-holding.com
-        </p>
-        
-        <h4>Directeur de publication</h4>
-        <p>Le représentant légal de JAEBETS HOLDING</p>
-        
-        <h4>Hébergement</h4>
-        <p>Application hébergée sur des serveurs sécurisés.</p>
-        
-        <h4>Propriété intellectuelle</h4>
-        <p>L'ensemble du contenu de l'application (textes, images, logos, icônes) est la propriété exclusive de JAEBETS HOLDING et est protégé par les lois sur la propriété intellectuelle.</p>
-        
-        <h4>Droit applicable</h4>
-        <p>Les présentes mentions sont régies par le droit ivoirien. Tout litige sera soumis aux tribunaux compétents d'Abidjan.</p>
-      </div>
-    </div>
-  </div>
   
   <!-- Bottom Navigation -->
   <nav class="bottom-nav">
@@ -352,8 +411,7 @@
     <a href="lignes.html" class="nav-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="12" cy="12" r="10"/>
-        <path d="M16.24 7.76a6 6 0 010 8.49m-8.48-.01a6 6 0 010-8.49"/>
-        <circle cx="12" cy="12" r="2"/>
+        <circle cx="12" cy="12" r="3"/>
       </svg>
       <span>Lignes</span>
     </a>
@@ -370,7 +428,7 @@
       </svg>
       <span>Notifs</span>
     </a>
-    <a href="profil.html" class="nav-item active">
+    <a href="profil.html" class="nav-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
         <circle cx="12" cy="7" r="4"/>
@@ -379,241 +437,6 @@
     </a>
   </nav>
   
-  <!-- Styles spécifiques -->
-  <style>
-    .about-header {
-      text-align: center;
-      padding: var(--spacing-xl);
-      background: linear-gradient(180deg, rgba(46, 196, 182, 0.1) 0%, transparent 100%);
-    }
-    
-    .about-logo {
-      width: 80px;
-      height: 80px;
-      margin: 0 auto var(--spacing-md);
-    }
-    
-    .about-name {
-      font-size: 24px;
-      font-weight: var(--font-bold);
-      margin-bottom: var(--spacing-xs);
-    }
-    
-    .about-tagline {
-      font-size: 14px;
-      color: var(--text-secondary);
-      margin-bottom: var(--spacing-sm);
-    }
-    
-    .about-version {
-      font-size: 12px;
-      color: var(--text-muted);
-      padding: 4px 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: var(--radius-full);
-    }
-    
-    .about-section {
-      padding: var(--spacing-md);
-      padding-top: 0;
-    }
-    
-    .about-text {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.7;
-    }
-    
-    .about-stats {
-      display: flex;
-      justify-content: space-around;
-      padding: var(--spacing-lg);
-      margin: 0 var(--spacing-md) var(--spacing-lg);
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-    }
-    
-    .about-stat {
-      text-align: center;
-    }
-    
-    .about-stat-value {
-      display: block;
-      font-size: 28px;
-      font-weight: var(--font-bold);
-      color: var(--secondary-turquoise);
-    }
-    
-    .about-stat-label {
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-    
-    .company-card {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-md);
-      padding: var(--spacing-md);
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-    }
-    
-    .company-logo {
-      width: 60px;
-      height: 60px;
-      flex-shrink: 0;
-    }
-    
-    .company-info h4 {
-      font-size: 16px;
-      margin-bottom: 4px;
-    }
-    
-    .company-info p {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-    
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-md);
-      padding: var(--spacing-md);
-      background: var(--card-bg);
-      border-radius: var(--radius-md);
-      margin-bottom: var(--spacing-sm);
-      text-decoration: none;
-      color: var(--text-primary);
-    }
-    
-    .contact-icon {
-      width: 44px;
-      height: 44px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-secondary);
-      flex-shrink: 0;
-    }
-    
-    .contact-icon svg {
-      width: 20px;
-      height: 20px;
-    }
-    
-    .contact-icon.whatsapp {
-      background: rgba(37, 211, 102, 0.15);
-      color: #25D366;
-    }
-    
-    .contact-info {
-      flex: 1;
-    }
-    
-    .contact-label {
-      display: block;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-    
-    .contact-value {
-      font-weight: var(--font-medium);
-    }
-    
-    .contact-arrow {
-      color: var(--text-muted);
-    }
-    
-    .legal-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding: var(--spacing-md);
-      background: var(--card-bg);
-      border-radius: var(--radius-md);
-      margin-bottom: var(--spacing-sm);
-      font-size: 15px;
-      color: var(--text-primary);
-      text-align: left;
-    }
-    
-    .legal-item svg {
-      color: var(--text-muted);
-    }
-    
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: var(--spacing-md);
-    }
-    
-    .social-link {
-      width: 48px;
-      height: 48px;
-      background: var(--card-bg);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-secondary);
-      transition: all var(--transition-fast);
-    }
-    
-    .social-link svg {
-      width: 22px;
-      height: 22px;
-    }
-    
-    .social-link:hover {
-      background: var(--secondary-turquoise);
-      color: var(--dark-bg);
-    }
-    
-    .about-footer {
-      text-align: center;
-      padding: var(--spacing-xl);
-      padding-bottom: calc(var(--bottom-nav-height) + var(--safe-area-bottom) + var(--spacing-xl));
-    }
-    
-    .about-footer p {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: var(--spacing-xs);
-    }
-    
-    .modal-full {
-      max-height: 90vh;
-    }
-    
-    .modal-scroll {
-      max-height: 70vh;
-      overflow-y: auto;
-      padding-right: var(--spacing-sm);
-    }
-    
-    .modal-scroll h4 {
-      margin-top: var(--spacing-lg);
-      margin-bottom: var(--spacing-sm);
-      font-size: 15px;
-      color: var(--secondary-turquoise);
-    }
-    
-    .modal-scroll h4:first-child {
-      margin-top: 0;
-    }
-    
-    .modal-scroll p {
-      font-size: 14px;
-      color: var(--text-secondary);
-      line-height: 1.7;
-    }
-  </style>
-  
-  <!-- Scripts -->
   <script src="js/app.js"></script>
 </body>
 </html>

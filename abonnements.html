@@ -7,20 +7,20 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Navette Express">
-  <meta name="description" content="Abonnez-vous à Navette Express - Économisez sur vos trajets quotidiens avec nos forfaits mensuels.">
-  
+  <meta name="description" content="Abonnez-vous à Navette Express - Abonnement mensuel aller-retour pour vos trajets quotidiens à Abidjan.">
+
   <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
   <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
   <link rel="manifest" href="manifest.json">
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  
+
   <link rel="stylesheet" href="css/app.css">
-  
+
   <title>Abonnements - Navette Express</title>
-  
+
   <style>
     .hero-banner {
       position: relative;
@@ -29,13 +29,13 @@
       border-radius: 16px;
       overflow: hidden;
     }
-    
+
     .hero-banner img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-    
+
     .hero-overlay {
       position: absolute;
       inset: 0;
@@ -45,23 +45,23 @@
       justify-content: flex-end;
       padding: 20px;
     }
-    
+
     .hero-title {
       font-size: 22px;
       font-weight: 700;
       margin-bottom: 4px;
     }
-    
+
     .hero-subtitle {
       font-size: 14px;
       color: rgba(255, 255, 255, 0.7);
     }
-    
-    .plans-section {
+
+    .selector-section {
       padding: 0 16px;
       margin-bottom: 24px;
     }
-    
+
     .section-title {
       font-size: 14px;
       font-weight: 600;
@@ -70,122 +70,207 @@
       letter-spacing: 0.5px;
       margin-bottom: 16px;
     }
-    
-    .plan-card {
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 8px;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 15px;
+      font-family: inherit;
+      color: #FFFFFF;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 20px;
+      transition: border-color 0.2s;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: #2EC4B6;
+    }
+
+    /* Carte récapitulatif prix */
+    .price-card {
+      background: linear-gradient(135deg, rgba(200, 169, 81, 0.15) 0%, rgba(46, 196, 182, 0.08) 100%);
+      border: 1px solid rgba(200, 169, 81, 0.4);
       border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      padding: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+      display: none;
     }
-    
-    .plan-card:hover {
-      background: rgba(255, 255, 255, 0.08);
+
+    .price-card.visible {
+      display: block;
     }
-    
-    .plan-card.premium {
-      border-color: rgba(200, 169, 81, 0.5);
-      background: linear-gradient(135deg, rgba(200, 169, 81, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
-    }
-    
-    .plan-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 12px;
-    }
-    
-    .plan-name {
-      font-size: 18px;
-      font-weight: 700;
-    }
-    
-    .plan-card.premium .plan-name {
-      color: #C8A951;
-    }
-    
-    .plan-badge {
-      padding: 4px 10px;
-      font-size: 10px;
+
+    .price-route {
+      font-size: 16px;
       font-weight: 600;
-      background: #C8A951;
-      color: #0F1A2E;
-      border-radius: 10px;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 8px;
     }
-    
-    .plan-price {
-      font-size: 28px;
-      font-weight: 700;
-      color: #2EC4B6;
-      margin-bottom: 4px;
-    }
-    
-    .plan-period {
+
+    .price-type {
       font-size: 13px;
       color: rgba(255, 255, 255, 0.5);
       margin-bottom: 16px;
     }
-    
-    .plan-features {
-      list-style: none;
+
+    .price-amount {
+      font-size: 42px;
+      font-weight: 700;
+      color: #C8A951;
+      line-height: 1;
+      margin-bottom: 4px;
     }
-    
-    .plan-features li {
+
+    .price-currency {
+      font-size: 18px;
+      font-weight: 600;
+      color: #C8A951;
+    }
+
+    .price-period {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 6px;
+    }
+
+    .price-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 16px 0;
+    }
+
+    .price-includes {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: left;
+    }
+
+    .price-include-item {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.8);
-      margin-bottom: 10px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.75);
     }
-    
-    .plan-features li:last-child {
-      margin-bottom: 0;
-    }
-    
-    .plan-features svg {
-      width: 18px;
-      height: 18px;
+
+    .price-include-item svg {
+      width: 16px;
+      height: 16px;
       color: #2EC4B6;
       flex-shrink: 0;
     }
-    
-    .plan-btn {
+
+    /* État indisponible */
+    .price-unavailable {
+      background: rgba(231, 76, 60, 0.1);
+      border: 1px solid rgba(231, 76, 60, 0.3);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .price-unavailable.visible {
+      display: block;
+    }
+
+    /* Bouton souscrire */
+    .subscribe-btn {
       width: 100%;
-      padding: 14px;
-      margin-top: 16px;
-      font-size: 15px;
+      padding: 16px;
+      font-size: 16px;
       font-weight: 600;
+      color: #0F1A2E;
+      background: #C8A951;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       font-family: inherit;
-      transition: all 0.2s ease;
+      transition: background 0.2s;
+      display: none;
     }
-    
-    .plan-btn.secondary {
+
+    .subscribe-btn.visible {
+      display: block;
+    }
+
+    .subscribe-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Mes abonnements actifs */
+    .mes-abonnements {
+      padding: 0 16px;
+      margin-bottom: 24px;
+    }
+
+    .abonnement-actif {
+      background: rgba(46, 196, 182, 0.08);
+      border: 1px solid rgba(46, 196, 182, 0.25);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 10px;
+    }
+
+    .abo-route {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .abo-meta {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.55);
+    }
+
+    .abo-badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 3px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 10px;
       background: rgba(46, 196, 182, 0.2);
       color: #2EC4B6;
     }
-    
-    .plan-btn.primary {
-      background: #C8A951;
-      color: #0F1A2E;
-    }
-    
+
+    /* FAQ */
     .faq-section {
       padding: 0 16px 100px;
     }
-    
+
     .faq-item {
       background: rgba(255, 255, 255, 0.05);
       border-radius: 12px;
       margin-bottom: 10px;
       overflow: hidden;
     }
-    
+
     .faq-question {
       display: flex;
       justify-content: space-between;
@@ -195,18 +280,19 @@
       font-size: 14px;
       font-weight: 500;
     }
-    
+
     .faq-question svg {
       width: 20px;
       height: 20px;
       color: rgba(255, 255, 255, 0.5);
       transition: transform 0.3s ease;
+      flex-shrink: 0;
     }
-    
+
     .faq-item.open .faq-question svg {
       transform: rotate(180deg);
     }
-    
+
     .faq-answer {
       padding: 0 16px 16px;
       font-size: 13px;
@@ -214,9 +300,16 @@
       line-height: 1.6;
       display: none;
     }
-    
+
     .faq-item.open .faq-answer {
       display: block;
+    }
+
+    .loading-text {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 14px;
+      padding: 20px 0;
     }
   </style>
 </head>
@@ -231,7 +324,7 @@
     <h1 class="header-title">Abonnements</h1>
     <div style="width: 24px;"></div>
   </header>
-  
+
   <main class="page-with-header">
     <!-- Hero Banner -->
     <div class="hero-banner">
@@ -240,137 +333,150 @@
         <img src="images/ecrans/passagers-abonnement.jpg" alt="Abonnements" loading="eager">
       </picture>
       <div class="hero-overlay">
-        <h2 class="hero-title">Économisez chaque mois</h2>
-        <p class="hero-subtitle">10 trajets pour le prix de 9 !</p>
+        <h2 class="hero-title">Abonnement mensuel</h2>
+        <p class="hero-subtitle">Aller-retour quotidien — Sûr, ponctuel, confortable</p>
       </div>
     </div>
-    
-    <!-- Plans -->
-    <div class="plans-section">
-      <h3 class="section-title">Choisissez votre forfait</h3>
-      
-      <!-- Plan Standard -->
-      <div class="plan-card" onclick="selectPlan('standard')">
-        <div class="plan-header">
-          <span class="plan-name">Forfait 10 km</span>
-        </div>
-        <div class="plan-price">18 000 FCFA</div>
-        <div class="plan-period">par mois • 20 trajets inclus</div>
-        <ul class="plan-features">
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            Trajets illimités jusqu'à 10 km
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            Réservation prioritaire
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            Support client dédié
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            Annulation flexible
-          </li>
-        </ul>
-        <button class="plan-btn secondary">Souscrire</button>
-      </div>
-      
-      <!-- Plan Premium -->
-      <div class="plan-card premium" onclick="selectPlan('premium')">
-        <div class="plan-header">
-          <span class="plan-name">Forfait 20 km</span>
-          <span class="plan-badge">Populaire</span>
-        </div>
-        <div class="plan-price">25 000 FCFA</div>
-        <div class="plan-period">par mois • Trajets illimités</div>
-        <ul class="plan-features">
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            Trajets illimités jusqu'à 20 km
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            Siège garanti à l'avant
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            Accès bus climatisés VIP
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            Support prioritaire 24/7
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="20 6 9 17 4 12"/>
-            </svg>
-            Report trajets non utilisés
-          </li>
-        </ul>
-        <button class="plan-btn primary">Souscrire maintenant</button>
-      </div>
+
+    <!-- Mes abonnements actifs -->
+    <div class="mes-abonnements" id="mesAbonnements" style="display:none;">
+      <h3 class="section-title">Mon abonnement actif</h3>
+      <div id="listeAbonnements"><p class="loading-text">Chargement...</p></div>
     </div>
-    
+
+    <!-- Calculateur de tarif -->
+    <div class="selector-section">
+      <h3 class="section-title">Calculer mon abonnement</h3>
+
+      <div class="form-group">
+        <label class="form-label">Point de départ</label>
+        <select class="form-select" id="selectDepart" onchange="calculerTarif()">
+          <option value="">— Choisir le quartier de départ —</option>
+          <option value="Angré">Angré</option>
+          <option value="Bingerville">Bingerville</option>
+          <option value="Cocody">Cocody</option>
+          <option value="Grand-Bassam">Grand-Bassam</option>
+          <option value="Yopougon">Yopougon</option>
+          <option value="Plateau">Plateau</option>
+          <option value="Treichville">Treichville</option>
+          <option value="Marcory">Marcory</option>
+          <option value="Koumassi">Koumassi</option>
+          <option value="Port-Bouët">Port-Bouët</option>
+          <option value="Vridi">Vridi</option>
+          <option value="Abobo">Abobo</option>
+          <option value="Gonzagueville">Gonzagueville</option>
+          <option value="Faya">Faya</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Destination (lieu de travail)</label>
+        <select class="form-select" id="selectDestination" onchange="calculerTarif()">
+          <option value="">— Choisir la destination —</option>
+          <option value="Angré">Angré</option>
+          <option value="Bingerville">Bingerville</option>
+          <option value="Cocody">Cocody</option>
+          <option value="Grand-Bassam">Grand-Bassam</option>
+          <option value="Yopougon">Yopougon</option>
+          <option value="Plateau">Plateau</option>
+          <option value="Treichville">Treichville</option>
+          <option value="Marcory">Marcory</option>
+          <option value="Koumassi">Koumassi</option>
+          <option value="Port-Bouët">Port-Bouët</option>
+          <option value="Vridi">Vridi</option>
+          <option value="Abobo">Abobo</option>
+          <option value="Gonzagueville">Gonzagueville</option>
+          <option value="Faya">Faya</option>
+        </select>
+      </div>
+
+      <!-- Résultat prix -->
+      <div class="price-card" id="priceCard">
+        <p class="price-route" id="priceRoute">—</p>
+        <p class="price-type">Abonnement Mensuel Aller-Retour</p>
+        <div>
+          <span class="price-amount" id="priceAmount">—</span>
+          <span class="price-currency"> FCFA</span>
+        </div>
+        <p class="price-period">par mois • trajet quotidien matin + soir</p>
+        <div class="price-divider"></div>
+        <div class="price-includes">
+          <div class="price-include-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Trajet aller le matin
+          </div>
+          <div class="price-include-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Trajet retour le soir
+          </div>
+          <div class="price-include-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Bus climatisé, siège garanti
+          </div>
+          <div class="price-include-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Valable 30 jours calendaires
+          </div>
+        </div>
+      </div>
+
+      <!-- Trajet non disponible -->
+      <div class="price-unavailable" id="priceUnavailable">
+        Ce trajet n'est pas encore disponible. Contactez-nous pour plus d'informations.
+      </div>
+
+      <!-- Bouton souscrire -->
+      <button class="subscribe-btn" id="subscribeBtn" onclick="souscrire()">
+        Souscrire à cet abonnement
+      </button>
+    </div>
+
     <!-- FAQ -->
     <div class="faq-section">
       <h3 class="section-title">Questions fréquentes</h3>
-      
-      <div class="faq-item" onclick="toggleFaq(this)">
+
+      <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-question">
-          <span>Comment fonctionne l'abonnement ?</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
+          <span>Comment fonctionne l'abonnement mensuel ?</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="faq-answer">
-          Votre abonnement est activé dès le paiement et valable pendant 30 jours. Vous pouvez réserver vos trajets sans limite dans la zone couverte par votre forfait.
+          Votre abonnement couvre un trajet aller le matin et un trajet retour le soir, chaque jour ouvrable pendant 30 jours. Il est activé dès confirmation du paiement.
         </div>
       </div>
-      
-      <div class="faq-item" onclick="toggleFaq(this)">
+
+      <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-question">
           <span>Puis-je annuler mon abonnement ?</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="faq-answer">
-          Oui, vous pouvez annuler à tout moment. L'abonnement reste actif jusqu'à la fin de la période payée et ne sera pas renouvelé automatiquement.
+          Oui. L'abonnement reste actif jusqu'à la fin de la période payée et ne sera pas renouvelé automatiquement.
         </div>
       </div>
-      
-      <div class="faq-item" onclick="toggleFaq(this)">
+
+      <div class="faq-item" onclick="this.classList.toggle('open')">
         <div class="faq-question">
-          <span>Que se passe-t-il si je dépasse ma zone ?</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"/>
-          </svg>
+          <span>Quels modes de paiement sont acceptés ?</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="faq-answer">
-          Si votre trajet dépasse la distance couverte par votre forfait, vous paierez uniquement la différence au tarif normal. Pas de surprise !
+          Nous acceptons Orange Money, MTN Mobile Money, Moov Money, Wave et les cartes bancaires.
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="this.classList.toggle('open')">
+        <div class="faq-question">
+          <span>Mon trajet n'est pas dans la liste, que faire ?</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="faq-answer">
+          Contactez-nous sur WhatsApp au +225 07 03 28 53 59. Nous étudions toutes les demandes pour créer de nouvelles lignes.
         </div>
       </div>
     </div>
   </main>
-  
+
   <!-- Bottom Navigation -->
   <nav class="bottom-nav">
     <a href="accueil.html" class="nav-item">
@@ -399,7 +505,7 @@
         <path d="M13.73 21a2 2 0 01-3.46 0"/>
       </svg>
       <span>Notifs</span>
-      <span class="nav-badge">3</span>
+      <span class="nav-badge" id="navBadge" style="display:none;"></span>
     </a>
     <a href="profil.html" class="nav-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -409,15 +515,120 @@
       <span>Profil</span>
     </a>
   </nav>
-  
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="js/app.js"></script>
   <script>
-    function selectPlan(plan) {
-      navigateTo('paiement.html?plan=' + plan);
+    /* Grille tarifaire en mémoire (chargée depuis Supabase) */
+    let grilleTarifs = [];
+    let tarifSelectionne = null;
+
+    /* Charger la grille + abonnements actifs au démarrage */
+    document.addEventListener('DOMContentLoaded', async function() {
+      try {
+        grilleTarifs = await getGrilleTarifaire();
+      } catch (err) {
+        grilleTarifs = [];
+      }
+
+      /* Afficher les abonnements actifs de l'utilisateur */
+      try {
+        const abos = await getMesAbonnements();
+        if (abos && abos.length > 0) {
+          const section = document.getElementById('mesAbonnements');
+          section.style.display = 'block';
+          const liste = document.getElementById('listeAbonnements');
+          liste.innerHTML = abos.map(a => {
+            const abo = a.abonnement || {};
+            const fin = a.date_fin ? new Date(a.date_fin).toLocaleDateString('fr-FR') : '—';
+            return `
+              <div class="abonnement-actif">
+                <p class="abo-route">${abo.depart || '—'} → ${abo.destination || '—'}</p>
+                <p class="abo-meta">Expire le ${fin} • ${abo.prix_mensuel ? abo.prix_mensuel.toLocaleString('fr-FR') + ' FCFA' : '—'}/mois</p>
+                <span class="abo-badge">${a.statut === 'actif' ? 'Actif' : a.statut}</span>
+              </div>`;
+          }).join('');
+        }
+      } catch (_) {}
+
+      /* Compteur notifications */
+      try {
+        const count = await compterNotificationsNonLues();
+        if (count > 0) {
+          const badge = document.getElementById('navBadge');
+          badge.textContent = count;
+          badge.style.display = '';
+        }
+      } catch (_) {}
+    });
+
+    /* Calculer le tarif quand l'utilisateur sélectionne départ + destination */
+    async function calculerTarif() {
+      const depart      = document.getElementById('selectDepart').value;
+      const destination = document.getElementById('selectDestination').value;
+      const priceCard   = document.getElementById('priceCard');
+      const priceUnavail = document.getElementById('priceUnavailable');
+      const subscribeBtn = document.getElementById('subscribeBtn');
+
+      /* Réinitialiser */
+      priceCard.classList.remove('visible');
+      priceUnavail.classList.remove('visible');
+      subscribeBtn.classList.remove('visible');
+      tarifSelectionne = null;
+
+      if (!depart || !destination || depart === destination) return;
+
+      /* Chercher dans la grille locale */
+      const tarif = grilleTarifs.find(t => t.depart === depart && t.destination === destination);
+
+      if (tarif) {
+        tarifSelectionne = tarif;
+        document.getElementById('priceRoute').textContent = `${depart} → ${destination}`;
+        document.getElementById('priceAmount').textContent = tarif.prix_mensuel.toLocaleString('fr-FR');
+        priceCard.classList.add('visible');
+        subscribeBtn.classList.add('visible');
+      } else {
+        /* Essai en sens inverse */
+        const tarifInverse = grilleTarifs.find(t => t.depart === destination && t.destination === depart);
+        if (tarifInverse) {
+          tarifSelectionne = tarifInverse;
+          document.getElementById('priceRoute').textContent = `${destination} → ${depart}`;
+          document.getElementById('priceAmount').textContent = tarifInverse.prix_mensuel.toLocaleString('fr-FR');
+          priceCard.classList.add('visible');
+          subscribeBtn.classList.add('visible');
+        } else {
+          priceUnavail.classList.add('visible');
+        }
+      }
     }
-    
-    function toggleFaq(element) {
-      element.classList.toggle('open');
+
+    /* Souscrire à l'abonnement sélectionné */
+    async function souscrire() {
+      if (!tarifSelectionne) return;
+
+      if (!estConnecte()) {
+        alert('Connectez-vous pour souscrire à un abonnement.');
+        window.location.href = 'connexion.html';
+        return;
+      }
+
+      const btn = document.getElementById('subscribeBtn');
+      btn.disabled = true;
+      btn.textContent = 'Traitement...';
+
+      try {
+        const souscription = await souscrireAbonnement(tarifSelectionne.id, null);
+        /* Rediriger vers le paiement avec les infos nécessaires */
+        const montant = tarifSelectionne.prix_mensuel;
+        const depart = tarifSelectionne.depart;
+        const dest = tarifSelectionne.destination;
+        window.location.href = `paiement.html?type=abonnement&montant=${montant}&souscription_id=${souscription.id}&label=${encodeURIComponent(depart + ' → ' + dest)}`;
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Souscrire à cet abonnement';
+        alert('Erreur lors de la souscription. Veuillez réessayer.');
+      }
     }
   </script>
 </body>

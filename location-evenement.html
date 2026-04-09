@@ -114,18 +114,60 @@
     </div>
   </main>
   
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="js/app.js"></script>
   <script>
+    const TYPES_EVENEMENT = {
+      'Mariage': 'mariage',
+      'Séminaire': 'meeting',
+      'Excursion': 'excursion',
+      'Autre': 'autre'
+    };
+
     document.querySelectorAll('.event-card').forEach(card => {
       card.addEventListener('click', function() {
         document.querySelectorAll('.event-card').forEach(c => c.classList.remove('selected'));
         this.classList.add('selected');
       });
     });
-    
-    function submitRequest() {
-      alert('Demande envoyée ! Nous vous contacterons sous 24h.');
-      navigateTo('accueil.html');
+
+    async function submitRequest() {
+      const btn = document.querySelector('.submit-btn');
+
+      const selectedCard = document.querySelector('.event-card.selected');
+      const typeLabel = selectedCard ? selectedCard.querySelector('.event-name').textContent.trim() : 'Autre';
+      const typeEvenement = TYPES_EVENEMENT[typeLabel] || 'autre';
+
+      const inputs = document.querySelectorAll('.form-input');
+      const dateEvenement = inputs[0].value;
+      const nombrePersonnes = parseInt(inputs[1].value || '0', 10);
+      const lieuDepart = inputs[2].value.trim();
+      const lieuDestination = inputs[3].value.trim();
+
+      if (!dateEvenement || !lieuDepart || !lieuDestination) {
+        alert('Veuillez remplir tous les champs.');
+        return;
+      }
+
+      btn.textContent = 'Envoi en cours...';
+      btn.disabled = true;
+
+      try {
+        await creerDemandeEvenement({
+          type_evenement: typeEvenement,
+          lieu_depart: lieuDepart,
+          lieu_destination: lieuDestination,
+          date_evenement: dateEvenement,
+          nombre_personnes: nombrePersonnes || null
+        });
+        alert('Demande envoyée ! Nous vous contacterons sous 24h.');
+        navigateTo('accueil.html');
+      } catch (err) {
+        btn.textContent = 'Demander un devis';
+        btn.disabled = false;
+        alert('Erreur lors de l\'envoi. Veuillez réessayer.');
+      }
     }
   </script>
 </body>

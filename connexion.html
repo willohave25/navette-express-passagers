@@ -4,316 +4,281 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#1B2A4A">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Navette Express">
-  <meta name="description" content="Créez votre compte Navette Express pour réserver vos trajets à Abidjan.">
+  <meta name="description" content="Connexion à Navette Express - Accédez à votre compte pour réserver vos trajets.">
   
-  <!-- Favicon et icônes -->
   <link rel="icon" type="image/png" sizes="32x32" href="images/icons/icon-32x32.png">
   <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
-  
-  <!-- Manifest PWA -->
   <link rel="manifest" href="manifest.json">
   
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Styles -->
   <link rel="stylesheet" href="css/app.css">
   
-  <title>Inscription - Navette Express</title>
+  <title>Connexion - Navette Express</title>
+  
+  <style>
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      padding-top: calc(60px + env(safe-area-inset-top, 0px));
+    }
+    
+    .auth-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .logo-container {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 16px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .logo-container img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+    
+    .auth-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .auth-subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,0.6);
+    }
+    
+    .auth-form {
+      flex: 1;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 8px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 16px;
+      font-size: 16px;
+      font-family: inherit;
+      color: #FFFFFF;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      transition: all 0.2s;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #2EC4B6;
+      background: rgba(46,196,182,0.05);
+    }
+    
+    .form-input::placeholder {
+      color: rgba(255,255,255,0.3);
+    }
+    
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: 14px;
+      color: #2EC4B6;
+      text-decoration: none;
+      margin-top: 8px;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      margin-top: 24px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #0F1A2E;
+      background: #C8A951;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    
+    .submit-btn:hover {
+      background: #d4b85e;
+    }
+    
+    .submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .auth-footer {
+      text-align: center;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 32px;
+    }
+    
+    .auth-footer p {
+      font-size: 15px;
+      color: rgba(255,255,255,0.6);
+    }
+    
+    .auth-footer a {
+      color: #2EC4B6;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .social-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 32px 0;
+    }
+    
+    .social-divider::before,
+    .social-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .social-divider span {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
+    }
+    
+    .social-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #FFFFFF;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    
+    .social-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+  </style>
 </head>
 <body class="no-nav">
-  <div class="auth-page">
+  <div class="auth-container">
     <!-- Header -->
     <div class="auth-header">
-      <picture class="auth-logo">
-        <source srcset="images/logo/logo-jaebets.webp" type="image/webp">
-        <img src="images/logo/logo-jaebets.png" alt="Logo Navette Express" width="80" height="80">
-      </picture>
-      <h1 class="auth-title">Créer votre compte Navette Express</h1>
-      <p class="auth-subtitle">Rejoignez des milliers de passagers à Abidjan</p>
+      <div class="logo-container">
+        <picture>
+          <source srcset="images/logo/logo-jaebets.webp" type="image/webp">
+          <img src="images/logo/logo-jaebets.png" alt="Logo" loading="eager">
+        </picture>
+      </div>
+      <h1 class="auth-title">Se connecter à Navette Express</h1>
+      <p class="auth-subtitle">Accédez à votre compte</p>
     </div>
     
     <!-- Formulaire -->
-    <div class="auth-form">
-      <form id="inscription-form" novalidate>
-        <!-- Nom complet -->
-        <div class="form-group">
-          <label for="fullname" class="form-label">Nom complet</label>
-          <input 
-            type="text" 
-            id="fullname" 
-            name="fullname" 
-            class="form-input" 
-            placeholder="Ex : Kouadio Jean-Marc"
-            required
-            autocomplete="name"
-          >
-        </div>
-        
-        <!-- Téléphone -->
-        <div class="form-group">
-          <label for="phone" class="form-label">Téléphone</label>
-          <input 
-            type="tel" 
-            id="phone" 
-            name="phone" 
-            class="form-input" 
-            placeholder="Ex : 07 03 28 53 59"
-            required
-            autocomplete="tel"
-          >
-          <p class="form-hint">Numéro utilisé pour les notifications et paiements</p>
-        </div>
-        
-        <!-- Email -->
-        <div class="form-group">
-          <label for="email" class="form-label">Email</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            class="form-input" 
-            placeholder="Ex : jean.kouadio@email.com"
-            required
-            autocomplete="email"
-          >
-        </div>
-        
-        <!-- Mot de passe -->
-        <div class="form-group">
-          <label for="password" class="form-label">Mot de passe</label>
-          <div class="password-input-wrapper">
-            <input 
-              type="password" 
-              id="password" 
-              name="password" 
-              class="form-input" 
-              placeholder="8 caractères minimum"
-              required
-              minlength="8"
-              autocomplete="new-password"
-            >
-            <button type="button" class="password-toggle" onclick="togglePassword('password')">
-              <!-- Icône œil -->
-              <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-              <svg class="eye-closed hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-                <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/>
-                <line x1="1" y1="1" x2="23" y2="23"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        <!-- Quartier domicile -->
-        <div class="form-group">
-          <label for="quartier" class="form-label">Quartier domicile</label>
-          <select id="quartier" name="quartier" class="form-input form-select" required>
-            <option value="" disabled selected>Sélectionnez votre quartier</option>
-            <option value="yopougon">Yopougon</option>
-            <option value="abobo">Abobo</option>
-            <option value="cocody">Cocody</option>
-            <option value="adjame">Adjamé</option>
-            <option value="marcory">Marcory</option>
-            <option value="koumassi">Koumassi</option>
-            <option value="treichville">Treichville</option>
-            <option value="port-bouet">Port-Bouët</option>
-            <option value="anyama">Anyama</option>
-            <option value="bingerville">Bingerville</option>
-            <option value="songon">Songon</option>
-            <option value="plateau">Plateau</option>
-            <option value="attiecoube">Attécoubé</option>
-            <option value="autre">Autre</option>
-          </select>
-        </div>
-        
-        <!-- Lieu de travail -->
-        <div class="form-group">
-          <label for="workplace" class="form-label">Lieu de travail</label>
-          <select id="workplace" name="workplace" class="form-input form-select" required>
-            <option value="" disabled selected>Sélectionnez votre destination</option>
-            <option value="plateau">Plateau</option>
-            <option value="marcory">Marcory</option>
-            <option value="cocody">Cocody</option>
-            <option value="treichville">Treichville</option>
-            <option value="zone-industrielle">Zone Industrielle</option>
-            <option value="vridi">Vridi</option>
-            <option value="riviera">Riviera</option>
-            <option value="deux-plateaux">Deux Plateaux</option>
-            <option value="angre">Angré</option>
-            <option value="autre">Autre</option>
-          </select>
-        </div>
-        
-        <!-- Horaires préférés -->
-        <div class="form-group">
-          <label class="form-label">Horaires de trajet</label>
-          <div class="horaires-grid">
-            <label class="form-check horaire-option">
-              <input type="checkbox" name="horaires" value="matin" class="form-check-input" checked>
-              <span class="horaire-card">
-                <span class="horaire-icon">
-                  <!-- Icône soleil levant -->
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
-                    <path d="M17 18a5 5 0 00-10 0"/>
-                    <line x1="12" y1="2" x2="12" y2="9"/>
-                    <line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/>
-                    <line x1="1" y1="18" x2="3" y2="18"/>
-                    <line x1="21" y1="18" x2="23" y2="18"/>
-                    <line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/>
-                  </svg>
-                </span>
-                <span class="horaire-label">Matin</span>
-                <span class="horaire-time">06h - 09h</span>
-              </span>
-            </label>
-            <label class="form-check horaire-option">
-              <input type="checkbox" name="horaires" value="soir" class="form-check-input" checked>
-              <span class="horaire-card">
-                <span class="horaire-icon">
-                  <!-- Icône soleil couchant -->
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24">
-                    <path d="M17 18a5 5 0 00-10 0"/>
-                    <line x1="12" y1="9" x2="12" y2="2"/>
-                    <line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/>
-                    <line x1="1" y1="18" x2="3" y2="18"/>
-                    <line x1="21" y1="18" x2="23" y2="18"/>
-                    <line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/>
-                  </svg>
-                </span>
-                <span class="horaire-label">Après-midi</span>
-                <span class="horaire-time">16h - 19h</span>
-              </span>
-            </label>
-          </div>
-        </div>
-        
-        <!-- Bouton inscription -->
-        <button type="submit" class="btn btn-primary btn-block btn-lg">
-          Créer mon compte
-        </button>
-      </form>
+    <form class="auth-form" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label class="form-label">Téléphone ou email</label>
+        <input type="text" class="form-input" id="loginId" placeholder="Ex : 07 03 28 53 59 ou email@exemple.com" required>
+      </div>
       
-      <!-- Conditions -->
-      <p class="auth-terms">
-        En créant un compte, vous acceptez les 
-        <a href="cgv.html">Conditions Générales d'Utilisation</a> 
-        et la 
-        <a href="confidentialite.html">Politique de Confidentialité</a>.
-      </p>
-    </div>
+      <div class="form-group">
+        <label class="form-label">Mot de passe</label>
+        <input type="password" class="form-input" id="password" placeholder="Votre mot de passe" required>
+        <a href="#" class="forgot-link" onclick="alert('Fonctionnalité à venir')">Mot de passe oublié ? Réinitialiser</a>
+      </div>
+      
+      <button type="submit" class="submit-btn" id="submitBtn">Se connecter</button>
+      
+      <div class="social-divider">
+        <span>ou</span>
+      </div>
+      
+      <button type="button" class="social-btn" onclick="alert('Connexion Google à venir')">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Continuer avec Google
+      </button>
+    </form>
     
     <!-- Footer -->
     <div class="auth-footer">
-      <p>Vous avez déjà un compte ? <a href="connexion.html">Se connecter</a></p>
+      <p>Pas encore de compte ? <a href="inscription.html">Créer un compte</a></p>
     </div>
   </div>
   
-  <!-- Styles spécifiques -->
-  <style>
-    .password-input-wrapper {
-      position: relative;
-    }
-    
-    .password-input-wrapper .form-input {
-      padding-right: 48px;
-    }
-    
-    .password-toggle {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-muted);
-      padding: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .password-toggle .hidden {
-      display: none;
-    }
-    
-    .horaires-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--spacing-md);
-    }
-    
-    .horaire-option {
-      cursor: pointer;
-    }
-    
-    .horaire-option .form-check-input {
-      position: absolute;
-      opacity: 0;
-      pointer-events: none;
-    }
-    
-    .horaire-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: var(--spacing-md);
-      background: var(--card-bg);
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--radius-md);
-      transition: all var(--transition-fast);
-    }
-    
-    .horaire-option .form-check-input:checked + .horaire-card {
-      border-color: var(--secondary-turquoise);
-      background: rgba(46, 196, 182, 0.1);
-    }
-    
-    .horaire-icon {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--premium-gold);
-      margin-bottom: var(--spacing-sm);
-    }
-    
-    .horaire-label {
-      font-weight: var(--font-semibold);
-      font-size: 14px;
-      margin-bottom: 2px;
-    }
-    
-    .horaire-time {
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-  </style>
-  
-  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="js/app.js"></script>
   <script>
-    /* Toggle visibilité mot de passe */
-    function togglePassword(inputId) {
-      const input = document.getElementById(inputId);
-      const wrapper = input.closest('.password-input-wrapper');
-      const eyeOpen = wrapper.querySelector('.eye-open');
-      const eyeClosed = wrapper.querySelector('.eye-closed');
-      
-      if (input.type === 'password') {
-        input.type = 'text';
-        eyeOpen.classList.add('hidden');
-        eyeClosed.classList.remove('hidden');
-      } else {
-        input.type = 'password';
-        eyeOpen.classList.remove('hidden');
-        eyeClosed.classList.add('hidden');
+    /* Afficher un message d'erreur sous le bouton */
+    function afficherErreur(msg) {
+      let el = document.getElementById('erreurMsg');
+      if (!el) {
+        el = document.createElement('p');
+        el.id = 'erreurMsg';
+        el.style.cssText = 'color:#E74C3C;font-size:14px;text-align:center;margin-top:12px;';
+        document.getElementById('submitBtn').after(el);
+      }
+      el.textContent = msg;
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('submitBtn');
+      btn.textContent = 'Connexion...';
+      btn.disabled = true;
+
+      const identifier = document.getElementById('loginId').value.trim();
+      const password   = document.getElementById('password').value;
+
+      try {
+        await connecterUtilisateur(identifier, password);
+        window.location.href = 'accueil.html';
+      } catch (err) {
+        btn.textContent = 'Se connecter';
+        btn.disabled = false;
+        afficherErreur('Identifiants incorrects. Vérifiez votre téléphone/email et mot de passe.');
       }
     }
   </script>
