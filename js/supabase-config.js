@@ -1,331 +1,501 @@
-/*
+/**
  * Configuration Supabase — Navette Express Passagers
- * Backend, authentification et données
+ * Schéma unifié JAEBETS HOLDING
  * W2K-Digital 2025
  */
 
 const SUPABASE_URL = 'https://ilycnutphhmuvaonkrsa.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlseWNudXRwaGhtdXZhb25rcnNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ1MjY5NDcsImV4cCI6MjA5MDEwMjk0N30.80ipBwMVvAkC2f0Oz2Wzl8E6GjMwlLCoE72XbePtmnM';
 
-/* Initialisation du client Supabase (CDN global) */
 const { createClient } = supabase;
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-/* Export global pour toutes les pages */
 window.supabaseClient = supabaseClient;
 
-// ========== AUTHENTIFICATION ==========
+// ─── AUTHENTIFICATION ────────────────────────────────────────────────
 
-/* Inscription d'un nouvel utilisateur */
+/**
+ * Inscription d'un nouveau passager
+ */
 async function inscrireUtilisateur(data) {
-  const { phone, email, full_name, password, quartier, lieu_travail, horaires } = data;
+    const { phone, email, full_name, password, quartier, lieu_travail, horaires } = data;
 
-  const { data: user, error } = await supabaseClient
-    .from('users')
-    .insert([{
-      phone,
-      email,
-      full_name,
-      password_hash: password,
-      quartier,
-      lieu_travail,
-      horaires: horaires || 'matin'
-    }])
-    .select()
-    .single();
+    try {
+        // Créer le compte Supabase Auth
+        const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+            email,
+            password,
+            options: {
+                data: { full_name, role: 'passenger' }
+            }
+        });
 
-  if (error) throw error;
+        if (authError) throw authError;
 
-  localStorage.setItem('userId', user.id);
-  localStorage.setItem('userName', user.full_name);
-  localStorage.setItem('userPhone', user.phone);
-  localStorage.setItem('isLoggedIn', 'true');
+        // Créer le profil dans public.users
+        // (le trigger crée aussi une ligne, on fait un upsert pour compléter)
+        const { data: userRow, error: profileError } = await supabaseClient
+            .from('users')
+            .upsert({
+                auth_id: authData.user.id,
+                email,
+                phone,
+                full_name,
+                quartier: quartier || null,
+                lieu_travail: lieu_travail || null,
+                horaires: horaires || 'matin',
+                role: 'passenger'
+            }, { onConflict: 'auth_id' })
+            .select()
+            .single();
 
-  return user;
+        if (profileError) throw profileError;
+
+        localStorage.setItem('userId', userRow.id);
+        localStorage.setItem('userName', userRow.full_name);
+        localStorage.setItem('userPhone', userRow.phone || phone);
+        localStorage.setItem('isLoggedIn', 'true');
+
+        return userRow;
+    } catch (error) {
+        console.error('[Inscription] Erreur:', error.message);
+        throw error;
+    }
 }
 
-/* Connexion par téléphone ou email */
+/**
+ * Connexion passager (email ou téléphone + mot de passe)
+ */
 async function connecterUtilisateur(identifier, password) {
-  const { data: user, error } = await supabaseClient
-    .from('users')
-    .select('*')
-    .or(`phone.eq.${identifier},email.eq.${identifier}`)
-    .eq('password_hash', password)
-    .single();
+    try {
+        // Déterminer si c'est un email ou un téléphone
+        const isEmail = identifier.includes('@');
+        let email = identifier;
 
-  if (error || !user) throw new Error('Identifiants incorrects');
+        if (!isEmail) {
+            // Chercher l'email correspondant au téléphone
+            const { data: userRow, error: lookupErr } = await supabaseClient
+                .from('users')
+                .select('email')
+                .eq('phone', identifier)
+                .single();
 
-  localStorage.setItem('userId', user.id);
-  localStorage.setItem('userName', user.full_name);
-  localStorage.setItem('userPhone', user.phone);
-  localStorage.setItem('isLoggedIn', 'true');
+            if (lookupErr || !userRow) throw new Error('Numéro de téléphone introuvable');
+            email = userRow.email;
+        }
 
-  return user;
+        const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+
+        // Récupérer le profil
+        const { data: userProfile, error: profileErr } = await supabaseClient
+            .from('users')
+            .select('*')
+            .eq('auth_id', data.user.id)
+            .single();
+
+        if (profileErr || !userProfile) throw new Error('Profil introuvable');
+
+        localStorage.setItem('userId', userProfile.id);
+        localStorage.setItem('userName', userProfile.full_name);
+        localStorage.setItem('userPhone', userProfile.phone || '');
+        localStorage.setItem('isLoggedIn', 'true');
+
+        return userProfile;
+    } catch (error) {
+        console.error('[Connexion] Erreur:', error.message);
+        throw new Error('Identifiants incorrects');
+    }
 }
 
-/* Déconnexion */
-function deconnecterUtilisateur() {
-  localStorage.removeItem('userId');
-  localStorage.removeItem('userName');
-  localStorage.removeItem('userPhone');
-  localStorage.removeItem('isLoggedIn');
-  window.location.href = 'connexion.html';
+/**
+ * Déconnexion
+ */
+async function deconnecterUtilisateur() {
+    await supabaseClient.auth.signOut();
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userPhone');
+    localStorage.removeItem('isLoggedIn');
+    window.location.href = 'connexion.html';
 }
 
-/* Vérifier si l'utilisateur est connecté */
+/**
+ * Vérifier si l'utilisateur est connecté
+ */
 function estConnecte() {
-  return localStorage.getItem('isLoggedIn') === 'true';
+    return localStorage.getItem('isLoggedIn') === 'true';
 }
 
-// ========== LIGNES ==========
+// ─── LIGNES ──────────────────────────────────────────────────────────
 
-/* Récupérer toutes les lignes avec filtres optionnels */
+/**
+ * Récupérer toutes les lignes avec filtres optionnels
+ */
 async function getLignes(filtres = {}) {
-  let query = supabaseClient.from('lignes').select('*');
+    let query = supabaseClient.from('lines').select('*');
 
-  if (filtres.depart) query = query.eq('depart', filtres.depart);
-  if (filtres.statut) query = query.eq('statut', filtres.statut);
+    if (filtres.depart)  query = query.eq('origin', filtres.depart);
+    if (filtres.statut)  query = query.eq('status', filtres.statut);
+    if (!filtres.statut) query = query.neq('status', 'inactive'); // par défaut : actives + pending
 
-  const { data, error } = await query.order('nom');
-  if (error) throw error;
-  return data;
+    const { data, error } = await query.order('name');
+    if (error) throw error;
+
+    // Mapper vers les noms attendus par les pages HTML
+    return (data || []).map(l => ({
+        ...l,
+        nom: l.name,
+        depart: l.origin,
+        destination: l.destination,
+        zone_depart: l.origin_zone,
+        zone_destination: l.destination_zone,
+        prix_mensuel: l.price_monthly,
+        prix_unitaire: l.price_single,
+        statut: l.status,
+        aller_retour: l.is_round_trip,
+        heure_depart: l.departure_time,
+        heure_retour: l.return_time,
+        jours: l.days_active
+    }));
 }
 
-/* Récupérer une ligne par son ID */
+/**
+ * Récupérer toutes les lignes actives uniquement
+ */
+async function getLignesActives() {
+    return getLignes({ statut: 'active' });
+}
+
+/**
+ * Récupérer une ligne par son ID
+ */
 async function getLigneById(id) {
-  const { data, error } = await supabaseClient
-    .from('lignes')
-    .select('*')
-    .eq('id', id)
-    .single();
+    const { data, error } = await supabaseClient
+        .from('lines')
+        .select('*')
+        .eq('id', id)
+        .single();
 
-  if (error) throw error;
-  return data;
+    if (error) throw error;
+    return {
+        ...data,
+        nom: data.name,
+        depart: data.origin,
+        destination: data.destination,
+        prix_mensuel: data.price_monthly,
+        statut: data.status
+    };
 }
 
-// ========== ABONNEMENTS ==========
+// ─── ABONNEMENTS ─────────────────────────────────────────────────────
 
-/* Récupérer toute la grille tarifaire active */
+/**
+ * Récupérer toutes les lignes actives (grille tarifaire)
+ */
 async function getGrilleTarifaire() {
-  const { data, error } = await supabaseClient
-    .from('abonnements')
-    .select('*')
-    .eq('actif', true)
-    .order('depart');
+    const { data, error } = await supabaseClient
+        .from('lines')
+        .select('*')
+        .eq('status', 'active')
+        .order('origin');
 
-  if (error) throw error;
-  return data;
+    if (error) throw error;
+    return (data || []).map(l => ({
+        ...l,
+        depart: l.origin,
+        destination: l.destination,
+        prix: l.price_monthly,
+        actif: true
+    }));
 }
 
-/* Rechercher le tarif pour un trajet donné */
+/**
+ * Rechercher le tarif pour un trajet donné
+ */
 async function getTarifTrajet(depart, destination) {
-  const { data, error } = await supabaseClient
-    .from('abonnements')
-    .select('*')
-    .eq('depart', depart)
-    .eq('destination', destination)
-    .single();
+    const { data, error } = await supabaseClient
+        .from('lines')
+        .select('*')
+        .eq('origin', depart)
+        .eq('destination', destination)
+        .single();
 
-  if (error) return null;
-  return data;
+    if (error) return null;
+    return { ...data, prix: data.price_monthly };
 }
 
-/* Souscrire à un abonnement mensuel */
-async function souscrireAbonnement(abonnementId, ligneId) {
-  const userId = localStorage.getItem('userId');
-  if (!userId) throw new Error('Non connecté');
+/**
+ * Souscrire à un abonnement mensuel
+ */
+async function souscrireAbonnement(ligneId, options = {}) {
+    const userId = localStorage.getItem('userId');
+    if (!userId) throw new Error('Non connecté');
 
-  const dateDebut = new Date();
-  const dateFin = new Date();
-  dateFin.setMonth(dateFin.getMonth() + 1);
+    const dateDebut = new Date();
+    const dateFin = new Date();
+    dateFin.setMonth(dateFin.getMonth() + 1);
 
-  const { data, error } = await supabaseClient
-    .from('user_subscriptions')
-    .insert([{
-      user_id: userId,
-      abonnement_id: abonnementId,
-      ligne_id: ligneId,
-      date_debut: dateDebut.toISOString().split('T')[0],
-      date_fin: dateFin.toISOString().split('T')[0]
-    }])
-    .select()
-    .single();
+    // Récupérer le prix de la ligne
+    const { data: ligne } = await supabaseClient
+        .from('lines')
+        .select('price_monthly')
+        .eq('id', ligneId)
+        .single();
 
-  if (error) throw error;
-  return data;
+    const { data, error } = await supabaseClient
+        .from('subscriptions')
+        .insert({
+            user_id: userId,
+            line_id: ligneId,
+            start_date: dateDebut.toISOString().split('T')[0],
+            end_date: dateFin.toISOString().split('T')[0],
+            price_paid: options.price || ligne?.price_monthly || 0,
+            payment_method: options.paymentMethod || null,
+            payment_reference: options.paymentReference || null,
+            status: 'pending',
+            is_round_trip: true
+        })
+        .select()
+        .single();
+
+    if (error) throw error;
+    return data;
 }
 
-/* Récupérer les abonnements de l'utilisateur connecté */
+/**
+ * Récupérer les abonnements de l'utilisateur connecté
+ */
 async function getMesAbonnements() {
-  const userId = localStorage.getItem('userId');
-  if (!userId) return [];
+    const userId = localStorage.getItem('userId');
+    if (!userId) return [];
 
-  const { data, error } = await supabaseClient
-    .from('user_subscriptions')
-    .select(`
-      *,
-      abonnement:abonnements(*),
-      ligne:lignes(*)
-    `)
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
+    const { data, error } = await supabaseClient
+        .from('subscriptions')
+        .select(`
+            *,
+            ligne:lines(id, name, origin, destination, price_monthly, departure_time, return_time, status)
+        `)
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
 
-  if (error) throw error;
-  return data;
+    if (error) throw error;
+
+    return (data || []).map(s => ({
+        ...s,
+        date_debut: s.start_date,
+        date_fin: s.end_date,
+        montant: s.price_paid,
+        statut: s.status,
+        nom_ligne: s.ligne?.name,
+        depart: s.ligne?.origin,
+        destination: s.ligne?.destination
+    }));
 }
 
-// ========== RÉSERVATIONS ==========
+// ─── RÉSERVATIONS ────────────────────────────────────────────────────
 
-/* Créer une réservation ponctuelle */
-async function creerReservation(ligneId, dateTrajet, siege, montant) {
-  const userId = localStorage.getItem('userId');
-  if (!userId) throw new Error('Non connecté');
+/**
+ * Créer une réservation ponctuelle
+ */
+async function creerReservation(tripId, siege, montant, options = {}) {
+    const userId = localStorage.getItem('userId');
+    if (!userId) throw new Error('Non connecté');
 
-  const { data, error } = await supabaseClient
-    .from('reservations')
-    .insert([{
-      user_id: userId,
-      ligne_id: ligneId,
-      date_trajet: dateTrajet,
-      siege,
-      montant
-    }])
-    .select()
-    .single();
+    const { data, error } = await supabaseClient
+        .from('reservations')
+        .insert({
+            user_id: userId,
+            trip_id: tripId,
+            seat_number: siege || null,
+            price_paid: montant,
+            payment_method: options.paymentMethod || null,
+            payment_reference: options.paymentReference || null,
+            status: 'confirmed',
+            boarding_status: 'waiting'
+        })
+        .select()
+        .single();
 
-  if (error) throw error;
-  return data;
+    if (error) throw error;
+    return data;
 }
 
-/* Récupérer l'historique des trajets */
+/**
+ * Récupérer l'historique des trajets du passager
+ */
 async function getHistorique() {
-  const userId = localStorage.getItem('userId');
-  if (!userId) return [];
+    const userId = localStorage.getItem('userId');
+    if (!userId) return [];
 
-  const { data, error } = await supabaseClient
-    .from('reservations')
-    .select(`
-      *,
-      ligne:lignes(nom, depart, destination)
-    `)
-    .eq('user_id', userId)
-    .order('date_trajet', { ascending: false });
+    const { data, error } = await supabaseClient
+        .from('reservations')
+        .select(`
+            *,
+            trajet:trips(
+                trip_date, departure_time,
+                ligne:lines(name, origin, destination)
+            )
+        `)
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
 
-  if (error) throw error;
-  return data;
+    if (error) throw error;
+
+    return (data || []).map(r => ({
+        ...r,
+        date_trajet: r.trajet?.trip_date,
+        nom_ligne: r.trajet?.ligne?.name,
+        depart: r.trajet?.ligne?.origin,
+        destination: r.trajet?.ligne?.destination,
+        montant: r.price_paid,
+        statut: r.status
+    }));
 }
 
-// ========== NOTIFICATIONS ==========
+// ─── NOTIFICATIONS ───────────────────────────────────────────────────
 
-/* Récupérer les notifications de l'utilisateur */
+/**
+ * Récupérer les notifications du passager
+ */
 async function getNotifications() {
-  const userId = localStorage.getItem('userId');
-  if (!userId) return [];
+    const userId = localStorage.getItem('userId');
+    if (!userId) return [];
 
-  const { data, error } = await supabaseClient
-    .from('notifications')
-    .select('*')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false });
+    const { data, error } = await supabaseClient
+        .from('notifications')
+        .select('*')
+        .or(`target_audience.eq.all,target_audience.eq.passengers,target_user_id.eq.${userId}`)
+        .order('created_at', { ascending: false })
+        .limit(50);
 
-  if (error) throw error;
-  return data;
+    if (error) throw error;
+
+    return (data || []).map(n => ({
+        ...n,
+        lu: n.is_read,
+        date_creation: n.created_at
+    }));
 }
 
-/* Marquer une notification comme lue */
+/**
+ * Marquer une notification comme lue
+ */
 async function marquerNotificationLue(notificationId) {
-  const { error } = await supabaseClient
-    .from('notifications')
-    .update({ lu: true })
-    .eq('id', notificationId);
+    const { error } = await supabaseClient
+        .from('notifications')
+        .update({ is_read: true })
+        .eq('id', notificationId);
 
-  if (error) throw error;
+    if (error) throw error;
 }
 
-/* Compter les notifications non lues */
+/**
+ * Compter les notifications non lues
+ */
 async function compterNotificationsNonLues() {
-  const userId = localStorage.getItem('userId');
-  if (!userId) return 0;
+    const userId = localStorage.getItem('userId');
+    if (!userId) return 0;
 
-  const { count, error } = await supabaseClient
-    .from('notifications')
-    .select('*', { count: 'exact', head: true })
-    .eq('user_id', userId)
-    .eq('lu', false);
+    const { count, error } = await supabaseClient
+        .from('notifications')
+        .select('*', { count: 'exact', head: true })
+        .or(`target_audience.eq.all,target_audience.eq.passengers,target_user_id.eq.${userId}`)
+        .eq('is_read', false);
 
-  if (error) return 0;
-  return count;
+    if (error) return 0;
+    return count;
 }
 
-// ========== ÉVÉNEMENTS ==========
+// ─── ÉVÉNEMENTS ──────────────────────────────────────────────────────
 
-/* Créer une demande de location pour événement */
+/**
+ * Créer une demande de location pour événement
+ */
 async function creerDemandeEvenement(data) {
-  const userId = localStorage.getItem('userId');
-  if (!userId) throw new Error('Non connecté');
+    const userId = localStorage.getItem('userId');
+    if (!userId) throw new Error('Non connecté');
 
-  const { data: demande, error } = await supabaseClient
-    .from('demandes_evenements')
-    .insert([{
-      user_id: userId,
-      ...data
-    }])
-    .select()
-    .single();
+    const { data: demande, error } = await supabaseClient
+        .from('event_requests')
+        .insert({
+            user_id: userId,
+            event_type: data.type || data.event_type,
+            event_date: data.date || data.event_date,
+            departure: data.depart || data.departure,
+            destination: data.destination,
+            passenger_count: data.nombre_personnes || data.passenger_count,
+            vehicle_type: data.type_vehicule || data.vehicle_type,
+            duration_hours: data.duree || data.duration_hours,
+            message: data.message,
+            status: 'pending'
+        })
+        .select()
+        .single();
 
-  if (error) throw error;
-  return demande;
+    if (error) throw error;
+    return demande;
 }
 
-// ========== PROFIL ==========
+// ─── PROFIL ──────────────────────────────────────────────────────────
 
-/* Récupérer le profil de l'utilisateur connecté */
+/**
+ * Récupérer le profil de l'utilisateur connecté
+ */
 async function getProfil() {
-  const userId = localStorage.getItem('userId');
-  if (!userId) return null;
+    const userId = localStorage.getItem('userId');
+    if (!userId) return null;
 
-  const { data, error } = await supabaseClient
-    .from('users')
-    .select('*')
-    .eq('id', userId)
-    .single();
+    const { data, error } = await supabaseClient
+        .from('users')
+        .select('*')
+        .eq('id', userId)
+        .single();
 
-  if (error) throw error;
-  return data;
+    if (error) throw error;
+    return data;
 }
 
-/* Mettre à jour le profil */
+/**
+ * Mettre à jour le profil
+ */
 async function updateProfil(updates) {
-  const userId = localStorage.getItem('userId');
-  if (!userId) throw new Error('Non connecté');
+    const userId = localStorage.getItem('userId');
+    if (!userId) throw new Error('Non connecté');
 
-  const { data, error } = await supabaseClient
-    .from('users')
-    .update(updates)
-    .eq('id', userId)
-    .select()
-    .single();
+    const { data, error } = await supabaseClient
+        .from('users')
+        .update({
+            full_name: updates.full_name || updates.nom,
+            phone: updates.phone || updates.telephone,
+            quartier: updates.quartier,
+            lieu_travail: updates.lieu_travail,
+            updated_at: new Date().toISOString()
+        })
+        .eq('id', userId)
+        .select()
+        .single();
 
-  if (error) throw error;
-  return data;
+    if (error) throw error;
+    return data;
 }
 
-/* Export global pour toutes les pages */
-window.inscrireUtilisateur = inscrireUtilisateur;
-window.connecterUtilisateur = connecterUtilisateur;
-window.deconnecterUtilisateur = deconnecterUtilisateur;
-window.estConnecte = estConnecte;
-window.getLignes = getLignes;
-window.getLigneById = getLigneById;
-window.getGrilleTarifaire = getGrilleTarifaire;
-window.getTarifTrajet = getTarifTrajet;
-window.souscrireAbonnement = souscrireAbonnement;
-window.getMesAbonnements = getMesAbonnements;
-window.creerReservation = creerReservation;
-window.getHistorique = getHistorique;
-window.getNotifications = getNotifications;
-window.marquerNotificationLue = marquerNotificationLue;
+// ─── EXPORT GLOBAL ───────────────────────────────────────────────────
+window.inscrireUtilisateur      = inscrireUtilisateur;
+window.connecterUtilisateur     = connecterUtilisateur;
+window.deconnecterUtilisateur   = deconnecterUtilisateur;
+window.estConnecte              = estConnecte;
+window.getLignes                = getLignes;
+window.getLignesActives         = getLignesActives;
+window.getLigneById             = getLigneById;
+window.getGrilleTarifaire       = getGrilleTarifaire;
+window.getTarifTrajet           = getTarifTrajet;
+window.souscrireAbonnement      = souscrireAbonnement;
+window.getMesAbonnements        = getMesAbonnements;
+window.creerReservation         = creerReservation;
+window.getHistorique            = getHistorique;
+window.getNotifications         = getNotifications;
+window.marquerNotificationLue   = marquerNotificationLue;
 window.compterNotificationsNonLues = compterNotificationsNonLues;
-window.creerDemandeEvenement = creerDemandeEvenement;
-window.getProfil = getProfil;
-window.updateProfil = updateProfil;
+window.creerDemandeEvenement    = creerDemandeEvenement;
+window.getProfil                = getProfil;
+window.updateProfil             = updateProfil;
