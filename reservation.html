@@ -327,14 +327,33 @@
   
   
   <script src="js/app.js"></script>
+  <script src="supabase-config.js"></script>
   <script>
     let selectedSeat = null;
 
     /* Récupérer les paramètres de l'URL (ligne_id, date, montant) */
     const params = new URLSearchParams(window.location.search);
-    const ligneId  = params.get('ligne_id') || null;
+    const ligneId    = params.get('ligne_id') || null;
     const dateTrajet = params.get('date') || new Date().toISOString().split('T')[0];
     const montantBase = parseInt(params.get('montant') || '0', 10);
+
+    /* Afficher le prix réel depuis l'URL */
+    (async function() {
+      const priceEl = document.getElementById('total-price');
+      if (!priceEl) return;
+      if (montantBase > 0) {
+        priceEl.textContent = new Intl.NumberFormat('fr-FR').format(montantBase) + ' FCFA';
+        return;
+      }
+      if (ligneId) {
+        try {
+          const l = await getLigneById(ligneId);
+          if (l && l.prix_unitaire) {
+            priceEl.textContent = new Intl.NumberFormat('fr-FR').format(l.prix_unitaire) + ' FCFA';
+          }
+        } catch (_) {}
+      }
+    })();
 
     function selectSeat(element, seatNumber) {
       const previous = document.querySelector('.seat.selected');
@@ -359,7 +378,7 @@
       btn.textContent = 'Enregistrement...';
 
       try {
-        const reservation = await creerReservation(ligneId, dateTrajet, String(selectedSeat), montantBase);
+        const reservation = await creerReservation(ligneId, String(selectedSeat), montantBase);
         /* Passer l'ID réservation à la page paiement */
         navigateTo('paiement.html?seat=' + selectedSeat + '&reservation_id=' + reservation.id + '&montant=' + montantBase);
       } catch (err) {

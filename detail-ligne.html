@@ -99,13 +99,14 @@
   
   <div class="book-footer">
     <div class="price-info">
-      <p class="price-label">Prix par trajet</p>
-      <p class="price-value">400 FCFA</p>
+      <p class="price-label">Abonnement mensuel</p>
+      <p class="price-value" id="prixLigne">--</span></p>
     </div>
-    <button class="book-btn" onclick="navigateTo('reservation.html')">Réserver</button>
+    <button class="book-btn" id="btnReserver" onclick="navigateTo('reservation.html')">Réserver</button>
   </div>
   
   <script src="js/app.js"></script>
+  <script src="supabase-config.js"></script>
   <script>
     document.querySelectorAll('.schedule-card').forEach(card => {
       card.addEventListener('click', function() {
@@ -113,6 +114,32 @@
         this.classList.add('selected');
       });
     });
+
+    // Charger le prix et les infos depuis l'API si line_id en URL
+    (async function() {
+      const params = new URLSearchParams(window.location.search);
+      const lineId = params.get('line_id');
+      if (!lineId) return;
+      try {
+        const ligne = await getLigneById(lineId);
+        if (!ligne) return;
+        // Titre
+        document.querySelector('.line-title').textContent = (ligne.depart || ligne.origin) + ' → ' + ligne.destination;
+        // Prix
+        const prixEl = document.getElementById('prixLigne');
+        if (prixEl && ligne.prix_mensuel) {
+          prixEl.textContent = new Intl.NumberFormat('fr-FR').format(ligne.prix_mensuel) + ' FCFA';
+        }
+        // Bouton → abonnements pré-sélectionnés
+        const btnReserver = document.getElementById('btnReserver');
+        if (btnReserver) {
+          const dep = encodeURIComponent(ligne.depart || ligne.origin || '');
+          const dst = encodeURIComponent(ligne.destination || '');
+          btnReserver.setAttribute('onclick', `navigateTo('abonnements.html?depart=${dep}&destination=${dst}')`);
+          btnReserver.textContent = 'S\'abonner';
+        }
+      } catch (_) {}
+    })();
   </script>
 </body>
 </html>

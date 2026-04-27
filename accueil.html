@@ -199,49 +199,8 @@
         <h2 class="section-title">Lignes populaires</h2>
         <a href="lignes.html" class="section-link">Voir tout</a>
       </div>
-      <div class="lines-scroll">
-        <div class="line-card" onclick="navigateTo('detail-ligne.html')">
-          <picture>
-            <source srcset="images/ecrans/passagers-lignes.webp" type="image/webp">
-            <img src="images/ecrans/passagers-lignes.jpg" alt="Ligne" class="line-image" loading="lazy">
-          </picture>
-          <div class="line-content">
-            <div class="line-header">
-              <span class="line-name">Yopougon → Plateau</span>
-              <span class="line-status">Active</span>
-            </div>
-            <p class="line-details">06:30 • 45 min • 12 places</p>
-            <span class="line-price">400 FCFA</span>
-          </div>
-        </div>
-        <div class="line-card" onclick="navigateTo('detail-ligne.html')">
-          <picture>
-            <source srcset="images/ecrans/passagers-carte.webp" type="image/webp">
-            <img src="images/ecrans/passagers-carte.jpg" alt="Ligne" class="line-image" loading="lazy">
-          </picture>
-          <div class="line-content">
-            <div class="line-header">
-              <span class="line-name">Abobo → Marcory</span>
-              <span class="line-status">Active</span>
-            </div>
-            <p class="line-details">07:00 • 50 min • 8 places</p>
-            <span class="line-price">500 FCFA</span>
-          </div>
-        </div>
-        <div class="line-card" onclick="navigateTo('detail-ligne.html')">
-          <picture>
-            <source srcset="images/ecrans/passagers-carte.webp" type="image/webp">
-            <img src="images/ecrans/passagers-carte.jpg" alt="Ligne" class="line-image" loading="lazy">
-          </picture>
-          <div class="line-content">
-            <div class="line-header">
-              <span class="line-name">Cocody → Zone 4</span>
-              <span class="line-status">Active</span>
-            </div>
-            <p class="line-details">06:45 • 35 min • 15 places</p>
-            <span class="line-price">350 FCFA</span>
-          </div>
-        </div>
+      <div class="lines-scroll" id="lignesPopulaires">
+        <p style="color:rgba(255,255,255,0.4);font-size:13px;padding:16px 0;">Chargement...</p>
       </div>
     </div>
     
@@ -287,10 +246,52 @@
   </nav>
   
   <script src="js/app.js"></script>
+  <script src="supabase-config.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async function() {
       const name = localStorage.getItem('userName') || 'Utilisateur';
       document.getElementById('userName').textContent = name.split(' ')[0];
+
+      // Charger les lignes populaires depuis l'API
+      try {
+        const lignes = await getLignesActives();
+        const container = document.getElementById('lignesPopulaires');
+        if (!lignes || lignes.length === 0) {
+          container.innerHTML = '<p style="color:rgba(255,255,255,0.4);font-size:13px;padding:16px 0;">Aucune ligne disponible.</p>';
+          return;
+        }
+        // Afficher les 3 premières lignes
+        container.innerHTML = lignes.slice(0, 3).map(l => {
+          const prix = l.prix_mensuel || l.price_monthly || 0;
+          const prixFmt = prix ? new Intl.NumberFormat('fr-FR').format(prix) + ' FCFA/mois' : '—';
+          const heure = l.heure_depart || l.departure_time || '';
+          const capacite = l.capacity || '';
+          const details = [heure, capacite ? capacite + ' places' : ''].filter(Boolean).join(' • ');
+          return `
+            <div class="line-card" onclick="navigateTo('detail-ligne.html?line_id=${l.id}')">
+              <picture>
+                <source srcset="images/ecrans/passagers-lignes.webp" type="image/webp">
+                <img src="images/ecrans/passagers-lignes.jpg" alt="Ligne" class="line-image" loading="lazy">
+              </picture>
+              <div class="line-content">
+                <div class="line-header">
+                  <span class="line-name">${l.depart || l.origin} → ${l.destination}</span>
+                  <span class="line-status">Active</span>
+                </div>
+                ${details ? `<p class="line-details">${details}</p>` : ''}
+                <span class="line-price">${prixFmt}</span>
+              </div>
+            </div>`;
+        }).join('');
+      } catch (_) {}
+
+      // Compteur notifications
+      try {
+        const count = await compterNotificationsNonLues();
+        if (count > 0) {
+          document.querySelectorAll('.nav-badge').forEach(b => { b.textContent = count; b.style.display = ''; });
+        }
+      } catch (_) {}
     });
   </script>
 </body>

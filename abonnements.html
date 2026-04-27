@@ -519,8 +519,9 @@
   
   
   <script src="js/app.js"></script>
+  <script src="supabase-config.js"></script>
   <script>
-    /* Grille tarifaire en mémoire (chargée depuis Supabase) */
+    /* Grille tarifaire en mémoire (chargée depuis API VPS) */
     let grilleTarifs = [];
     let tarifSelectionne = null;
 
@@ -532,6 +533,20 @@
         grilleTarifs = [];
       }
 
+      /* Pré-sélectionner départ/destination si passés en URL */
+      const urlp = new URLSearchParams(window.location.search);
+      const preDepart = urlp.get('depart');
+      const preDest   = urlp.get('destination');
+      if (preDepart) {
+        const selD = document.getElementById('selectDepart');
+        if (selD) selD.value = preDepart;
+      }
+      if (preDest) {
+        const selDst = document.getElementById('selectDestination');
+        if (selDst) selDst.value = preDest;
+      }
+      if (preDepart && preDest) calculerTarif();
+
       /* Afficher les abonnements actifs de l'utilisateur */
       try {
         const abos = await getMesAbonnements();
@@ -540,13 +555,16 @@
           section.style.display = 'block';
           const liste = document.getElementById('listeAbonnements');
           liste.innerHTML = abos.map(a => {
-            const abo = a.abonnement || {};
             const fin = a.date_fin ? new Date(a.date_fin).toLocaleDateString('fr-FR') : '—';
+            const depart = a.depart || a.nom_ligne || '—';
+            const destination = a.destination || '';
+            const route = destination ? depart + ' → ' + destination : depart;
+            const statut = a.statut === 'active' || a.statut === 'actif' ? 'Actif' : (a.statut || '—');
             return `
               <div class="abonnement-actif">
-                <p class="abo-route">${abo.depart || '—'} → ${abo.destination || '—'}</p>
-                <p class="abo-meta">Expire le ${fin} • ${abo.prix_mensuel ? abo.prix_mensuel.toLocaleString('fr-FR') + ' FCFA' : '—'}/mois</p>
-                <span class="abo-badge">${a.statut === 'actif' ? 'Actif' : a.statut}</span>
+                <p class="abo-route">${route}</p>
+                <p class="abo-meta">Expire le ${fin} • ${a.montant ? a.montant.toLocaleString('fr-FR') + ' FCFA' : '—'}/mois</p>
+                <span class="abo-badge">${statut}</span>
               </div>`;
           }).join('');
         }
@@ -618,9 +636,8 @@
       btn.textContent = 'Traitement...';
 
       try {
-        const souscription = await souscrireAbonnement(tarifSelectionne.id, null);
-        /* Rediriger vers le paiement avec les infos nécessaires */
         const montant = tarifSelectionne.prix_mensuel;
+        const souscription = await souscrireAbonnement(tarifSelectionne.id, { price: montant });
         const depart = tarifSelectionne.depart;
         const dest = tarifSelectionne.destination;
         window.location.href = `paiement.html?type=abonnement&montant=${montant}&souscription_id=${souscription.id}&label=${encodeURIComponent(depart + ' → ' + dest)}`;

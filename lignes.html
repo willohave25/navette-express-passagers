@@ -210,86 +210,8 @@
     </div>
     
     <!-- Liste des lignes -->
-    <div class="lines-list">
-      <!-- Ligne 1 -->
-      <div class="line-card" onclick="navigateTo('detail-ligne.html')">
-        <picture>
-          <source srcset="images/ecrans/passagers-carte.webp" type="image/webp">
-          <img src="images/ecrans/passagers-carte.jpg" alt="Ligne" class="line-image" loading="lazy">
-        </picture>
-        <div class="line-content">
-          <div class="line-header">
-            <span class="line-name">Yopougon → Plateau</span>
-            <span class="line-status active">Active</span>
-          </div>
-          <p class="line-details">06:30 • 45 min • 12 places</p>
-          <span class="line-price">400 FCFA</span>
-        </div>
-      </div>
-      
-      <!-- Ligne 2 -->
-      <div class="line-card" onclick="navigateTo('detail-ligne.html')">
-        <picture>
-          <source srcset="images/ecrans/passagers-carte.webp" type="image/webp">
-          <img src="images/ecrans/passagers-carte.jpg" alt="Ligne" class="line-image" loading="lazy">
-        </picture>
-        <div class="line-content">
-          <div class="line-header">
-            <span class="line-name">Abobo → Marcory</span>
-            <span class="line-status active">Active</span>
-          </div>
-          <p class="line-details">07:00 • 50 min • 8 places</p>
-          <span class="line-price">500 FCFA</span>
-        </div>
-      </div>
-      
-      <!-- Ligne 3 -->
-      <div class="line-card" onclick="navigateTo('detail-ligne.html')">
-        <picture>
-          <source srcset="images/ecrans/passagers-carte.webp" type="image/webp">
-          <img src="images/ecrans/passagers-carte.jpg" alt="Ligne" class="line-image" loading="lazy">
-        </picture>
-        <div class="line-content">
-          <div class="line-header">
-            <span class="line-name">Cocody → Zone Industrielle</span>
-            <span class="line-status waiting">En attente</span>
-          </div>
-          <p class="line-details">06:45 • 35 min • 20 places</p>
-          <span class="line-price">300 FCFA</span>
-        </div>
-      </div>
-      
-      <!-- Ligne 4 -->
-      <div class="line-card" onclick="navigateTo('detail-ligne.html')">
-        <picture>
-          <source srcset="images/ecrans/passagers-carte.webp" type="image/webp">
-          <img src="images/ecrans/passagers-carte.jpg" alt="Ligne" class="line-image" loading="lazy">
-        </picture>
-        <div class="line-content">
-          <div class="line-header">
-            <span class="line-name">Bingerville → Zone 4</span>
-            <span class="line-status active">Active</span>
-          </div>
-          <p class="line-details">07:15 • 40 min • 5 places</p>
-          <span class="line-price">400 FCFA</span>
-        </div>
-      </div>
-      
-      <!-- Ligne 5 -->
-      <div class="line-card" onclick="navigateTo('detail-ligne.html')">
-        <picture>
-          <source srcset="images/ecrans/passagers-carte.webp" type="image/webp">
-          <img src="images/ecrans/passagers-carte.jpg" alt="Ligne" class="line-image" loading="lazy">
-        </picture>
-        <div class="line-content">
-          <div class="line-header">
-            <span class="line-name">Anyama → Plateau</span>
-            <span class="line-status full">Complète</span>
-          </div>
-          <p class="line-details">06:30 • 55 min • 0 places</p>
-          <span class="line-price">500 FCFA</span>
-        </div>
-      </div>
+    <div class="lines-list" id="linesList">
+      <p style="text-align:center;color:rgba(255,255,255,0.5);font-size:14px;padding:30px 0;">Chargement des lignes...</p>
     </div>
   </main>
   
@@ -333,5 +255,54 @@
   </nav>
   
   <script src="js/app.js"></script>
+  <script src="supabase-config.js"></script>
+  <script>
+    const statusMap = {
+      active:   { cls: 'active',  label: 'Active' },
+      inactive: { cls: 'waiting', label: 'En attente' },
+      full:     { cls: 'full',    label: 'Complète' }
+    };
+
+    function renderCard(l) {
+      const s = statusMap[l.statut] || statusMap[l.status] || { cls: 'waiting', label: l.statut || '—' };
+      const prix = l.prix_mensuel || l.price_monthly || 0;
+      const prixFmt = prix ? new Intl.NumberFormat('fr-FR').format(prix) + ' FCFA / mois' : '—';
+      const heure = l.heure_depart || l.departure_time || '';
+      const capacite = l.capacity || '';
+      const details = [heure, capacite ? capacite + ' places' : ''].filter(Boolean).join(' • ');
+      return `
+        <div class="line-card" onclick="navigateTo('detail-ligne.html?line_id=${l.id}')">
+          <picture>
+            <source srcset="images/ecrans/passagers-carte.webp" type="image/webp">
+            <img src="images/ecrans/passagers-carte.jpg" alt="Ligne" class="line-image" loading="lazy">
+          </picture>
+          <div class="line-content">
+            <div class="line-header">
+              <span class="line-name">${l.depart || l.origin} → ${l.destination}</span>
+              <span class="line-status ${s.cls}">${s.label}</span>
+            </div>
+            ${details ? `<p class="line-details">${details}</p>` : ''}
+            <span class="line-price">${prixFmt}</span>
+          </div>
+        </div>`;
+    }
+
+    document.addEventListener('DOMContentLoaded', async function() {
+      const container = document.getElementById('linesList');
+      try {
+        const lignes = await getLignesActives();
+        if (!lignes || lignes.length === 0) {
+          container.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.5);font-size:14px;padding:30px 0;">Aucune ligne disponible pour le moment.</p>';
+          return;
+        }
+        // Mettre à jour le sous-titre avec le nombre réel
+        const subtitle = document.querySelector('.hero-subtitle');
+        if (subtitle) subtitle.textContent = lignes.length + ' ligne' + (lignes.length > 1 ? 's' : '') + ' active' + (lignes.length > 1 ? 's' : '') + ' à Abidjan';
+        container.innerHTML = lignes.map(renderCard).join('');
+      } catch (err) {
+        container.innerHTML = '<p style="text-align:center;color:rgba(255,255,255,0.5);font-size:14px;padding:30px 0;">Erreur de chargement. Vérifiez votre connexion.</p>';
+      }
+    });
+  </script>
 </body>
 </html>
