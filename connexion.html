@@ -273,12 +273,28 @@
       const password   = document.getElementById('password').value;
 
       try {
-        await connecterUtilisateur(identifier, password);
+        const res = await fetch('https://api.jaebets-holding.com/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: identifier, password })
+        });
+        const data = await res.json();
+
+        if (!data.success) {
+          btn.textContent = 'Se connecter';
+          btn.disabled = false;
+          afficherErreur('Identifiants incorrects. Vérifiez votre email et mot de passe.');
+          return;
+        }
+
+        localStorage.setItem('userToken', data.data.token);
+        localStorage.setItem('navette_user', JSON.stringify(data.data.user));
         window.location.href = 'accueil.html';
+
       } catch (err) {
         btn.textContent = 'Se connecter';
         btn.disabled = false;
-        afficherErreur('Identifiants incorrects. Vérifiez votre téléphone/email et mot de passe.');
+        afficherErreur('Impossible de contacter le serveur. Vérifiez votre connexion.');
       }
     }
   </script>

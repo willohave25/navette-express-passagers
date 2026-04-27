@@ -338,28 +338,39 @@
       btn.textContent = 'Création en cours...';
       btn.disabled = true;
 
-      const data = {
+      const payload = {
         full_name:   document.getElementById('fullName').value.trim(),
         phone:       document.getElementById('phone').value.trim(),
         email:       document.getElementById('email').value.trim(),
         password:    document.getElementById('password').value,
-        quartier:    document.getElementById('quartier').value,
-        lieu_travail: document.getElementById('travail').value,
-        horaires:    document.getElementById('horaires').value
+        role:        'passenger'
       };
 
       try {
-        await inscrireUtilisateur(data);
+        const res = await fetch('https://api.jaebets-holding.com/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (!data.success) {
+          btn.textContent = 'Créer mon compte';
+          btn.disabled = false;
+          const msg = data.error?.message || '';
+          afficherErreur(msg.includes('exist') || msg.includes('duplic') ? 'Cet email est déjà utilisé.' : msg || 'Erreur lors de la création du compte.');
+          return;
+        }
+
+        localStorage.setItem('userToken', data.data.token);
+        localStorage.setItem('navette_user', JSON.stringify(data.data.user));
         localStorage.setItem('hasSeenOnboarding', 'true');
         window.location.href = 'lignes-suggerees.html';
+
       } catch (err) {
         btn.textContent = 'Créer mon compte';
         btn.disabled = false;
-        if (err.message && err.message.includes('duplicate')) {
-          afficherErreur('Ce numéro ou cet email est déjà utilisé.');
-        } else {
-          afficherErreur('Erreur lors de la création du compte. Réessayez.');
-        }
+        afficherErreur('Impossible de contacter le serveur. Vérifiez votre connexion.');
       }
     }
   </script>
