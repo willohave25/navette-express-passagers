@@ -63,8 +63,9 @@
 
   // ─── Intercepte formulaire de CONNEXION ───────────────
   function hookConnexionForm() {
-    const form = document.querySelector('.auth-form form, form[id*="login"], form[class*="login"]');
+    const form = document.querySelector('form.auth-form, .auth-form form, form[id*="login"], form[class*="login"]');
     if (!form) return;
+    form.onsubmit = null;
     // S'assurer qu'on est sur une page connexion
     const page = window.location.pathname.split('/').pop();
     if (!['connexion.html', ''].includes(page) && page !== '') return;
@@ -111,8 +112,10 @@
     const page = window.location.pathname.split('/').pop();
     if (!['inscription.html'].includes(page)) return;
 
-    const form = document.querySelector('.auth-form form, form[id*="register"], form[class*="register"]');
+    const form = document.querySelector('form.auth-form, .auth-form form, form[id*="register"], form[class*="register"]');
     if (!form) return;
+    // Neutraliser l'onsubmit inline s'il existe
+    form.onsubmit = null;
 
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
