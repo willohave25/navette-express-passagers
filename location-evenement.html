@@ -117,13 +117,56 @@
   
   
   <script src="js/app.js"></script>
+  <script src="supabase-config.js"></script>
+
+  <!-- Overlay paiement événement -->
+  <div id="paiementOverlay" style="display:none;position:fixed;inset:0;background:rgba(15,26,46,0.97);z-index:9999;overflow-y:auto;padding:24px 16px 40px;">
+    <button onclick="document.getElementById('paiementOverlay').style.display='none'" style="background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:50%;width:36px;height:36px;font-size:20px;cursor:pointer;margin-bottom:20px;">✕</button>
+    <h2 style="font-size:18px;font-weight:700;margin-bottom:4px;">Confirmer la réservation</h2>
+    <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:24px;">Versez un acompte pour valider votre réservation</p>
+    <div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:16px;margin-bottom:24px;">
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:4px;">Acompte à verser</p>
+      <p id="acompteMontant" style="font-size:22px;font-weight:700;color:#C8A951;">—</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;">
+      <button onclick="payerOM()" style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.06);border:2px solid rgba(255,153,0,0.4);border-radius:14px;padding:16px;cursor:pointer;color:#fff;font-family:inherit;text-align:left;">
+        <span style="width:40px;height:40px;background:#FF9900;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">OM</span>
+        <div><p style="font-weight:600;font-size:15px;margin-bottom:2px;">Orange Money</p><p style="font-size:12px;color:rgba(255,255,255,0.5);">Paiement mobile sécurisé</p></div>
+      </button>
+      <button onclick="payerWave()" style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.06);border:2px solid rgba(0,184,250,0.4);border-radius:14px;padding:16px;cursor:pointer;color:#fff;font-family:inherit;text-align:left;">
+        <span style="width:40px;height:40px;background:#00B8FA;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">W</span>
+        <div><p style="font-weight:600;font-size:15px;margin-bottom:2px;">Wave</p><p style="font-size:12px;color:rgba(255,255,255,0.5);">Paiement mobile instantané</p></div>
+      </button>
+    </div>
+    <p style="font-size:12px;color:rgba(255,255,255,0.4);text-align:center;">Notre équipe vous contactera sous 24h pour finaliser</p>
+  </div>
+
+  <!-- Overlay instructions paiement -->
+  <div id="instrOverlay" style="display:none;position:fixed;inset:0;background:rgba(15,26,46,0.97);z-index:10000;overflow-y:auto;padding:24px 16px 40px;">
+    <button onclick="document.getElementById('instrOverlay').style.display='none'" style="background:rgba(255,255,255,0.1);border:none;color:#fff;border-radius:50%;width:36px;height:36px;font-size:20px;cursor:pointer;margin-bottom:20px;">✕</button>
+    <h2 id="instrTitre" style="font-size:18px;font-weight:700;margin-bottom:20px;"></h2>
+    <div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:16px;margin-bottom:20px;">
+      <p style="font-size:13px;color:rgba(255,255,255,0.5);">Montant à envoyer</p>
+      <p id="instrMontant" style="font-size:22px;font-weight:700;color:#C8A951;"></p>
+    </div>
+    <div id="instrEtapes" style="font-size:14px;color:rgba(255,255,255,0.75);line-height:1.8;margin-bottom:24px;"></div>
+    <a id="instrLien" href="#" target="_blank" style="display:block;text-align:center;padding:16px;border-radius:12px;font-weight:700;font-size:15px;color:#fff;text-decoration:none;margin-bottom:16px;">Ouvrir l'application</a>
+    <button onclick="confirmerAcompte()" style="width:100%;padding:16px;background:#2EC4B6;color:#0F1A2E;border:none;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;font-family:inherit;">J'ai effectué le paiement</button>
+  </div>
+
   <script>
+    const OM_URL = 'https://qr.orange.com/pay/ci/JAEBETS_NAVETTE_EXPRESS';
+    const WAVE_URL = 'https://pay.wave.com/m/jaebets_navette';
+
     const TYPES_EVENEMENT = {
-      'Mariage': 'mariage',
-      'Séminaire': 'meeting',
-      'Excursion': 'excursion',
-      'Autre': 'autre'
+      'Mariage':   { code: 'mariage',   acompte: 50000 },
+      'Séminaire': { code: 'meeting',   acompte: 35000 },
+      'Excursion': { code: 'excursion', acompte: 25000 },
+      'Autre':     { code: 'autre',     acompte: 0 }
     };
+
+    let acompte = 0;
 
     document.querySelectorAll('.event-card').forEach(card => {
       card.addEventListener('click', function() {
@@ -137,7 +180,7 @@
 
       const selectedCard = document.querySelector('.event-card.selected');
       const typeLabel = selectedCard ? selectedCard.querySelector('.event-name').textContent.trim() : 'Autre';
-      const typeEvenement = TYPES_EVENEMENT[typeLabel] || 'autre';
+      const typeInfo = TYPES_EVENEMENT[typeLabel] || { code: 'autre', acompte: 0 };
 
       const inputs = document.querySelectorAll('.form-input');
       const dateEvenement = inputs[0].value;
@@ -155,19 +198,65 @@
 
       try {
         await creerDemandeEvenement({
-          type_evenement: typeEvenement,
+          type_evenement: typeInfo.code,
           lieu_depart: lieuDepart,
           lieu_destination: lieuDestination,
           date_evenement: dateEvenement,
           nombre_personnes: nombrePersonnes || null
         });
-        alert('Demande envoyée ! Nous vous contacterons sous 24h.');
-        navigateTo('accueil.html');
+
+        btn.textContent = 'Réserver';
+        btn.disabled = false;
+
+        // Afficher le paiement de l'acompte si montant > 0
+        acompte = typeInfo.acompte;
+        if (acompte > 0) {
+          const fmt = new Intl.NumberFormat('fr-FR').format(acompte);
+          document.getElementById('acompteMontant').textContent = fmt + ' FCFA';
+          document.getElementById('paiementOverlay').style.display = 'block';
+        } else {
+          alert('Demande envoyée ! Nous vous contacterons sous 24h pour établir votre devis.');
+          navigateTo('accueil.html');
+        }
       } catch (err) {
-        btn.textContent = 'Demander un devis';
+        btn.textContent = 'Réserver';
         btn.disabled = false;
         alert('Erreur lors de l\'envoi. Veuillez réessayer.');
       }
+    }
+
+    function payerOM() {
+      const fmt = new Intl.NumberFormat('fr-FR').format(acompte);
+      document.getElementById('instrTitre').textContent = 'Payer par Orange Money';
+      document.getElementById('instrMontant').textContent = fmt + ' FCFA';
+      document.getElementById('instrEtapes').innerHTML =
+        '1. Ouvrez votre application Orange Money<br>2. Scannez le QR code ou cliquez sur le bouton ci-dessous<br>3. Envoyez exactement <strong>' + fmt + ' FCFA</strong><br>4. Revenez ici et confirmez';
+      const lien = document.getElementById('instrLien');
+      lien.href = OM_URL;
+      lien.style.background = '#FF9900';
+      lien.textContent = 'Ouvrir Orange Money';
+      document.getElementById('paiementOverlay').style.display = 'none';
+      document.getElementById('instrOverlay').style.display = 'block';
+    }
+
+    function payerWave() {
+      const fmt = new Intl.NumberFormat('fr-FR').format(acompte);
+      document.getElementById('instrTitre').textContent = 'Payer par Wave';
+      document.getElementById('instrMontant').textContent = fmt + ' FCFA';
+      document.getElementById('instrEtapes').innerHTML =
+        '1. Ouvrez votre application Wave<br>2. Cliquez sur le bouton ci-dessous (montant pré-rempli)<br>3. Validez le paiement de <strong>' + fmt + ' FCFA</strong><br>4. Revenez ici et confirmez';
+      const lien = document.getElementById('instrLien');
+      lien.href = WAVE_URL + '?amount=' + acompte;
+      lien.style.background = '#00B8FA';
+      lien.textContent = 'Ouvrir Wave';
+      document.getElementById('paiementOverlay').style.display = 'none';
+      document.getElementById('instrOverlay').style.display = 'block';
+    }
+
+    async function confirmerAcompte() {
+      document.getElementById('instrOverlay').style.display = 'none';
+      alert('Merci ! Votre réservation est confirmée. Notre équipe vous contactera sous 24h.');
+      navigateTo('accueil.html');
     }
   </script>
 </body>
